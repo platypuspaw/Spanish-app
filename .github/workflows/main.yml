@@ -13,7 +13,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
+          java-version: '17'
           distribution: 'temurin'
       
       - name: Setup Node.js
@@ -25,7 +25,11 @@ jobs:
         run: npm install -g @bubblewrap/cli
       
       - name: Init Bubblewrap
-        run: bubblewrap init --manifest https://platypuspaw.github.io/Spanish-app/manifest.json --directory /tmp/twa
+        run: |
+          bubblewrap init \
+            --manifest https://platypuspaw.github.io/Spanish-app/manifest.json \
+            --directory /tmp/twa \
+            --jdk-path $JAVA_HOME
       
       - name: Build APK
         run: bubblewrap build --directory /tmp/twa
