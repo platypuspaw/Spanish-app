@@ -29,10 +29,13 @@ jobs:
       - name: Init Bubblewrap
         run: |
           echo "JAVA_HOME=$JAVA_HOME"
-          yes | bubblewrap init \
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          
+          bubblewrap init \
             --manifest https://platypuspaw.github.io/Spanish-app/manifest.json \
             --directory /tmp/twa \
-            --jdk-path "$JAVA_HOME"
+            --jdk-path "$JAVA_HOME" \
+            --android-sdk-path "$ANDROID_HOME"
       
       - name: Build APK
         run: bubblewrap build --directory /tmp/twa
