@@ -8,29 +8,30 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Setup Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '11'
           distribution: 'temurin'
       
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
       
       - name: Install Bubblewrap
         run: npm install -g @bubblewrap/cli
       
+      - name: Init Bubblewrap
+        run: bubblewrap init --manifest https://platypuspaw.github.io/Spanish-app/manifest.json --directory /tmp/twa
+      
       - name: Build APK
-        run: |
-          bubblewrap build --skipPwaValidation
-        working-directory: ${{ github.workspace }}
+        run: bubblewrap build --directory /tmp/twa
       
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: HolaTuki-APK
-          path: app-release-signed.apk
+          path: /tmp/twa/app-release-signed.apk
