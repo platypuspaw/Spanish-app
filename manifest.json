@@ -1,21 +1,12 @@
 {
-  "name": "Español 스페인어 학습",
-  "short_name": "Español",
-  "start_url": "./index.html",
-  "display": "standalone",
   "background_color": "#0e0c1a",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "HolaTuki",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "HolaTuki",
+  "start_url": "/index.html",
   "theme_color": "#0e0c1a",
-  "description": "과테말라 직장인을 위한 스페인어 학습 앱",
-  "icons": [
-    {
-      "src": "icon.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+  "description": "Dele 시험을 준비하는 사람들을 위한 스페인어 학습 앱"
 }
