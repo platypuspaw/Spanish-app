@@ -26,13 +26,12 @@ jobs:
       - name: Install Bubblewrap
         run: npm install -g @bubblewrap/cli
 
-      # 🔥 추가된 부분
-      - name: Install Android SDK
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y android-sdk
+      # 🔥 핵심 (이걸로 SDK 설치)
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
-      - name: Accept Android Licenses
+      # 🔥 이제 sdkmanager 정상 사용 가능
+      - name: Accept Licenses
         run: yes | sdkmanager --licenses
       
       - name: Init Bubblewrap
@@ -41,7 +40,7 @@ jobs:
             --manifest https://platypuspaw.github.io/Spanish-app/manifest.json \
             --directory /tmp/twa \
             --jdk-path "$JAVA_HOME" \
-            --android-sdk-path "$ANDROID_HOME"
+            --android-sdk-path "$ANDROID_SDK_ROOT"
       
       - name: Build APK
         run: bubblewrap build --directory /tmp/twa
