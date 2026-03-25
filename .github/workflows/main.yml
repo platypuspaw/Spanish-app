@@ -30,7 +30,7 @@ jobs:
         working-directory: ${{ github.workspace }}
       
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: HolaTuki-APK
           path: app-release-signed.apk
