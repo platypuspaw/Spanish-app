@@ -7,8 +7,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
       
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -26,10 +28,11 @@ jobs:
       
       - name: Init Bubblewrap
         run: |
-          bubblewrap init \
+          echo "JAVA_HOME=$JAVA_HOME"
+          yes | bubblewrap init \
             --manifest https://platypuspaw.github.io/Spanish-app/manifest.json \
             --directory /tmp/twa \
-            --jdk-path $JAVA_HOME
+            --jdk-path "$JAVA_HOME"
       
       - name: Build APK
         run: bubblewrap build --directory /tmp/twa
