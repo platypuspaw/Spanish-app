@@ -16,22 +16,15 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-        env:
-          SKIP_JDK_VERSION_CHECK: true
-
-      - name: Clone TWA
-        run: git clone https://github.com/GoogleChromeLabs/svgomg-twa.git twa
-
-      - name: Build APK
-        run: |
-          cd twa
-          sed -i 's|distributionUrl=.*|distributionUrl=https\\://services.gradle.org/distributions/gradle-8.0-bin.zip|' gradle/wrapper/gradle-wrapper.properties
-          ./gradlew assembleRelease
+      - name: Build TWA APK
+        uses: BandhiyaHardik/twa-build-action@main
+        with:
+          manifest-url: 'https://platypuspaw.github.io/Spanish-app/manifest.json'
+          app-name: 'HolaTuki'
+          package-name: 'io.github.platypuspaw.twa'
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: HolaTuki-APK
-          path: twa/app/build/outputs/apk/release/app-release-unsigned.apk
+          path: '*.apk'
