@@ -13,11 +13,13 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
+          java-version: '17'
           distribution: 'temurin'
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        env:
+          SKIP_JDK_VERSION_CHECK: true
 
       - name: Clone TWA
         run: git clone https://github.com/GoogleChromeLabs/svgomg-twa.git twa
@@ -25,7 +27,7 @@ jobs:
       - name: Build APK
         run: |
           cd twa
-          sed -i 's|distributionUrl=.*|distributionUrl=https\\://services.gradle.org/distributions/gradle-7.6-bin.zip|' gradle/wrapper/gradle-wrapper.properties
+          sed -i 's|distributionUrl=.*|distributionUrl=https\\://services.gradle.org/distributions/gradle-8.0-bin.zip|' gradle/wrapper/gradle-wrapper.properties
           ./gradlew assembleRelease
 
       - name: Upload APK
