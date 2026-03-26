@@ -21,25 +21,17 @@ jobs:
         env:
           SKIP_JDK_VERSION_CHECK: true
 
-      - name: Build TWA APK
+      - name: Install llama-pack
+        run: npm install -g @llama-pack/cli
+
+      - name: Build APK
         run: |
-          git clone https://github.com/chromeos/pwa-to-twa.git
-          cd pwa-to-twa
-          cat > config.json << 'EOF'
-          {
-            "packageId": "io.github.platypuspaw.twa",
-            "host": "platypuspaw.github.io",
-            "name": "HolaTuki",
-            "startUrl": "/Spanish-app/index.html",
-            "themeColor": "#0e0c1a",
-            "backgroundColor": "#0e0c1a",
-            "iconUrl": "https://platypuspaw.github.io/Spanish-app/launchericon-512x512.png"
-          }
-          EOF
-          ./gradlew assembleRelease
+          llama-pack init --manifest https://platypuspaw.github.io/Spanish-app/manifest.json --directory /tmp/twa
+          cd /tmp/twa
+          llama-pack build
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: HolaTuki-APK
-          path: pwa-to-twa/app/build/outputs/apk/release/*.apk
+          path: /tmp/twa/app-release-unsigned.apk
