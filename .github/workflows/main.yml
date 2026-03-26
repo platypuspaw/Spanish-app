@@ -21,17 +21,75 @@ jobs:
         env:
           SKIP_JDK_VERSION_CHECK: true
 
-      - name: Install llama-pack
-        run: npm install -g @llama-pack/cli
+      - name: Create TWA Project
+        run: |
+          mkdir -p twa/app/src/main/java/io/github/platypuspaw/twa
+          mkdir -p twa/app/src/main/res/values
+          
+          cat > twa/settings.gradle << 'EOF'
+          include ':app'
+          EOF
+          
+          cat > twa/build.gradle << 'EOF'
+          buildscript {
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+              dependencies {
+                  classpath 'com.android.tools.build:gradle:8.1.0'
+              }
+          }
+          EOF
+          
+          cat > twa/app/build.gradle << 'EOF'
+          plugins {
+              id 'com.android.application'
+          }
+          android {
+              compileSdk 34
+              defaultConfig {
+                  applicationId "io.github.platypuspaw.twa"
+                  minSdk 19
+                  targetSdk 34
+                  versionCode 1
+                  versionName "1.0"
+              }
+          }
+          dependencies {
+              implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.5.0'
+          }
+          EOF
+          
+          cat > twa/app/src/main/AndroidManifest.xml << 'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+              <uses-permission android:name="android.permission.INTERNET" />
+              <application android:label="HolaTuki">
+                  <activity android:name="com.google.androidbrowserhelper.trusted.LauncherActivity">
+                      <meta-data android:name="android.support.customtabs.trusted.DEFAULT_URL"
+                          android:value="https://platypuspaw.github.io/Spanish-app/index.html" />
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN" />
+                          <category android:name="android.intent.category.LAUNCHER" />
+                      </intent-filter>
+                  </activity>
+              </application>
+          </manifest>
+          EOF
+          
+          cat > twa/gradle/wrapper/gradle-wrapper.properties << 'EOF'
+          distributionUrl=https\://services.gradle.org/distributions/gradle-8.1-bin.zip
+          EOF
 
       - name: Build APK
         run: |
-          llama-pack init --manifest https://platypuspaw.github.io/Spanish-app/manifest.json --directory /tmp/twa
-          cd /tmp/twa
-          llama-pack build
+          cd twa
+          chmod +x gradlew 2>/dev/null || true
+          gradle assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: HolaTuki-APK
-          path: /tmp/twa/app-release-unsigned.apk
+          path: twa/app/build/outputs/apk/debug/app-debug.apk
