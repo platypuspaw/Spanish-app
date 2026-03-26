@@ -10,21 +10,52 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Java
+      - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build TWA APK
-        uses: BandhiyaHardik/twa-build-action@main
-        with:
-          manifest-url: 'https://platypuspaw.github.io/Spanish-app/manifest.json'
-          app-name: 'HolaTuki'
-          package-name: 'io.github.platypuspaw.twa'
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        env:
+          SKIP_JDK_VERSION_CHECK: true
+
+      - name: Install Bubblewrap
+        run: npm install -g @bubblewrap/cli
+
+      - name: Create Bubblewrap config
+        run: |
+          mkdir -p /tmp/twa
+          cd /tmp/twa
+          cat > twa-manifest.json << 'EOF'
+          {
+            "packageId": "io.github.platypuspaw.twa",
+            "host": "platypuspaw.github.io",
+            "name": "HolaTuki",
+            "launcherName": "HolaTuki",
+            "display": "standalone",
+            "orientation": "portrait",
+            "themeColor": "#0e0c1a",
+            "navigationColor": "#0e0c1a",
+            "backgroundColor": "#0e0c1a",
+            "startUrl": "/Spanish-app/index.html",
+            "iconUrl": "https://platypuspaw.github.io/Spanish-app/launchericon-512x512.png",
+            "maskableIconUrl": "https://platypuspaw.github.io/Spanish-app/launchericon-512x512.png",
+            "appVersion": "1.0.0",
+            "appVersionCode": 1,
+            "signingMode": "none",
+            "generatorApp": "bubblewrap-cli"
+          }
+          EOF
+
+      - name: Build APK
+        run: |
+          cd /tmp/twa
+          bubblewrap build --skipPwaValidation
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: HolaTuki-APK
-          path: '*.apk'
+          path: /tmp/twa/app-release-unsigned.apk
