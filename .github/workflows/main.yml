@@ -25,7 +25,7 @@ jobs:
         run: npm install -g @bubblewrap/cli
       
       - name: Init Bubblewrap
-        run: echo "y" | bubblewrap init --manifest https://platypuspaw.github.io/Spanish-app/manifest.json --directory /tmp/twa
+        run: echo -e "y\ny\ny\ny\ny" | bubblewrap init --manifest https://platypuspaw.github.io/Spanish-app/manifest.json --directory /tmp/twa
       
       - name: Build APK
         run: bubblewrap build --directory /tmp/twa
