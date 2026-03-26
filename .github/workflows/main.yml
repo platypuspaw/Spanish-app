@@ -9,29 +9,43 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
+          java-version: '17'
           distribution: 'temurin'
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-      
-      - name: Install Bubblewrap
-        run: npm install -g @bubblewrap/cli
-      
-      - name: Init Bubblewrap
-        run: echo -e "y\ny\ny\ny\ny" | bubblewrap init --manifest https://platypuspaw.github.io/Spanish-app/manifest.json --directory /tmp/twa
-      
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Clone TWA Quickstart
+        run: git clone https://github.com/GoogleChromeLabs/svgomg-twa.git twa
+
+      - name: Configure TWA
+        run: |
+          cd twa
+          cat > app/build.gradle << 'EOF'
+          apply plugin: 'com.android.application'
+          android {
+              compileSdkVersion 33
+              defaultConfig {
+                  applicationId "io.github.platypuspaw.twa"
+                  minSdkVersion 19
+                  targetSdkVersion 33
+                  versionCode 1
+                  versionName "1.0"
+              }
+          }
+          EOF
+
       - name: Build APK
-        run: bubblewrap build --directory /tmp/twa
-      
+        run: |
+          cd twa
+          ./gradlew assembleRelease
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: HolaTuki-APK
-          path: /tmp/twa/app-release-signed.apk
+          path: twa/app/build/outputs/apk/release/app-release-unsigned.apk
