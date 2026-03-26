@@ -21,41 +21,25 @@ jobs:
         env:
           SKIP_JDK_VERSION_CHECK: true
 
-      - name: Install Bubblewrap
-        run: npm install -g @bubblewrap/cli
-
-      - name: Create Bubblewrap config
+      - name: Build TWA APK
         run: |
-          mkdir -p /tmp/twa
-          cd /tmp/twa
-          cat > twa-manifest.json << 'EOF'
+          git clone https://github.com/chromeos/pwa-to-twa.git
+          cd pwa-to-twa
+          cat > config.json << 'EOF'
           {
             "packageId": "io.github.platypuspaw.twa",
             "host": "platypuspaw.github.io",
             "name": "HolaTuki",
-            "launcherName": "HolaTuki",
-            "display": "standalone",
-            "orientation": "portrait",
-            "themeColor": "#0e0c1a",
-            "navigationColor": "#0e0c1a",
-            "backgroundColor": "#0e0c1a",
             "startUrl": "/Spanish-app/index.html",
-            "iconUrl": "https://platypuspaw.github.io/Spanish-app/launchericon-512x512.png",
-            "maskableIconUrl": "https://platypuspaw.github.io/Spanish-app/launchericon-512x512.png",
-            "appVersion": "1.0.0",
-            "appVersionCode": 1,
-            "signingMode": "none",
-            "generatorApp": "bubblewrap-cli"
+            "themeColor": "#0e0c1a",
+            "backgroundColor": "#0e0c1a",
+            "iconUrl": "https://platypuspaw.github.io/Spanish-app/launchericon-512x512.png"
           }
           EOF
-
-      - name: Build APK
-        run: |
-          cd /tmp/twa
-          bubblewrap build --skipPwaValidation
+          ./gradlew assembleRelease
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: HolaTuki-APK
-          path: /tmp/twa/app-release-unsigned.apk
+          path: pwa-to-twa/app/build/outputs/apk/release/*.apk
