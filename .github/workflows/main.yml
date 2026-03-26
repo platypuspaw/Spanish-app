@@ -7,15 +7,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '11'
           distribution: 'temurin'
       
       - name: Setup Node.js
@@ -25,22 +23,9 @@ jobs:
       
       - name: Install Bubblewrap
         run: npm install -g @bubblewrap/cli
-
-      # 🔥 핵심 (이걸로 SDK 설치)
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      # 🔥 이제 sdkmanager 정상 사용 가능
-      - name: Accept Licenses
-        run: yes | sdkmanager --licenses
       
       - name: Init Bubblewrap
-        run: |
-          bubblewrap init \
-            --manifest https://platypuspaw.github.io/Spanish-app/manifest.json \
-            --directory /tmp/twa \
-            --jdk-path "$JAVA_HOME" \
-            --android-sdk-path "$ANDROID_SDK_ROOT"
+        run: echo "y" | bubblewrap init --manifest https://platypuspaw.github.io/Spanish-app/manifest.json --directory /tmp/twa
       
       - name: Build APK
         run: bubblewrap build --directory /tmp/twa
