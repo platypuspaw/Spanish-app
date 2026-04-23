@@ -434,6 +434,7 @@
   <button class="tab" onclick="showTab('quiz',this)">✍️ 퀴즈</button>
   <button class="tab" onclick="showTab('wordlist',this)">📖 단어장</button>
   <button class="tab" onclick="showTab('sentences',this)">💬 문장</button>
+  <button class="tab" onclick="showTab('patterns',this)">📐 B1표현</button>
   <button class="tab" onclick="showTab('progress',this)">📊 진도</button>
 </nav>
 
@@ -1183,6 +1184,28 @@
       <button class="pill" onclick="selectSentCat('request',this)">🙋 요청·부탁</button>
     </div>
     <div id="sent-list"></div>
+  </div>
+</div>
+
+<!-- ══════ PATTERNS TAB ══════ -->
+<div id="tab-patterns" class="screen">
+  <div class="panel">
+    <div class="panel-title">📐 B1 필수 문장구조</div>
+    <div style="font-size:13px;color:var(--text3);margin-bottom:16px;line-height:1.6">
+      회화 시험에서 자주 쓰이는 문장 패턴이에요. 탭하면 예문을 볼 수 있어요.
+    </div>
+    <!-- 카테고리 필터 -->
+    <div class="cat-pills" id="pattern-cat-pills" style="margin-bottom:20px">
+      <button class="pill active" onclick="selectPatternCat('all',this)">전체</button>
+      <button class="pill" onclick="selectPatternCat('opinion',this)">💬 의견</button>
+      <button class="pill" onclick="selectPatternCat('condition',this)">🔀 가정</button>
+      <button class="pill" onclick="selectPatternCat('reason',this)">🔍 이유</button>
+      <button class="pill" onclick="selectPatternCat('feeling',this)">😊 감정</button>
+      <button class="pill" onclick="selectPatternCat('compare',this)">⚖️ 비교</button>
+      <button class="pill" onclick="selectPatternCat('time',this)">⏰ 시간</button>
+      <button class="pill" onclick="selectPatternCat('purpose',this)">🎯 목적</button>
+    </div>
+    <div id="pattern-list"></div>
   </div>
 </div>
 
@@ -5877,6 +5900,7 @@ function showTab(name, btn) {
   if (name === 'dictation')   initDictation();
   if (name === 'progress')    renderProgress();
   if (name === 'sentences')   renderSentences();
+  if (name === 'patterns')    renderPatterns();
   if (name === 'cards')       renderCard();
   if (name === 'listening')   initListening();
 }
@@ -7986,7 +8010,359 @@ function closeWordPopup() {
 
 let conjReturnToSent = false;
 
-function shuffle(arr) { return [...arr].sort(() => Math.random() - .5); }
+// ══════════════════════════════════════════════════
+//  문장구조 (B1 회화 패턴)
+// ══════════════════════════════════════════════════
+const PATTERNS = [
+
+  // ── 💬 의견 표현 ──
+  { cat:'opinion', structure:'Creo que + 직설법', ko:'~라고 생각해요',
+    when:'자신의 의견을 말할 때. que 뒤에 직설법을 써요.',
+    tip:'B1 회화에서 가장 자주 쓰이는 패턴! 반드시 익혀두세요.',
+    examples:[
+      { es:'Creo que es muy importante estudiar español.', ko:'스페인어를 공부하는 것이 매우 중요하다고 생각해요.' },
+      { es:'Creo que el problema tiene solución.', ko:'그 문제는 해결책이 있다고 생각해요.' },
+      { es:'No creo que sea tan difícil.', ko:'그렇게 어렵다고 생각하지 않아요.' },
+    ]
+  },
+  { cat:'opinion', structure:'Me parece que + 직설법', ko:'~인 것 같아요',
+    when:'확신보다 약한 의견을 말할 때. 부드러운 표현.',
+    tip:'Creo que보다 조심스러운 뉘앙스예요.',
+    examples:[
+      { es:'Me parece que hay un malentendido.', ko:'오해가 있는 것 같아요.' },
+      { es:'Me parece que podemos llegar a un acuerdo.', ko:'합의에 도달할 수 있을 것 같아요.' },
+      { es:'Me parece bien tu propuesta.', ko:'당신의 제안이 좋은 것 같아요.' },
+    ]
+  },
+  { cat:'opinion', structure:'En mi opinión, + 문장', ko:'제 의견으로는',
+    when:'공식적인 상황에서 자신의 입장을 밝힐 때.',
+    tip:'Desde mi punto de vista도 같은 의미예요.',
+    examples:[
+      { es:'En mi opinión, deberíamos cambiar el enfoque.', ko:'제 의견으로는 접근 방식을 바꿔야 해요.' },
+      { es:'En mi opinión, el precio es demasiado alto.', ko:'제 의견으로는 가격이 너무 높아요.' },
+      { es:'Desde mi punto de vista, es una buena oportunidad.', ko:'제 관점에서는 좋은 기회예요.' },
+    ]
+  },
+  { cat:'opinion', structure:'Lo que pienso es que + 문장', ko:'제가 생각하는 것은 ~예요',
+    when:'자신의 생각을 강조해서 말할 때.',
+    tip:'Lo que + 동사 구조는 강조 표현이에요.',
+    examples:[
+      { es:'Lo que pienso es que necesitamos más tiempo.', ko:'제가 생각하는 것은 우리에게 시간이 더 필요하다는 거예요.' },
+      { es:'Lo que creo es que hay que actuar ya.', ko:'제가 믿는 것은 지금 바로 행동해야 한다는 거예요.' },
+    ]
+  },
+  { cat:'opinion', structure:'Estoy de acuerdo / No estoy de acuerdo con + 명사', ko:'동의해요 / 동의하지 않아요',
+    when:'상대방 의견에 동의하거나 반대할 때.',
+    tip:'반대 의견 후에는 pero(하지만)로 이유를 덧붙여요.',
+    examples:[
+      { es:'Estoy de acuerdo con tu propuesta.', ko:'당신 제안에 동의해요.' },
+      { es:'No estoy de acuerdo con esa decisión.', ko:'그 결정에 동의하지 않아요.' },
+      { es:'Estoy completamente de acuerdo contigo.', ko:'완전히 동의해요.' },
+    ]
+  },
+
+  // ── 🔀 가정·조건 ──
+  { cat:'condition', structure:'Si + 현재, + 미래/현재', ko:'만약 ~하면 ~할 거예요',
+    when:'실현 가능한 조건을 말할 때. 현실적인 가정.',
+    tip:'Si 뒤에는 반드시 현재형! 미래형 쓰면 틀려요.',
+    examples:[
+      { es:'Si tienes tiempo, podemos reunirnos mañana.', ko:'시간이 있으면 내일 만날 수 있어요.' },
+      { es:'Si termino antes, te ayudo.', ko:'먼저 끝나면 도와줄게요.' },
+      { es:'Si hay algún problema, me avisas.', ko:'문제가 있으면 알려줘요.' },
+    ]
+  },
+  { cat:'condition', structure:'Si + 불완료접속법, + 조건법', ko:'만약 ~라면 ~할 텐데',
+    when:'현실과 반대되는 가정, 또는 실현 가능성이 낮은 상황.',
+    tip:'불완료접속법(-ra형)을 꼭 익혀두세요! B1 핵심 문법이에요.',
+    examples:[
+      { es:'Si tuviera más tiempo, estudiaría más.', ko:'시간이 더 있다면 더 공부할 텐데.' },
+      { es:'Si viviera en España, hablaría mejor.', ko:'스페인에 산다면 더 잘 말할 텐데.' },
+      { es:'Si pudiera, cambiaría de trabajo.', ko:'할 수 있다면 직장을 바꿀 텐데.' },
+    ]
+  },
+  { cat:'condition', structure:'Aunque + 접속법/직설법, + 문장', ko:'비록 ~이지만',
+    when:'접속법: 아직 확실하지 않은 상황 / 직설법: 이미 알고 있는 사실.',
+    tip:'Aunque는 양보절을 만들어요. 매우 자주 쓰여요.',
+    examples:[
+      { es:'Aunque esté cansado, voy a terminar.', ko:'피곤하더라도 끝낼 거예요.' },
+      { es:'Aunque es difícil, no me rindo.', ko:'어렵긴 하지만 포기하지 않아요.' },
+      { es:'Aunque no entiendo todo, sigo intentando.', ko:'다 이해하지 못해도 계속 시도해요.' },
+    ]
+  },
+  { cat:'condition', structure:'En caso de que + 접속법', ko:'~한 경우에는',
+    when:'특정 상황이 발생했을 때를 대비해 말할 때.',
+    tip:'de que 뒤에는 반드시 접속법!',
+    examples:[
+      { es:'En caso de que haya algún problema, llámame.', ko:'문제가 생길 경우에는 전화해요.' },
+      { es:'En caso de que no puedas venir, avísame.', ko:'올 수 없는 경우에는 알려줘요.' },
+    ]
+  },
+  { cat:'condition', structure:'Siempre que + 접속법', ko:'~하는 한, ~할 때마다',
+    when:'조건이나 반복적인 상황을 나타낼 때.',
+    tip:'con tal de que(~하기만 하면)도 같은 용도예요.',
+    examples:[
+      { es:'Siempre que pueda, te ayudaré.', ko:'할 수 있는 한 도와줄게요.' },
+      { es:'Siempre que llegues, me avisas.', ko:'도착할 때마다 알려줘요.' },
+    ]
+  },
+
+  // ── 🔍 이유·설명 ──
+  { cat:'reason', structure:'Lo que pasa es que + 문장', ko:'문제는 ~이에요',
+    when:'상황을 설명하거나 이유를 말할 때. 구어체에서 매우 자주 사용.',
+    tip:'회화에서 가장 자연스러운 설명 표현이에요!',
+    examples:[
+      { es:'Lo que pasa es que no tengo tiempo.', ko:'문제는 시간이 없다는 거예요.' },
+      { es:'Lo que pasa es que el sistema no funciona.', ko:'문제는 시스템이 작동하지 않는다는 거예요.' },
+      { es:'Lo que pasa es que no entendí bien.', ko:'문제는 잘 이해하지 못했다는 거예요.' },
+    ]
+  },
+  { cat:'reason', structure:'Esto se debe a que + 문장', ko:'이것은 ~ 때문이에요',
+    when:'공식적인 이유 설명. 문서나 발표에서 자주 사용.',
+    tip:'구어체에서는 Es porque나 Es que가 더 자연스러워요.',
+    examples:[
+      { es:'Esto se debe a que hubo un error en el sistema.', ko:'이것은 시스템 오류가 있었기 때문이에요.' },
+      { es:'El retraso se debe a que no recibimos la información.', ko:'지연은 정보를 받지 못했기 때문이에요.' },
+    ]
+  },
+  { cat:'reason', structure:'La razón por la que + 문장 + es que', ko:'~한 이유는 ~이에요',
+    when:'이유를 강조해서 설명할 때.',
+    tip:'간단하게 Es que ~로 줄여서도 많이 써요.',
+    examples:[
+      { es:'La razón por la que llegué tarde es que había mucho tráfico.', ko:'늦게 도착한 이유는 교통이 많이 막혔기 때문이에요.' },
+      { es:'La razón por la que lo hice es que era urgente.', ko:'그것을 한 이유는 긴급했기 때문이에요.' },
+    ]
+  },
+  { cat:'reason', structure:'Gracias a + 명사/que, + 문장', ko:'~ 덕분에',
+    when:'긍정적인 결과의 원인을 말할 때.',
+    tip:'부정적 결과는 debido a(~ 때문에)를 써요.',
+    examples:[
+      { es:'Gracias a tu ayuda, pudimos terminar a tiempo.', ko:'당신 덕분에 제때 끝낼 수 있었어요.' },
+      { es:'Gracias a que estudiamos juntos, aprendimos más.', ko:'함께 공부한 덕분에 더 많이 배웠어요.' },
+    ]
+  },
+
+  // ── 😊 감정 표현 ──
+  { cat:'feeling', structure:'Me alegra / Me alegro de que + 접속법', ko:'~해서 기뻐요',
+    when:'기쁨을 표현할 때. que 뒤 주어가 다르면 접속법.',
+    tip:'감정 동사 + que + 접속법은 B1 핵심 문법!',
+    examples:[
+      { es:'Me alegra que hayas podido venir.', ko:'올 수 있어서 기뻐요.' },
+      { es:'Me alegro de que todo haya salido bien.', ko:'다 잘 돼서 기뻐요.' },
+      { es:'Me alegra mucho escuchar eso.', ko:'그 말을 들으니 정말 기뻐요.' },
+    ]
+  },
+  { cat:'feeling', structure:'Es una lástima que + 접속법', ko:'~해서 유감이에요',
+    when:'안타까움이나 유감을 표현할 때.',
+    tip:'Es una pena que도 같은 의미예요.',
+    examples:[
+      { es:'Es una lástima que no puedas asistir.', ko:'참석하지 못해서 유감이에요.' },
+      { es:'Es una lástima que no hayamos llegado a un acuerdo.', ko:'합의에 이르지 못해서 유감이에요.' },
+    ]
+  },
+  { cat:'feeling', structure:'Espero que + 접속법', ko:'~하길 바라요',
+    when:'바람이나 기대를 표현할 때. que 뒤에는 반드시 접속법.',
+    tip:'Ojalá(~이면 좋겠다)도 비슷한 표현이에요.',
+    examples:[
+      { es:'Espero que te mejores pronto.', ko:'빨리 나으시길 바라요.' },
+      { es:'Espero que podamos resolver esto juntos.', ko:'함께 이것을 해결할 수 있기를 바라요.' },
+      { es:'Espero que todo salga bien.', ko:'다 잘 되기를 바라요.' },
+    ]
+  },
+  { cat:'feeling', structure:'Me preocupa que + 접속법', ko:'~이 걱정돼요',
+    when:'걱정이나 우려를 표현할 때.',
+    tip:'Me sorprende que(~해서 놀라요)도 같은 구조예요.',
+    examples:[
+      { es:'Me preocupa que no haya respuesta todavía.', ko:'아직 답변이 없는 게 걱정돼요.' },
+      { es:'Me preocupa que el plazo se acerque.', ko:'기한이 다가오는 게 걱정돼요.' },
+    ]
+  },
+  { cat:'feeling', structure:'Ojalá + 접속법', ko:'~이면 좋겠다',
+    when:'강한 바람이나 소원을 표현할 때.',
+    tip:'Ojalá 뒤에는 항상 접속법! 주어가 없어도 돼요.',
+    examples:[
+      { es:'Ojalá pueda ir a España algún día.', ko:'언젠가 스페인에 갈 수 있으면 좋겠어요.' },
+      { es:'Ojalá haga buen tiempo mañana.', ko:'내일 날씨가 좋으면 좋겠어요.' },
+      { es:'Ojalá apruebe el examen.', ko:'시험에 합격하면 좋겠어요.' },
+    ]
+  },
+
+  // ── ⚖️ 비교·대조 ──
+  { cat:'compare', structure:'A diferencia de + 명사, + 문장', ko:'~와 달리',
+    when:'두 가지를 대조할 때.',
+    tip:'Mientras que(반면에)도 같은 용도예요.',
+    examples:[
+      { es:'A diferencia de Korea, en Guatemala hace calor todo el año.', ko:'한국과 달리 과테말라는 일년 내내 더워요.' },
+      { es:'A diferencia de antes, ahora tengo más experiencia.', ko:'전과 달리 이제 경험이 더 많아요.' },
+    ]
+  },
+  { cat:'compare', structure:'Mientras que + 문장, + 문장', ko:'~인 반면에',
+    when:'두 가지 상황을 대조할 때.',
+    tip:'앞뒤 내용이 반대여야 자연스러워요.',
+    examples:[
+      { es:'Mientras que él es rápido, yo soy más cuidadoso.', ko:'그는 빠른 반면에 저는 더 꼼꼼해요.' },
+      { es:'Mientras que el costo subió, la calidad bajó.', ko:'비용은 오른 반면에 품질은 떨어졌어요.' },
+    ]
+  },
+  { cat:'compare', structure:'No solo... sino (también)...', ko:'~뿐만 아니라 ~도',
+    when:'두 가지 이상의 특징을 강조할 때.',
+    tip:'también을 붙이면 더 자연스러워요.',
+    examples:[
+      { es:'No solo es inteligente, sino también trabajador.', ko:'똑똑할 뿐만 아니라 성실하기도 해요.' },
+      { es:'No solo habla español, sino también inglés y coreano.', ko:'스페인어뿐만 아니라 영어와 한국어도 해요.' },
+    ]
+  },
+  { cat:'compare', structure:'Cuanto más... más...', ko:'~하면 할수록 더 ~해요',
+    when:'비례 관계를 표현할 때.',
+    tip:'두 번째 más 뒤에 오는 동사도 같은 시제로 맞춰요.',
+    examples:[
+      { es:'Cuanto más practico, más aprendo.', ko:'연습할수록 더 많이 배워요.' },
+      { es:'Cuanto más tiempo pasa, más difícil se hace.', ko:'시간이 지날수록 더 어려워져요.' },
+    ]
+  },
+
+  // ── ⏰ 시간 표현 ──
+  { cat:'time', structure:'Llevar + 시간 + 현재분사', ko:'~한 지 ~됐어요',
+    when:'어떤 행동을 얼마나 계속해왔는지 말할 때.',
+    tip:'B1에서 자주 나오는 시간 표현이에요!',
+    examples:[
+      { es:'Llevo dos años viviendo en Guatemala.', ko:'과테말라에 산 지 2년 됐어요.' },
+      { es:'Llevo una hora esperando.', ko:'한 시간째 기다리고 있어요.' },
+      { es:'Llevo tres meses estudiando español.', ko:'스페인어를 공부한 지 3개월 됐어요.' },
+    ]
+  },
+  { cat:'time', structure:'Hace + 시간 + que + 현재/과거', ko:'~한 지 ~됐어요 / ~전에',
+    when:'어떤 상황이 시작된 시점을 표현할 때.',
+    tip:'Hace + 시간 + que + 현재 = 지금도 계속 중. 과거 = 완료된 일.',
+    examples:[
+      { es:'Hace dos años que vivo aquí.', ko:'여기 산 지 2년 됐어요.' },
+      { es:'Hace una semana que no como bien.', ko:'일주일째 제대로 못 먹고 있어요.' },
+      { es:'Llegué hace tres horas.', ko:'3시간 전에 도착했어요.' },
+    ]
+  },
+  { cat:'time', structure:'Desde que + 문장, + 문장', ko:'~한 이후로',
+    when:'어떤 사건 이후의 변화를 말할 때.',
+    tip:'Desde hace + 시간(~전부터)과 혼동하지 마요.',
+    examples:[
+      { es:'Desde que llegué a Guatemala, aprendí mucho.', ko:'과테말라에 온 이후로 많이 배웠어요.' },
+      { es:'Desde que uso esta app, mi español mejoró.', ko:'이 앱을 사용한 이후로 스페인어가 늘었어요.' },
+    ]
+  },
+  { cat:'time', structure:'En cuanto + 접속법, + 미래/명령', ko:'~하자마자',
+    when:'어떤 일이 일어나는 즉시 다른 일을 할 때.',
+    tip:'Tan pronto como도 같은 의미예요.',
+    examples:[
+      { es:'En cuanto llegue, te aviso.', ko:'도착하자마자 알려줄게요.' },
+      { es:'En cuanto pueda, lo reviso.', ko:'가능하자마자 확인해볼게요.' },
+      { es:'En cuanto termines, llámame.', ko:'끝나자마자 전화해요.' },
+    ]
+  },
+
+  // ── 🎯 목적·결과 ──
+  { cat:'purpose', structure:'Para que + 접속법', ko:'~하도록, ~하기 위해서',
+    when:'목적이나 의도를 표현할 때. 주어가 다를 때 사용.',
+    tip:'주어가 같으면 para + 동사원형을 써요.',
+    examples:[
+      { es:'Te lo explico para que lo entiendas.', ko:'네가 이해할 수 있도록 설명해줄게요.' },
+      { es:'Lo hago para que todos estén contentos.', ko:'모두가 만족할 수 있도록 해요.' },
+    ]
+  },
+  { cat:'purpose', structure:'Me gustaría + 동사원형', ko:'~하고 싶어요 (정중)',
+    when:'원하는 것을 정중하게 말할 때. Quiero보다 격식 있는 표현.',
+    tip:'조건법이라 정중한 뉘앙스! 시험에서 자주 쓰여요.',
+    examples:[
+      { es:'Me gustaría hablar con el responsable.', ko:'담당자와 이야기하고 싶어요.' },
+      { es:'Me gustaría saber más sobre el tema.', ko:'그 주제에 대해 더 알고 싶어요.' },
+      { es:'Nos gustaría reservar una mesa para dos.', ko:'2인 테이블을 예약하고 싶어요.' },
+    ]
+  },
+  { cat:'purpose', structure:'Hay que + 동사원형', ko:'~해야 해요 (일반적 의무)',
+    when:'일반적인 의무나 필요를 표현할 때. 특정 주어 없음.',
+    tip:'Tener que(나/너/그가 해야 해요)와 달리 주어가 없어요.',
+    examples:[
+      { es:'Hay que estudiar todos los días.', ko:'매일 공부해야 해요.' },
+      { es:'Hay que respetar las reglas.', ko:'규칙을 지켜야 해요.' },
+      { es:'Hay que tener paciencia.', ko:'인내심을 가져야 해요.' },
+    ]
+  },
+  { cat:'purpose', structure:'Lo que más / menos + me gusta es + 동사원형/명사', ko:'제가 가장 좋아하는/싫어하는 건 ~예요',
+    when:'취향이나 선호를 강조해서 말할 때.',
+    tip:'Lo que 구조는 강조할 때 써요. 회화 시험 단골 패턴!',
+    examples:[
+      { es:'Lo que más me gusta de Guatemala es el clima.', ko:'과테말라에서 가장 좋아하는 건 날씨예요.' },
+      { es:'Lo que menos me gusta es madrugar.', ko:'가장 싫은 건 일찍 일어나는 거예요.' },
+      { es:'Lo que más disfruto es aprender idiomas.', ko:'가장 즐기는 건 언어를 배우는 거예요.' },
+    ]
+  },
+  { cat:'purpose', structure:'Tener ganas de + 동사원형', ko:'~하고 싶어요 (기대감)',
+    when:'어떤 것에 대한 기대나 하고 싶음을 표현할 때.',
+    tip:'감정적인 기대감을 담은 표현이에요.',
+    examples:[
+      { es:'Tengo muchas ganas de volver a Corea.', ko:'한국에 돌아가고 싶어요.' },
+      { es:'Tengo ganas de hablar en español.', ko:'스페인어로 말하고 싶어요.' },
+      { es:'¿Tienes ganas de salir hoy?', ko:'오늘 나가고 싶어요?' },
+    ]
+  },
+];
+
+let patternCat = 'all';
+
+function selectPatternCat(cat, el) {
+  patternCat = cat;
+  document.querySelectorAll('#pattern-cat-pills .pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  renderPatterns();
+}
+
+function renderPatterns() {
+  const filtered = patternCat === 'all' ? PATTERNS : PATTERNS.filter(p => p.cat === patternCat);
+  const list = document.getElementById('pattern-list');
+  if (!list) return;
+
+  list.innerHTML = filtered.map((p, idx) => {
+    const exHtml = p.examples.map(ex => `
+      <div style="background:var(--surface);border-radius:10px;padding:12px 14px;margin-bottom:8px">
+        <div style="font-family:'Courier New',monospace;font-size:15px;color:var(--text);line-height:1.7;margin-bottom:4px">${ex.es}</div>
+        <div style="font-size:12px;color:var(--accent);font-style:italic;margin-bottom:8px">${ex.ko}</div>
+        <button onclick="speakText('${ex.es.replace(/'/g,"\\'")}');this.classList.add('speaking');setTimeout(()=>this.classList.remove('speaking'),2500)"
+          class="speak-btn" style="padding:4px 12px;font-size:11px">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          듣기
+        </button>
+      </div>`).join('');
+
+    const catColors = { opinion:'var(--accent3)', condition:'var(--accent)', reason:'var(--accent2)', feeling:'#f472b6', compare:'var(--correct)', time:'var(--wrong)', purpose:'#a78bfa' };
+    const color = catColors[p.cat] || 'var(--accent)';
+
+    return `
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:14px;margin-bottom:14px;overflow:hidden">
+      <!-- 헤더 -->
+      <div onclick="togglePattern(${idx})" style="padding:16px 18px;cursor:pointer;display:flex;align-items:flex-start;gap:12px">
+        <div style="flex:1">
+          <div style="font-family:'Courier New',monospace;font-size:17px;color:${color};font-weight:700;margin-bottom:4px">${p.structure}</div>
+          <div style="font-size:14px;color:var(--text);margin-bottom:4px">${p.ko}</div>
+          <div style="font-size:12px;color:var(--text3)">${p.when}</div>
+        </div>
+        <span id="pattern-arrow-${idx}" style="color:var(--text3);font-size:16px;transition:transform .2s;margin-top:2px">▸</span>
+      </div>
+      <!-- 펼치기: 팁 + 예문 -->
+      <div id="pattern-body-${idx}" style="display:none;padding:0 18px 16px">
+        <div style="background:#f0b42912;border:1px solid #f0b42930;border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:var(--accent);line-height:1.7">
+          💡 ${p.tip}
+        </div>
+        ${exHtml}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function togglePattern(idx) {
+  const body  = document.getElementById(`pattern-body-${idx}`);
+  const arrow = document.getElementById(`pattern-arrow-${idx}`);
+  if (!body) return;
+  const open = body.style.display === 'block';
+  body.style.display  = open ? 'none' : 'block';
+  arrow.style.transform = open ? 'rotate(0deg)' : 'rotate(90deg)';
+}
 
 // ══════════════════════════════════════════════════
 //  초기화
