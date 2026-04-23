@@ -5823,7 +5823,6 @@ let synthKeepAlive = null;
 function startSynthKeepAlive() {
   if (synthKeepAlive) return;
   synthKeepAlive = setInterval(() => {
-    // speaking 중일 때만 resume (pause 없이) — Chrome 안드로이드 버그 대응
     if (synth.speaking && synth.paused) synth.resume();
   }, 5000);
 }
@@ -5835,9 +5834,7 @@ function speakText(text, btn) {
   if (!text || text === '—') return;
   if (!esVoice) loadVoices();
 
-  // 진행 중인 예약 발화 취소
   if (speakTimer) { clearTimeout(speakTimer); speakTimer = null; }
-
   document.querySelectorAll('.speak-btn, .speak-ex-btn, #dict-play-btn').forEach(b => b.classList.remove('speaking'));
 
   function doSpeak() {
@@ -5850,8 +5847,6 @@ function speakText(text, btn) {
     }
     u.onerror = (e) => {
       if (btn) btn.classList.remove('speaking');
-      // interrupted 는 사용자가 다시 눌러서 취소된 것 → 재시도 불필요
-      // 그 외 에러(network, synthesis-failed 등)만 한 번 재시도
       if (e.error && e.error !== 'interrupted') {
         setTimeout(() => {
           try {
@@ -5869,7 +5864,6 @@ function speakText(text, btn) {
   }
 
   try { synth.cancel(); } catch(e) {}
-  // cancel() 직후 speak() 하면 안드로이드에서 묵음 발생 → 50ms 딜레이
   speakTimer = setTimeout(doSpeak, 50);
 }
 function speakWord() {
@@ -5913,10 +5907,10 @@ const listeningData = [
   // 💼 직장·업무
   { cat:'work', topic:'💼 직장 — 회의 시간 확인',
     dialog:[
-      { speaker:'A', line:'Buenos días. ¿A qué hora es la reunión hoy?' },
-      { speaker:'B', line:'Buenos días. La reunión es a las diez de la mañana.' },
-      { speaker:'A', line:'¿En qué sala?' },
-      { speaker:'B', line:'En la sala número tres, en el segundo piso.' },
+      { speaker:'A', line:'Buenos días. ¿A qué hora es la reunión hoy?', ko:'좋은 아침이에요. 오늘 회의가 몇 시예요?' },
+      { speaker:'B', line:'Buenos días. La reunión es a las diez de la mañana.', ko:'좋은 아침이에요. 회의는 오전 10시예요.' },
+      { speaker:'A', line:'¿En qué sala?', ko:'어느 회의실이에요?' },
+      { speaker:'B', line:'En la sala número tres, en el segundo piso.', ko:'2층 3번 회의실이에요.' },
     ],
     question:'회의는 몇 시, 어디서 진행되나요?',
     options:['오전 10시, 3층 3번 회의실','오전 10시, 2층 3번 회의실','오후 3시, 2층 3번 회의실','오전 9시, 2층 3번 회의실'],
@@ -5925,10 +5919,10 @@ const listeningData = [
   },
   { cat:'work', topic:'💼 직장 — 보고서 제출',
     dialog:[
-      { speaker:'A', line:'¿Terminaste el informe mensual?' },
-      { speaker:'B', line:'Todavía no. Lo termino esta tarde.' },
-      { speaker:'A', line:'El jefe lo necesita antes de las tres.' },
-      { speaker:'B', line:'Entendido. Lo envío a las dos.' },
+      { speaker:'A', line:'¿Terminaste el informe mensual?', ko:'월간 보고서 끝냈어요?' },
+      { speaker:'B', line:'Todavía no. Lo termino esta tarde.', ko:'아직이요. 오늘 오후에 끝낼게요.' },
+      { speaker:'A', line:'El jefe lo necesita antes de las tres.', ko:'상사가 3시 전에 필요해요.' },
+      { speaker:'B', line:'Entendido. Lo envío a las dos.', ko:'알겠어요. 2시에 보낼게요.' },
     ],
     question:'B는 보고서를 언제 보낸다고 했나요?',
     options:['오전 10시','오후 2시','오후 3시','오늘 저녁'],
@@ -5937,10 +5931,10 @@ const listeningData = [
   },
   { cat:'work', topic:'💼 직장 — 구매 기안서',
     dialog:[
-      { speaker:'A', line:'Necesitamos comprar lubricante y filtros.' },
-      { speaker:'B', line:'¿Ya tienes la cotización del proveedor?' },
-      { speaker:'A', line:'Sí, aquí está. Son tres proveedores.' },
-      { speaker:'B', line:'Bien. Prepara la orden de compra para el jefe.' },
+      { speaker:'A', line:'Necesitamos comprar lubricante y filtros.', ko:'윤활유와 필터를 구매해야 해요.' },
+      { speaker:'B', line:'¿Ya tienes la cotización del proveedor?', ko:'공급업체 견적서 이미 받았어요?' },
+      { speaker:'A', line:'Sí, aquí está. Son tres proveedores.', ko:'네, 여기 있어요. 공급업체가 세 곳이에요.' },
+      { speaker:'B', line:'Bien. Prepara la orden de compra para el jefe.', ko:'좋아요. 상사를 위해 구매 오더를 준비해요.' },
     ],
     question:'A는 무엇을 준비해야 하나요?',
     options:['견적서','구매 기안서','세금계산서','재고 목록'],
@@ -5949,10 +5943,10 @@ const listeningData = [
   },
   { cat:'work', topic:'💼 직장 — 재고 확인',
     dialog:[
-      { speaker:'A', line:'¿Cuántas agujas tenemos en inventario?' },
-      { speaker:'B', line:'Quedan unas doscientas, pero necesitamos más.' },
-      { speaker:'A', line:'¿Cuántas necesitamos pedir?' },
-      { speaker:'B', line:'Por lo menos quinientas para el mes que viene.' },
+      { speaker:'A', line:'¿Cuántas agujas tenemos en inventario?', ko:'재고에 바늘이 몇 개 있어요?' },
+      { speaker:'B', line:'Quedan unas doscientas, pero necesitamos más.', ko:'약 200개 남았는데 더 필요해요.' },
+      { speaker:'A', line:'¿Cuántas necesitamos pedir?', ko:'얼마나 주문해야 해요?' },
+      { speaker:'B', line:'Por lo menos quinientas para el mes que viene.', ko:'다음 달을 위해 최소 500개요.' },
     ],
     question:'다음 달을 위해 몇 개의 바늘을 주문해야 하나요?',
     options:['200개','300개','500개','1000개'],
@@ -5961,10 +5955,10 @@ const listeningData = [
   },
   { cat:'work', topic:'💼 직장 — 납품 지연',
     dialog:[
-      { speaker:'A', line:'El proveedor llamó. El pedido llega con retraso.' },
-      { speaker:'B', line:'¿Cuántos días de retraso?' },
-      { speaker:'A', line:'Tres días hábiles más.' },
-      { speaker:'B', line:'Hay que informar al jefe inmediatamente.' },
+      { speaker:'A', line:'El proveedor llamó. El pedido llega con retraso.', ko:'공급업체에서 전화했어요. 주문이 지연돼요.' },
+      { speaker:'B', line:'¿Cuántos días de retraso?', ko:'며칠 지연돼요?' },
+      { speaker:'A', line:'Tres días hábiles más.', ko:'영업일로 3일 더요.' },
+      { speaker:'B', line:'Hay que informar al jefe inmediatamente.', ko:'즉시 상사에게 보고해야 해요.' },
     ],
     question:'납품이 얼마나 지연되나요?',
     options:['1 영업일','2 영업일','3 영업일','5 영업일'],
@@ -5975,10 +5969,10 @@ const listeningData = [
   // ☕ 일상생활
   { cat:'daily', topic:'☕ 일상 — 아침 인사',
     dialog:[
-      { speaker:'A', line:'¡Buenos días! ¿Cómo estás hoy?' },
-      { speaker:'B', line:'Buenos días. Estoy un poco cansado.' },
-      { speaker:'A', line:'¿Por qué? ¿No dormiste bien?' },
-      { speaker:'B', line:'No, trabajé hasta las doce de la noche.' },
+      { speaker:'A', line:'¡Buenos días! ¿Cómo estás hoy?', ko:'좋은 아침이에요! 오늘 어때요?' },
+      { speaker:'B', line:'Buenos días. Estoy un poco cansado.', ko:'좋은 아침이에요. 좀 피곤해요.' },
+      { speaker:'A', line:'¿Por qué? ¿No dormiste bien?', ko:'왜요? 잘 못 잤어요?' },
+      { speaker:'B', line:'No, trabajé hasta las doce de la noche.', ko:'아니요, 밤 12시까지 일했어요.' },
     ],
     question:'B는 왜 피곤한가요?',
     options:['일찍 일어나서','밤 12시까지 일해서','아파서','먼 길을 걸어서'],
@@ -5987,10 +5981,10 @@ const listeningData = [
   },
   { cat:'daily', topic:'☕ 일상 — 주말 계획',
     dialog:[
-      { speaker:'A', line:'¿Qué vas a hacer este fin de semana?' },
-      { speaker:'B', line:'Voy a visitar a mi familia en Antigua.' },
-      { speaker:'A', line:'¡Qué bien! ¿Cuándo vuelves?' },
-      { speaker:'B', line:'El domingo por la noche.' },
+      { speaker:'A', line:'¿Qué vas a hacer este fin de semana?', ko:'이번 주말에 뭐 할 거예요?' },
+      { speaker:'B', line:'Voy a visitar a mi familia en Antigua.', ko:'안티구아에 있는 가족을 방문할 거예요.' },
+      { speaker:'A', line:'¡Qué bien! ¿Cuándo vuelves?', ko:'잘됐네요! 언제 돌아와요?' },
+      { speaker:'B', line:'El domingo por la noche.', ko:'일요일 저녁이에요.' },
     ],
     question:'B는 이번 주말에 무엇을 할 예정인가요?',
     options:['안티과에서 쇼핑','안티과에 있는 가족 방문','집에서 쉬기','동료와 저녁 식사'],
@@ -5999,10 +5993,10 @@ const listeningData = [
   },
   { cat:'daily', topic:'☕ 일상 — 건강 상태',
     dialog:[
-      { speaker:'A', line:'¿Estás bien? Te veo muy pálido.' },
-      { speaker:'B', line:'No me siento bien. Me duele la cabeza.' },
-      { speaker:'A', line:'¿Fuiste al médico?' },
-      { speaker:'B', line:'No todavía. Voy esta tarde si no mejoro.' },
+      { speaker:'A', line:'¿Estás bien? Te veo muy pálido.', ko:'괜찮아요? 많이 창백해 보여요.' },
+      { speaker:'B', line:'No me siento bien. Me duele la cabeza.', ko:'몸이 안 좋아요. 두통이 있어요.' },
+      { speaker:'A', line:'¿Fuiste al médico?', ko:'의사한테 갔어요?' },
+      { speaker:'B', line:'No todavía. Voy esta tarde si no mejoro.', ko:'아직이요. 나아지지 않으면 오늘 오후에 가요.' },
     ],
     question:'B는 어디가 아프다고 했나요?',
     options:['배','머리','목','등'],
@@ -6011,10 +6005,10 @@ const listeningData = [
   },
   { cat:'daily', topic:'☕ 일상 — 점심 약속',
     dialog:[
-      { speaker:'A', line:'¿Comemos juntos hoy?' },
-      { speaker:'B', line:'Sí, ¿a qué hora?' },
-      { speaker:'A', line:'A las doce y media, ¿te parece bien?' },
-      { speaker:'B', line:'Perfecto. Nos vemos en la entrada.' },
+      { speaker:'A', line:'¿Comemos juntos hoy?', ko:'오늘 같이 밥 먹어요?' },
+      { speaker:'B', line:'Sí, ¿a qué hora?', ko:'네, 몇 시에요?' },
+      { speaker:'A', line:'A las doce y media, ¿te parece bien?', ko:'12시 반에요, 괜찮아요?' },
+      { speaker:'B', line:'Perfecto. Nos vemos en la entrada.', ko:'완벽해요. 입구에서 봐요.' },
     ],
     question:'두 사람은 어디서 몇 시에 만나기로 했나요?',
     options:['12시, 식당 안','12시 30분, 입구','1시, 사무실','12시, 입구'],
@@ -6025,10 +6019,10 @@ const listeningData = [
   // 🍽️ 식당
   { cat:'restaurant', topic:'🍽️ 식당 — 주문하기',
     dialog:[
-      { speaker:'웨이터', line:'Buenas tardes. ¿Qué van a pedir?' },
-      { speaker:'손님A', line:'Yo quiero el pollo con arroz, por favor.' },
-      { speaker:'손님B', line:'Para mí, la sopa del día. ¿Qué sopa es hoy?' },
-      { speaker:'웨이터', line:'Hoy es sopa de frijoles negros.' },
+      { speaker:'웨이터', line:'Buenas tardes. ¿Qué van a pedir?', ko:'좋은 오후예요. 뭐 주문하실 건가요?' },
+      { speaker:'손님A', line:'Yo quiero el pollo con arroz, por favor.', ko:'저는 닭고기와 밥 주세요.' },
+      { speaker:'손님B', line:'Para mí, la sopa del día. ¿Qué sopa es hoy?', ko:'저는 오늘의 수프요. 오늘 수프가 뭐예요?' },
+      { speaker:'웨이터', line:'Hoy es sopa de frijoles negros.', ko:'오늘은 검은콩 수프예요.' },
     ],
     question:'오늘의 수프는 무엇인가요?',
     options:['토마토 수프','닭고기 수프','검은콩 수프','야채 수프'],
@@ -6037,10 +6031,10 @@ const listeningData = [
   },
   { cat:'restaurant', topic:'🍽️ 식당 — 계산하기',
     dialog:[
-      { speaker:'A', line:'¿Me trae la cuenta, por favor?' },
-      { speaker:'웨이터', line:'Sí, en seguida. ¿Todo en una cuenta o separado?' },
-      { speaker:'A', line:'Todo junto, por favor. ¿Está incluida la propina?' },
-      { speaker:'웨이터', line:'No señor, la propina no está incluida.' },
+      { speaker:'A', line:'¿Me trae la cuenta, por favor?', ko:'계산서 가져다주세요.' },
+      { speaker:'웨이터', line:'Sí, en seguida. ¿Todo en una cuenta o separado?', ko:'네, 바로요. 전부 한 계산서로요 따로따로요?' },
+      { speaker:'A', line:'Todo junto, por favor. ¿Está incluida la propina?', ko:'전부 같이요. 팁이 포함돼 있나요?' },
+      { speaker:'웨이터', line:'No señor, la propina no está incluida.', ko:'아니요 손님, 팁은 포함되지 않아요.' },
     ],
     question:'팁이 계산서에 포함되어 있나요?',
     options:['예, 포함되어 있다','아니오, 포함되어 있지 않다','10%가 포함되어 있다','선택 사항이다'],
@@ -6049,10 +6043,10 @@ const listeningData = [
   },
   { cat:'restaurant', topic:'🍽️ 식당 — 예약',
     dialog:[
-      { speaker:'A', line:'Buenas tardes, quisiera hacer una reserva.' },
-      { speaker:'B', line:'Claro. ¿Para cuántas personas?' },
-      { speaker:'A', line:'Para cuatro personas, el viernes a las ocho.' },
-      { speaker:'B', line:'Perfecto. ¿A nombre de quién?' },
+      { speaker:'A', line:'Buenas tardes, quisiera hacer una reserva.', ko:'좋은 오후예요, 예약하고 싶어요.' },
+      { speaker:'B', line:'Claro. ¿Para cuántas personas?', ko:'물론이죠. 몇 명이에요?' },
+      { speaker:'A', line:'Para cuatro personas, el viernes a las ocho.', ko:'4명이요, 금요일 8시요.' },
+      { speaker:'B', line:'Perfecto. ¿A nombre de quién?', ko:'완벽해요. 누구 이름으로요?' },
     ],
     question:'몇 명이서, 언제 예약하려고 하나요?',
     options:['3명, 목요일 8시','4명, 금요일 8시','4명, 토요일 8시','5명, 금요일 7시'],
@@ -6063,10 +6057,10 @@ const listeningData = [
   // 🚌 교통
   { cat:'transport', topic:'🚌 교통 — 버스 타기',
     dialog:[
-      { speaker:'A', line:'Perdona, ¿este autobús va al centro?' },
-      { speaker:'B', line:'No, este va al aeropuerto. El que va al centro es el número doce.' },
-      { speaker:'A', line:'¿Dónde puedo tomarlo?' },
-      { speaker:'B', line:'En la parada de enfrente, al otro lado de la calle.' },
+      { speaker:'A', line:'Perdona, ¿este autobús va al centro?', ko:'실례해요, 이 버스가 시내로 가나요?' },
+      { speaker:'B', line:'No, este va al aeropuerto. El que va al centro es el número doce.', ko:'아니요, 이건 공항으로 가요. 시내 가는 건 12번이에요.' },
+      { speaker:'A', line:'¿Dónde puedo tomarlo?', ko:'어디서 탈 수 있어요?' },
+      { speaker:'B', line:'En la parada de enfrente, al otro lado de la calle.', ko:'맞은편 정류장, 길 건너편에 있어요.' },
     ],
     question:'시내로 가려면 어떻게 해야 하나요?',
     options:['현재 버스를 타면 된다','12번 버스를 길 건너 정류장에서 탄다','공항버스로 환승한다','택시를 탄다'],
@@ -6075,10 +6069,10 @@ const listeningData = [
   },
   { cat:'transport', topic:'🚌 교통 — 길 찾기',
     dialog:[
-      { speaker:'A', line:'Disculpe, ¿cómo llego al banco más cercano?' },
-      { speaker:'B', line:'Siga todo recto dos cuadras y gire a la derecha.' },
-      { speaker:'A', line:'¿Está lejos?' },
-      { speaker:'B', line:'No, está a unos cinco minutos caminando.' },
+      { speaker:'A', line:'Disculpe, ¿cómo llego al banco más cercano?', ko:'실례합니다, 가장 가까운 은행에 어떻게 가요?' },
+      { speaker:'B', line:'Siga todo recto dos cuadras y gire a la derecha.', ko:'직진으로 두 블록 가서 오른쪽으로 도세요.' },
+      { speaker:'A', line:'¿Está lejos?', ko:'멀어요?' },
+      { speaker:'B', line:'No, está a unos cinco minutos caminando.', ko:'아니요, 걸어서 약 5분이에요.' },
     ],
     question:'은행까지 어떻게 가나요?',
     options:['왼쪽으로 두 블록','직진 두 블록 후 오른쪽','오른쪽으로 두 블록','직진 다섯 블록'],
@@ -6089,10 +6083,10 @@ const listeningData = [
   // 🏭 공장·회계
   { cat:'factory', topic:'🏭 공장 — 기계 고장',
     dialog:[
-      { speaker:'A', line:'La máquina de coser número cinco está descompuesta.' },
-      { speaker:'B', line:'¿Desde cuándo?' },
-      { speaker:'A', line:'Desde esta mañana. Ya llamé al técnico.' },
-      { speaker:'B', line:'Bien. ¿Cuándo puede venir?' },
+      { speaker:'A', line:'La máquina de coser número cinco está descompuesta.', ko:'5번 재봉기가 고장났어요.' },
+      { speaker:'B', line:'¿Desde cuándo?', ko:'언제부터요?' },
+      { speaker:'A', line:'Desde esta mañana. Ya llamé al técnico.', ko:'오늘 아침부터요. 이미 기술자에게 전화했어요.' },
+      { speaker:'B', line:'Bien. ¿Cuándo puede venir?', ko:'좋아요. 언제 올 수 있어요?' },
     ],
     question:'재봉틀이 언제부터 고장났으며 A는 이미 무엇을 했나요?',
     options:['어제부터, 아직 아무것도 안 함','오늘 아침부터, 기사에게 전화함','오늘 오후부터, 상사에게 보고함','어제부터, 기사에게 전화함'],
@@ -6101,10 +6095,10 @@ const listeningData = [
   },
   { cat:'factory', topic:'🏭 회계 — 세금계산서 오류',
     dialog:[
-      { speaker:'A', line:'Hay un error en la factura del proveedor.' },
-      { speaker:'B', line:'¿Qué tipo de error?' },
-      { speaker:'A', line:'El total no coincide con la orden de compra.' },
-      { speaker:'B', line:'Hay que contactar al proveedor hoy mismo.' },
+      { speaker:'A', line:'Hay un error en la factura del proveedor.', ko:'공급업체 청구서에 오류가 있어요.' },
+      { speaker:'B', line:'¿Qué tipo de error?', ko:'어떤 종류의 오류예요?' },
+      { speaker:'A', line:'El total no coincide con la orden de compra.', ko:'합계가 구매 오더와 일치하지 않아요.' },
+      { speaker:'B', line:'Hay que contactar al proveedor hoy mismo.', ko:'오늘 당장 공급업체에 연락해야 해요.' },
     ],
     question:'세금계산서의 문제는 무엇인가요?',
     options:['날짜가 잘못됨','합계가 구매 기안서와 맞지 않음','품목이 빠져있음','이미 처리된 계산서임'],
@@ -6113,10 +6107,10 @@ const listeningData = [
   },
   { cat:'factory', topic:'🏭 회계 — 결제 기한',
     dialog:[
-      { speaker:'A', line:'¿Cuándo vence el pago al proveedor?' },
-      { speaker:'B', line:'El próximo martes. Son treinta días desde la factura.' },
-      { speaker:'A', line:'¿Ya preparaste la transferencia bancaria?' },
-      { speaker:'B', line:'Sí, todo está listo para enviar mañana.' },
+      { speaker:'A', line:'¿Cuándo vence el pago al proveedor?', ko:'공급업체 지급 기한이 언제예요?' },
+      { speaker:'B', line:'El próximo martes. Son treinta días desde la factura.', ko:'다음 화요일이에요. 청구서부터 30일이에요.' },
+      { speaker:'A', line:'¿Ya preparaste la transferencia bancaria?', ko:'은행 이체 준비했어요?' },
+      { speaker:'B', line:'Sí, todo está listo para enviar mañana.', ko:'네, 내일 보낼 준비 다 됐어요.' },
     ],
     question:'결제 관련 내용으로 맞는 것은?',
     options:['이번 주 금요일 마감, 아직 준비 안 됨','다음 화요일 마감, 내일 송금 예정','이번 주 화요일 마감, 이미 완료','다음 주 금요일 마감, 준비 중'],
@@ -6127,10 +6121,10 @@ const listeningData = [
   // 🛒 쇼핑·일상생활
   { cat:'shopping', topic:'🛒 쇼핑 — 옷 가게',
     dialog:[
-      { speaker:'직원', line:'Buenas tardes. ¿En qué le puedo ayudar?' },
-      { speaker:'손님', line:'Estoy buscando una camisa azul, talla mediana.' },
-      { speaker:'직원', line:'Tenemos esta. ¿La quiere probar?' },
-      { speaker:'손님', line:'Sí, por favor. ¿Dónde están los probadores?' },
+      { speaker:'직원', line:'Buenas tardes. ¿En qué le puedo ayudar?', ko:'좋은 오후예요. 무엇을 도와드릴까요?' },
+      { speaker:'손님', line:'Estoy buscando una camisa azul, talla mediana.', ko:'파란 셔츠 중간 사이즈를 찾고 있어요.' },
+      { speaker:'직원', line:'Tenemos esta. ¿La quiere probar?', ko:'이게 있어요. 입어보고 싶으세요?' },
+      { speaker:'손님', line:'Sí, por favor. ¿Dónde están los probadores?', ko:'네, 부탁해요. 탈의실이 어디예요?' },
     ],
     question:'손님이 찾고 있는 것은 무엇인가요?',
     options:['흰색 셔츠 중간 사이즈','파란색 셔츠 중간 사이즈','파란색 바지 중간 사이즈','파란색 셔츠 큰 사이즈'],
@@ -6139,10 +6133,10 @@ const listeningData = [
   },
   { cat:'shopping', topic:'🛒 쇼핑 — 가격 흥정',
     dialog:[
-      { speaker:'손님', line:'¿Cuánto cuesta este bolso?' },
-      { speaker:'직원', line:'Cuesta doscientos quetzales.' },
-      { speaker:'손님', line:'¿Me puede hacer un descuento? Es un poco caro.' },
-      { speaker:'직원', line:'Le puedo dar un diez por ciento de descuento.' },
+      { speaker:'손님', line:'¿Cuánto cuesta este bolso?', ko:'이 가방 얼마예요?' },
+      { speaker:'직원', line:'Cuesta doscientos quetzales.', ko:'200케찰이에요.' },
+      { speaker:'손님', line:'¿Me puede hacer un descuento? Es un poco caro.', ko:'할인해주실 수 있어요? 좀 비싸네요.' },
+      { speaker:'직원', line:'Le puedo dar un diez por ciento de descuento.', ko:'10% 할인해드릴 수 있어요.' },
     ],
     question:'할인 후 가방의 가격은 얼마인가요?',
     options:['150 케찰','170 케찰','180 케찰','190 케찰'],
@@ -6151,10 +6145,10 @@ const listeningData = [
   },
   { cat:'shopping', topic:'🛒 쇼핑 — 슈퍼마켓',
     dialog:[
-      { speaker:'A', line:'¿Sabes dónde están los productos de limpieza?' },
-      { speaker:'B', line:'Sí, están en el pasillo cuatro, al fondo a la derecha.' },
-      { speaker:'A', line:'¿Y el pan?' },
-      { speaker:'B', line:'El pan está en la panadería, cerca de la entrada.' },
+      { speaker:'A', line:'¿Sabes dónde están los productos de limpieza?', ko:'청소용품이 어디 있는지 알아요?' },
+      { speaker:'B', line:'Sí, están en el pasillo cuatro, al fondo a la derecha.', ko:'네, 4번 통로 안쪽 오른쪽에 있어요.' },
+      { speaker:'A', line:'¿Y el pan?', ko:'빵은요?' },
+      { speaker:'B', line:'El pan está en la panadería, cerca de la entrada.', ko:'빵은 입구 근처 빵집에 있어요.' },
     ],
     question:'빵은 어디에 있나요?',
     options:['4번 통로 오른쪽','입구 근처 빵집','계산대 옆','냉동 코너'],
@@ -6163,10 +6157,10 @@ const listeningData = [
   },
   { cat:'shopping', topic:'🛒 쇼핑 — 환불',
     dialog:[
-      { speaker:'손님', line:'Quisiera devolver este producto.' },
-      { speaker:'직원', line:'¿Cuál es el problema?' },
-      { speaker:'손님', line:'Está defectuoso. Lo compré ayer.' },
-      { speaker:'직원', line:'¿Tiene el recibo?' },
+      { speaker:'손님', line:'Quisiera devolver este producto.', ko:'이 제품을 반품하고 싶어요.' },
+      { speaker:'직원', line:'¿Cuál es el problema?', ko:'무슨 문제예요?' },
+      { speaker:'손님', line:'Está defectuoso. Lo compré ayer.', ko:'불량이에요. 어제 샀어요.' },
+      { speaker:'직원', line:'¿Tiene el recibo?', ko:'영수증 있으세요?' },
     ],
     question:'손님이 환불하려는 이유는 무엇인가요?',
     options:['마음에 안 들어서','사이즈가 맞지 않아서','불량품이어서','더 저렴한 걸 찾아서'],
@@ -6175,10 +6169,10 @@ const listeningData = [
   },
   { cat:'shopping', topic:'🛒 쇼핑 — 약국',
     dialog:[
-      { speaker:'손님', line:'Buenas tardes. ¿Tiene algo para el dolor de cabeza?' },
-      { speaker:'약사', line:'Sí, tenemos paracetamol o ibuprofeno.' },
-      { speaker:'손님', line:'¿Cuál recomienda usted?' },
-      { speaker:'약사', line:'Para el dolor de cabeza, el paracetamol es mejor.' },
+      { speaker:'손님', line:'Buenas tardes. ¿Tiene algo para el dolor de cabeza?', ko:'좋은 오후예요. 두통약 있어요?' },
+      { speaker:'약사', line:'Sí, tenemos paracetamol o ibuprofeno.', ko:'네, 파라세타몰이나 이부프로펜이 있어요.' },
+      { speaker:'손님', line:'¿Cuál recomienda usted?', ko:'어느 것을 추천하세요?' },
+      { speaker:'약사', line:'Para el dolor de cabeza, el paracetamol es mejor.', ko:'두통에는 파라세타몰이 더 좋아요.' },
     ],
     question:'약사가 두통에 추천한 약은 무엇인가요?',
     options:['이부프로펜','아스피린','파라세타몰','항생제'],
@@ -6189,10 +6183,10 @@ const listeningData = [
   // 🍽️ 식당·카페 추가
   { cat:'restaurant', topic:'☕ 카페 — 음료 주문',
     dialog:[
-      { speaker:'직원', line:'¡Bienvenido! ¿Qué va a tomar?' },
-      { speaker:'손님', line:'Un café con leche, por favor. ¿Tienen también jugo de naranja?' },
-      { speaker:'직원', line:'Sí, el jugo está recién hecho.' },
-      { speaker:'손님', line:'Entonces los dos, por favor.' },
+      { speaker:'직원', line:'¡Bienvenido! ¿Qué va a tomar?', ko:'환영해요! 뭘 드릴까요?' },
+      { speaker:'손님', line:'Un café con leche, por favor. ¿Tienen también jugo de naranja?', ko:'카페 라떼 하나요. 오렌지 주스도 있어요?' },
+      { speaker:'직원', line:'Sí, el jugo está recién hecho.', ko:'네, 주스가 방금 만들어졌어요.' },
+      { speaker:'손님', line:'Entonces los dos, por favor.', ko:'그럼 둘 다요, 감사해요.' },
     ],
     question:'손님이 주문한 것은 무엇인가요?',
     options:['카페라떼만','오렌지주스만','카페라떼와 오렌지주스','아메리카노와 오렌지주스'],
@@ -6201,10 +6195,10 @@ const listeningData = [
   },
   { cat:'restaurant', topic:'🍽️ 식당 — 알레르기',
     dialog:[
-      { speaker:'손님', line:'Disculpe, soy alérgico al mariscos. ¿Este plato tiene?' },
-      { speaker:'직원', line:'Déjeme verificar. Un momento, por favor.' },
-      { speaker:'직원', line:'Sí señor, este plato tiene camarones.' },
-      { speaker:'손님', line:'Entonces prefiero el pollo asado, sin mariscos.' },
+      { speaker:'손님', line:'Disculpe, soy alérgico al mariscos. ¿Este plato tiene?', ko:'실례합니다, 저 해산물 알레르기가 있어요. 이 요리에 들어가나요?' },
+      { speaker:'직원', line:'Déjeme verificar. Un momento, por favor.', ko:'확인해볼게요. 잠깐만요.' },
+      { speaker:'직원', line:'Sí señor, este plato tiene camarones.', ko:'네 손님, 이 요리에 새우가 들어가요.' },
+      { speaker:'손님', line:'Entonces prefiero el pollo asado, sin mariscos.', ko:'그럼 해산물 없는 구운 닭고기로 할게요.' },
     ],
     question:'손님이 결국 주문한 것은 무엇인가요?',
     options:['해산물 요리','새우 요리','구운 닭고기','생선 요리'],
@@ -6215,10 +6209,10 @@ const listeningData = [
   // 🚕 교통·길 안내 추가
   { cat:'transport', topic:'🚕 택시 — 목적지',
     dialog:[
-      { speaker:'기사', line:'Buenas tardes. ¿A dónde va?' },
-      { speaker:'손님', line:'Al aeropuerto internacional, por favor.' },
-      { speaker:'기사', line:'¿A qué hora sale su vuelo?' },
-      { speaker:'손님', line:'A las cuatro de la tarde. ¿Llegamos a tiempo?' },
+      { speaker:'기사', line:'Buenas tardes. ¿A dónde va?', ko:'좋은 오후예요. 어디 가세요?' },
+      { speaker:'손님', line:'Al aeropuerto internacional, por favor.', ko:'국제공항으로요.' },
+      { speaker:'기사', line:'¿A qué hora sale su vuelo?', ko:'비행기가 몇 시에 출발해요?' },
+      { speaker:'손님', line:'A las cuatro de la tarde. ¿Llegamos a tiempo?', ko:'오후 4시요. 제때 도착할까요?' },
     ],
     question:'손님의 비행기는 몇 시에 출발하나요?',
     options:['오전 4시','오후 2시','오후 4시','오후 6시'],
@@ -6227,10 +6221,10 @@ const listeningData = [
   },
   { cat:'transport', topic:'🚕 교통 — 지하철 환승',
     dialog:[
-      { speaker:'A', line:'¿Cómo llego al mercado central desde aquí?' },
-      { speaker:'B', line:'Toma el metro hasta la estación Central, luego camina cinco minutos.' },
-      { speaker:'A', line:'¿Cuántas paradas son?' },
-      { speaker:'B', line:'Son tres paradas desde aquí.' },
+      { speaker:'A', line:'¿Cómo llego al mercado central desde aquí?', ko:'여기서 중앙 시장에 어떻게 가요?' },
+      { speaker:'B', line:'Toma el metro hasta la estación Central, luego camina cinco minutos.', ko:'중앙역까지 지하철 타고 걸어서 5분이에요.' },
+      { speaker:'A', line:'¿Cuántas paradas son?', ko:'정류장이 몇 개예요?' },
+      { speaker:'B', line:'Son tres paradas desde aquí.', ko:'여기서 세 정류장이에요.' },
     ],
     question:'중앙 시장까지 가는 방법은?',
     options:['버스 3번 탑승 후 도보 5분','지하철 3정거장 후 도보 5분','택시로 직접 이동','지하철 5정거장 후 도보 3분'],
@@ -6239,10 +6233,10 @@ const listeningData = [
   },
   { cat:'transport', topic:'🚕 교통 — 기차표 구매',
     dialog:[
-      { speaker:'손님', line:'Un billete para Antigua, por favor.' },
-      { speaker:'직원', line:'¿De ida o de ida y vuelta?' },
-      { speaker:'손님', line:'De ida y vuelta. ¿Cuánto cuesta?' },
-      { speaker:'직원', line:'Son ochenta quetzales por persona.' },
+      { speaker:'손님', line:'Un billete para Antigua, por favor.', ko:'안티구아행 티켓 한 장 주세요.' },
+      { speaker:'직원', line:'¿De ida o de ida y vuelta?', ko:'편도인가요 왕복인가요?' },
+      { speaker:'손님', line:'De ida y vuelta. ¿Cuánto cuesta?', ko:'왕복이요. 얼마예요?' },
+      { speaker:'직원', line:'Son ochenta quetzales por persona.', ko:'1인당 80케찰이에요.' },
     ],
     question:'손님이 구매하려는 것과 가격은?',
     options:['편도, 40 케찰','왕복, 40 케찰','편도, 80 케찰','왕복, 80 케찰'],
@@ -6253,10 +6247,10 @@ const listeningData = [
   // ── 추가 듣기 ──
   { cat:'work', topic:'💼 직장 — 업무 지시',
     dialog:[
-      { speaker:'A', line:'Buenos días. ¿Puedes encargarte del informe mensual?' },
-      { speaker:'B', line:'Claro. ¿Para cuándo lo necesitas?' },
-      { speaker:'A', line:'Para el miércoles antes del mediodía, por favor.' },
-      { speaker:'B', line:'Perfecto, lo tendré listo a tiempo.' },
+      { speaker:'A', line:'Buenos días. ¿Puedes encargarte del informe mensual?', ko:'좋은 아침이에요. 월간 보고서를 맡아줄 수 있어요?' },
+      { speaker:'B', line:'Claro. ¿Para cuándo lo necesitas?', ko:'물론이죠. 언제 필요해요?' },
+      { speaker:'A', line:'Para el miércoles antes del mediodía, por favor.', ko:'수요일 정오 전까지요.' },
+      { speaker:'B', line:'Perfecto, lo tendré listo a tiempo.', ko:'완벽해요, 제때 준비할게요.' },
     ],
     question:'보고서 제출 기한은?',
     options:['화요일 오후','수요일 정오 전','목요일 오전','금요일 오후'],
@@ -6265,10 +6259,10 @@ const listeningData = [
   },
   { cat:'work', topic:'💼 직장 — 회의 일정 조정',
     dialog:[
-      { speaker:'A', line:'¿Podemos cambiar la reunión del lunes?' },
-      { speaker:'B', line:'¿Por qué? ¿Tienes algún problema ese día?' },
-      { speaker:'A', line:'Sí, tengo una cita médica a las 10.' },
-      { speaker:'B', line:'No hay problema. La pasamos al martes a las 3.' },
+      { speaker:'A', line:'¿Podemos cambiar la reunión del lunes?', ko:'월요일 회의를 바꿀 수 있어요?' },
+      { speaker:'B', line:'¿Por qué? ¿Tienes algún problema ese día?', ko:'왜요? 그날 문제가 있어요?' },
+      { speaker:'A', line:'Sí, tengo una cita médica a las 10.', ko:'네, 10시에 병원 예약이 있어요.' },
+      { speaker:'B', line:'No hay problema. La pasamos al martes a las 3.', ko:'문제없어요. 화요일 3시로 옮겨요.' },
     ],
     question:'회의가 언제로 변경됐나요?',
     options:['월요일 오전 10시','화요일 오전 10시','화요일 오후 3시','수요일 오후 3시'],
@@ -6277,10 +6271,10 @@ const listeningData = [
   },
   { cat:'work', topic:'💼 직장 — 새 직원 소개',
     dialog:[
-      { speaker:'A', line:'Te presento a Minho, nuestro nuevo contador.' },
-      { speaker:'B', line:'Mucho gusto, Minho. Bienvenido al equipo.' },
-      { speaker:'C', line:'Gracias. Espero aprender mucho aquí.' },
-      { speaker:'A', line:'Minho viene de Corea y lleva dos años en Guatemala.' },
+      { speaker:'A', line:'Te presento a Minho, nuestro nuevo contador.', ko:'우리 새 회계사 민호를 소개해요.' },
+      { speaker:'B', line:'Mucho gusto, Minho. Bienvenido al equipo.', ko:'만나서 반가워요, 민호. 팀에 오신 걸 환영해요.' },
+      { speaker:'C', line:'Gracias. Espero aprender mucho aquí.', ko:'감사해요. 여기서 많이 배우길 기대해요.' },
+      { speaker:'A', line:'Minho viene de Corea y lleva dos años en Guatemala.', ko:'민호는 한국에서 왔고 과테말라에 2년 됐어요.' },
     ],
     question:'민호에 대해 맞는 내용은?',
     options:['과테말라 출신이다','새 회계사다','과테말라에 1년 됐다','영업팀 소속이다'],
@@ -6289,10 +6283,10 @@ const listeningData = [
   },
   { cat:'work', topic:'💼 직장 — 문제 보고',
     dialog:[
-      { speaker:'A', line:'Hay un problema con el sistema. No puedo acceder.' },
-      { speaker:'B', line:'¿Desde cuándo tienes ese problema?' },
-      { speaker:'A', line:'Desde esta mañana. Lo intenté varias veces.' },
-      { speaker:'B', line:'Llama al soporte técnico. Ellos pueden ayudarte.' },
+      { speaker:'A', line:'Hay un problema con el sistema. No puedo acceder.', ko:'시스템 문제가 있어요. 접속할 수 없어요.' },
+      { speaker:'B', line:'¿Desde cuándo tienes ese problema?', ko:'언제부터 그 문제가 있어요?' },
+      { speaker:'A', line:'Desde esta mañana. Lo intenté varias veces.', ko:'오늘 아침부터요. 여러 번 시도해봤어요.' },
+      { speaker:'B', line:'Llama al soporte técnico. Ellos pueden ayudarte.', ko:'기술 지원팀에 전화해요. 도와줄 수 있어요.' },
     ],
     question:'A가 권유받은 해결 방법은?',
     options:['직접 수리하기','IT 지원팀에 연락하기','시스템 재설치하기','상사에게 보고하기'],
@@ -6301,10 +6295,10 @@ const listeningData = [
   },
   { cat:'daily', topic:'☕ 일상 — 날씨 대화',
     dialog:[
-      { speaker:'A', line:'¡Qué calor hace hoy! ¿Cuántos grados hay?' },
-      { speaker:'B', line:'El teléfono dice que están 33 grados.' },
-      { speaker:'A', line:'¡Por eso me siento tan cansado!' },
-      { speaker:'B', line:'Sí, y por la tarde dicen que va a llover.' },
+      { speaker:'A', line:'¡Qué calor hace hoy! ¿Cuántos grados hay?', ko:'오늘 정말 덥네요! 몇 도예요?' },
+      { speaker:'B', line:'El teléfono dice que están 33 grados.', ko:'폰에서 33도라고 해요.' },
+      { speaker:'A', line:'¡Por eso me siento tan cansado!', ko:'그래서 이렇게 피곤한 거네요!' },
+      { speaker:'B', line:'Sí, y por la tarde dicen que va a llover.', ko:'네, 오후에는 비가 올 거래요.' },
     ],
     question:'오늘 오후 날씨 예보는?',
     options:['맑음','흐림','비','폭풍'],
@@ -6313,10 +6307,10 @@ const listeningData = [
   },
   { cat:'daily', topic:'☕ 일상 — 식당에서',
     dialog:[
-      { speaker:'직원', line:'Buenas noches. ¿Tienen reserva?' },
-      { speaker:'손님', line:'No, somos tres personas. ¿Hay mesa disponible?' },
-      { speaker:'직원', line:'Sí, les puedo acomodar en la terraza.' },
-      { speaker:'손님', line:'Perfecto, nos gusta la terraza.' },
+      { speaker:'직원', line:'Buenas noches. ¿Tienen reserva?', ko:'좋은 저녁이에요. 예약하셨나요?' },
+      { speaker:'손님', line:'No, somos tres personas. ¿Hay mesa disponible?', ko:'아니요, 세 명이에요. 빈 테이블 있어요?' },
+      { speaker:'직원', line:'Sí, les puedo acomodar en la terraza.', ko:'네, 테라스로 안내해드릴 수 있어요.' },
+      { speaker:'손님', line:'Perfecto, nos gusta la terraza.', ko:'완벽해요, 테라스가 좋아요.' },
     ],
     question:'손님 일행이 앉을 자리는?',
     options:['실내 창가 자리','지하 홀','테라스','바 자리'],
@@ -6325,10 +6319,10 @@ const listeningData = [
   },
   { cat:'daily', topic:'☕ 일상 — 길 안내',
     dialog:[
-      { speaker:'A', line:'Disculpe, ¿cómo llego al correo?' },
-      { speaker:'B', line:'Siga derecho dos cuadras y doble a la izquierda.' },
-      { speaker:'A', line:'¿Está lejos de aquí?' },
-      { speaker:'B', line:'No, a pie está a unos cinco minutos.' },
+      { speaker:'A', line:'Disculpe, ¿cómo llego al correo?', ko:'실례합니다, 우체국에 어떻게 가요?' },
+      { speaker:'B', line:'Siga derecho dos cuadras y doble a la izquierda.', ko:'직진으로 두 블록 가서 왼쪽으로 도세요.' },
+      { speaker:'A', line:'¿Está lejos de aquí?', ko:'여기서 멀어요?' },
+      { speaker:'B', line:'No, a pie está a unos cinco minutos.', ko:'아니요, 걸어서 약 5분이에요.' },
     ],
     question:'우체국에 도착하는 방법은?',
     options:['오른쪽으로 두 블록','왼쪽으로 두 블록','직진 후 오른쪽','직진 후 왼쪽'],
@@ -6337,10 +6331,10 @@ const listeningData = [
   },
   { cat:'daily', topic:'☕ 일상 — 쇼핑',
     dialog:[
-      { speaker:'A', line:'¿Cuánto cuesta esta camisa?' },
-      { speaker:'B', line:'Está a ciento cincuenta quetzales.' },
-      { speaker:'A', line:'¿Me puede hacer un descuento?' },
-      { speaker:'B', line:'Le puedo dejar en ciento treinta. Es el mejor precio.' },
+      { speaker:'A', line:'¿Cuánto cuesta esta camisa?', ko:'이 셔츠 얼마예요?' },
+      { speaker:'B', line:'Está a ciento cincuenta quetzales.', ko:'150케찰이에요.' },
+      { speaker:'A', line:'¿Me puede hacer un descuento?', ko:'할인해주실 수 있어요?' },
+      { speaker:'B', line:'Le puedo dejar en ciento treinta. Es el mejor precio.', ko:'130케찰로 드릴 수 있어요. 최선의 가격이에요.' },
     ],
     question:'최종 할인가는?',
     options:['100 케찰','130 케찰','150 케찰','160 케찰'],
@@ -6349,10 +6343,10 @@ const listeningData = [
   },
   { cat:'daily', topic:'☕ 일상 — 병원',
     dialog:[
-      { speaker:'의사', line:'¿Qué síntomas tiene?' },
-      { speaker:'환자', line:'Me duele la cabeza y tengo fiebre desde ayer.' },
-      { speaker:'의사', line:'¿Cuánto de fiebre tiene?' },
-      { speaker:'환자', line:'Treinta y ocho grados y medio.' },
+      { speaker:'의사', line:'¿Qué síntomas tiene?', ko:'증상이 어떻게 되세요?' },
+      { speaker:'환자', line:'Me duele la cabeza y tengo fiebre desde ayer.', ko:'두통이 있고 어제부터 열이 있어요.' },
+      { speaker:'의사', line:'¿Cuánto de fiebre tiene?', ko:'열이 몇 도예요?' },
+      { speaker:'환자', line:'Treinta y ocho grados y medio.', ko:'38.5도예요.' },
     ],
     question:'환자의 증상은?',
     options:['배탈과 발열','두통과 발열','기침과 발열','두통과 어지러움'],
@@ -6361,10 +6355,10 @@ const listeningData = [
   },
   { cat:'travel', topic:'✈️ 여행 — 공항 체크인',
     dialog:[
-      { speaker:'직원', line:'Buenas tardes. Su pasaporte, por favor.' },
-      { speaker:'A', line:'Aquí tiene. Voy a Seúl.' },
-      { speaker:'직원', line:'¿Lleva equipaje para facturar?' },
-      { speaker:'A', line:'Sí, una maleta de 23 kilos.' },
+      { speaker:'직원', line:'Buenas tardes. Su pasaporte, por favor.', ko:'좋은 오후예요. 여권 주세요.' },
+      { speaker:'A', line:'Aquí tiene. Voy a Seúl.', ko:'여기요. 서울로 가요.' },
+      { speaker:'직원', line:'¿Lleva equipaje para facturar?', ko:'위탁할 수하물 있으세요?' },
+      { speaker:'A', line:'Sí, una maleta de 23 kilos.', ko:'네, 23킬로 여행 가방 하나요.' },
     ],
     question:'A는 얼마 무게의 짐을 가지고 있나요?',
     options:['13 kg','20 kg','23 kg','30 kg'],
@@ -6373,11 +6367,11 @@ const listeningData = [
   },
   { cat:'travel', topic:'✈️ 여행 — 호텔 체크인',
     dialog:[
-      { speaker:'직원', line:'Bienvenido. ¿Tiene reserva?' },
-      { speaker:'A', line:'Sí, a nombre de Kim Minho. Tres noches.' },
-      { speaker:'직원', line:'Perfecto. Habitación 305 en el tercer piso.' },
-      { speaker:'A', line:'¿Está incluido el desayuno?' },
-      { speaker:'직원', line:'Sí, de 7 a 10 de la mañana.' },
+      { speaker:'직원', line:'Bienvenido. ¿Tiene reserva?', ko:'환영해요. 예약하셨나요?' },
+      { speaker:'A', line:'Sí, a nombre de Kim Minho. Tres noches.', ko:'네, 김민호 이름으로요. 3박이요.' },
+      { speaker:'직원', line:'Perfecto. Habitación 305 en el tercer piso.', ko:'완벽해요. 3층 305호예요.' },
+      { speaker:'A', line:'¿Está incluido el desayuno?', ko:'아침식사가 포함돼 있어요?' },
+      { speaker:'직원', line:'Sí, de 7 a 10 de la mañana.', ko:'네, 오전 7시에서 10시까지요.' },
     ],
     question:'아침식사 시간은?',
     options:['6시~9시','7시~10시','8시~11시','9시~12시'],
@@ -6386,10 +6380,10 @@ const listeningData = [
   },
   { cat:'accounting', topic:'📊 회계 — 예산 회의',
     dialog:[
-      { speaker:'A', line:'El gasto de este mes fue mayor de lo esperado.' },
-      { speaker:'B', line:'¿Cuánto nos excedimos del presupuesto?' },
-      { speaker:'A', line:'Unos quinientos dólares más.' },
-      { speaker:'B', line:'Hay que reducir los gastos el próximo mes.' },
+      { speaker:'A', line:'El gasto de este mes fue mayor de lo esperado.', ko:'이번 달 지출이 예상보다 많았어요.' },
+      { speaker:'B', line:'¿Cuánto nos excedimos del presupuesto?', ko:'예산을 얼마나 초과했어요?' },
+      { speaker:'A', line:'Unos quinientos dólares más.', ko:'약 500달러 더요.' },
+      { speaker:'B', line:'Hay que reducir los gastos el próximo mes.', ko:'다음 달에는 지출을 줄여야 해요.' },
     ],
     question:'예산 초과 금액은?',
     options:['$300','$400','$500','$600'],
@@ -6398,10 +6392,10 @@ const listeningData = [
   },
   { cat:'accounting', topic:'📊 회계 — 청구서 오류',
     dialog:[
-      { speaker:'A', line:'Hay un error en esta factura.' },
-      { speaker:'B', line:'¿Qué tipo de error es?' },
-      { speaker:'A', line:'El total no coincide con la suma de los conceptos.' },
-      { speaker:'B', line:'Tienes razón. La corrijo y te mando una nueva.' },
+      { speaker:'A', line:'Hay un error en esta factura.', ko:'이 청구서에 오류가 있어요.' },
+      { speaker:'B', line:'¿Qué tipo de error es?', ko:'어떤 종류의 오류예요?' },
+      { speaker:'A', line:'El total no coincide con la suma de los conceptos.', ko:'합계가 항목들의 합산과 일치하지 않아요.' },
+      { speaker:'B', line:'Tienes razón. La corrijo y te mando una nueva.', ko:'맞아요. 수정해서 새로운 걸 보낼게요.' },
     ],
     question:'청구서의 문제는 무엇인가요?',
     options:['날짜가 틀렸다','합계 금액이 맞지 않는다','세금이 잘못 계산됐다','서명이 없다'],
@@ -6410,10 +6404,10 @@ const listeningData = [
   },
   { cat:'work', topic:'💼 직장 — 휴가 신청',
     dialog:[
-      { speaker:'A', line:'¿Puedo pedir unos días de vacaciones?' },
-      { speaker:'B', line:'Claro. ¿Para cuándo los necesitas?' },
-      { speaker:'A', line:'Del 15 al 18 de este mes, cuatro días.' },
-      { speaker:'B', line:'Está bien. Llena el formulario y yo lo apruebo.' },
+      { speaker:'A', line:'¿Puedo pedir unos días de vacaciones?', ko:'며칠 휴가를 신청할 수 있어요?' },
+      { speaker:'B', line:'Claro. ¿Para cuándo los necesitas?', ko:'물론이죠. 언제 필요해요?' },
+      { speaker:'A', line:'Del 15 al 18 de este mes, cuatro días.', ko:'이번 달 15일부터 18일까지, 4일이요.' },
+      { speaker:'B', line:'Está bien. Llena el formulario y yo lo apruebo.', ko:'좋아요. 양식 작성하면 제가 승인할게요.' },
     ],
     question:'A는 며칠 휴가를 신청하나요?',
     options:['2일','3일','4일','5일'],
@@ -6422,15 +6416,323 @@ const listeningData = [
   },
   { cat:'daily', topic:'☕ 일상 — 전화 통화',
     dialog:[
-      { speaker:'A', line:'Aló, ¿está el señor Pérez?' },
-      { speaker:'B', line:'De parte de quién, por favor.' },
-      { speaker:'A', line:'Soy Kim de la empresa Hansae.' },
-      { speaker:'B', line:'Un momento, por favor. Lo comunico.' },
+      { speaker:'A', line:'Aló, ¿está el señor Pérez?', ko:'여보세요, 페레스 씨 계세요?' },
+      { speaker:'B', line:'De parte de quién, por favor.', ko:'누구세요?' },
+      { speaker:'A', line:'Soy Kim de la empresa Hansae.', ko:'한쎄 회사의 김이에요.' },
+      { speaker:'B', line:'Un momento, por favor. Lo comunico.', ko:'잠깐만요. 연결해드릴게요.' },
     ],
     question:'A는 누구를 찾고 있나요?',
     options:['김 씨','페레스 씨','한쎄 직원','비서'],
     answer:'페레스 씨',
     explanation:'¿Está el señor Pérez? = 페레스 씨 계세요? Lo comunico = 연결해드릴게요.'
+  },
+
+  // ── 추가 듣기 20개 ──
+
+  // 🏥 병원
+  { cat:'daily', topic:'🏥 병원 — 진료 예약',
+    dialog:[
+      { speaker:'직원', line:'Clínica San Rafael, buenos días.', ko:'산라파엘 클리닉, 좋은 아침이에요.' },
+      { speaker:'A', line:'Buenos días. Quisiera hacer una cita con el médico.', ko:'좋은 아침이에요. 의사 예약을 하고 싶어요.' },
+      { speaker:'직원', line:'¿Para cuándo la necesita?', ko:'언제 필요하세요?' },
+      { speaker:'A', line:'Lo antes posible. Tengo dolor de estómago.', ko:'가능한 빨리요. 배가 아파요.' },
+      { speaker:'직원', line:'Tenemos disponible mañana a las 10. ¿Le viene bien?', ko:'내일 10시에 가능해요. 괜찮으세요?' },
+      { speaker:'A', line:'Perfecto, ahí estaré.', ko:'완벽해요, 그때 갈게요.' },
+    ],
+    question:'A가 예약한 시간은?',
+    options:['오늘 오전 10시','내일 오전 10시','내일 오후 2시','모레 오전 10시'],
+    answer:'내일 오전 10시',
+    explanation:'Mañana a las 10 = 내일 10시. Lo antes posible = 가능한 빨리.'
+  },
+
+  // 🏥 병원2
+  { cat:'daily', topic:'🏥 병원 — 처방전',
+    dialog:[
+      { speaker:'의사', line:'¿Cuánto tiempo lleva con estos síntomas?', ko:'이 증상이 얼마나 됐어요?' },
+      { speaker:'A', line:'Desde hace tres días. Tengo fiebre y tos.', ko:'3일 됐어요. 열과 기침이 있어요.' },
+      { speaker:'의사', line:'Voy a recetarle un antibiótico y algo para la fiebre.', ko:'항생제와 해열제를 처방해드릴게요.' },
+      { speaker:'A', line:'¿Cuántas veces al día tengo que tomarlo?', ko:'하루에 몇 번 먹어야 해요?' },
+      { speaker:'의사', line:'Tres veces al día, después de las comidas.', ko:'하루 3번, 식후에요.' },
+    ],
+    question:'약을 먹는 방법은?',
+    options:['하루 2번 공복에','하루 3번 식전에','하루 3번 식후에','하루 2번 식후에'],
+    answer:'하루 3번 식후에',
+    explanation:'Tres veces al día = 하루 3번. Después de las comidas = 식후.'
+  },
+
+  // 🏦 은행
+  { cat:'daily', topic:'🏦 은행 — 계좌 개설',
+    dialog:[
+      { speaker:'직원', line:'Buenos días. ¿En qué le puedo ayudar?', ko:'좋은 아침이에요. 무엇을 도와드릴까요?' },
+      { speaker:'A', line:'Quisiera abrir una cuenta de ahorros.', ko:'저축 계좌를 개설하고 싶어요.' },
+      { speaker:'직원', line:'Necesita su pasaporte y un comprobante de domicilio.', ko:'여권과 거주지 증명서가 필요해요.' },
+      { speaker:'A', line:'¿Cuánto tiempo tarda el proceso?', ko:'절차가 얼마나 걸려요?' },
+      { speaker:'직원', line:'Unos treinta minutos si tiene todos los documentos.', ko:'서류가 다 있으면 약 30분이에요.' },
+    ],
+    question:'계좌 개설에 필요한 서류는?',
+    options:['여권만','여권과 거주지 증명서','신분증과 사진','여권과 사진'],
+    answer:'여권과 거주지 증명서',
+    explanation:'Pasaporte = 여권. Comprobante de domicilio = 거주지 증명서.'
+  },
+
+  // 🏦 은행2
+  { cat:'daily', topic:'🏦 은행 — ATM 문제',
+    dialog:[
+      { speaker:'A', line:'Perdone, el cajero automático se tragó mi tarjeta.', ko:'실례합니다, ATM이 제 카드를 삼켜버렸어요.' },
+      { speaker:'직원', line:'¿Cuándo ocurrió eso?', ko:'언제 그 일이 있었어요?' },
+      { speaker:'A', line:'Hace diez minutos. Estaba haciendo un retiro.', ko:'10분 전이에요. 출금하고 있었어요.' },
+      { speaker:'직원', line:'Pase a ventanilla. Le ayudamos a recuperarla.', ko:'창구로 오세요. 카드 되찾는 걸 도와드릴게요.' },
+    ],
+    question:'A의 문제는?',
+    options:['비밀번호를 잊어버렸다','ATM에 카드가 걸렸다','잔액이 부족하다','카드가 분실됐다'],
+    answer:'ATM에 카드가 걸렸다',
+    explanation:'El cajero se tragó la tarjeta = ATM이 카드를 삼켰어요. Retiro = 출금.'
+  },
+
+  // 📱 약속 잡기
+  { cat:'daily', topic:'📱 약속 — 저녁 약속',
+    dialog:[
+      { speaker:'A', line:'¿Tienes planes para el viernes por la noche?', ko:'금요일 저녁에 계획 있어요?' },
+      { speaker:'B', line:'No, estoy libre. ¿Por qué?', ko:'아니요, 한가해요. 왜요?' },
+      { speaker:'A', line:'Unos amigos y yo vamos a cenar. ¿Te apuntas?', ko:'친구들이랑 저녁 먹으러 가요. 같이 갈래요?' },
+      { speaker:'B', line:'¡Claro! ¿A qué hora y dónde quedamos?', ko:'물론이죠! 몇 시에 어디서 만나요?' },
+      { speaker:'A', line:'A las siete en el restaurante frente al parque.', ko:'7시에 공원 맞은편 식당에서요.' },
+    ],
+    question:'약속 장소는?',
+    options:['공원 안','공원 근처 카페','공원 맞은편 식당','A의 집'],
+    answer:'공원 맞은편 식당',
+    explanation:'Frente al parque = 공원 맞은편. A las siete = 7시.'
+  },
+
+  // 📱 전화
+  { cat:'daily', topic:'📱 전화 — 메시지 남기기',
+    dialog:[
+      { speaker:'A', line:'Hola, ¿está María?', ko:'안녕하세요, 마리아 있어요?' },
+      { speaker:'B', line:'No, en este momento no está. ¿Quiere dejar un mensaje?', ko:'아니요, 지금 없어요. 메시지 남기실래요?' },
+      { speaker:'A', line:'Sí, por favor. Dígale que llamó Carlos.', ko:'네, 부탁해요. 카를로스가 전화했다고 전해줘요.' },
+      { speaker:'B', line:'¿Quiere que ella le devuelva la llamada?', ko:'마리아가 다시 전화드리기를 원하세요?' },
+      { speaker:'A', line:'Sí, a mi número de siempre.', ko:'네, 항상 쓰는 번호로요.' },
+    ],
+    question:'A가 요청한 것은?',
+    options:['직접 메시지 보내기','마리아에게 콜백 요청','나중에 다시 전화하기','이메일 보내기'],
+    answer:'마리아에게 콜백 요청',
+    explanation:'Que ella le devuelva la llamada = 그녀가 다시 전화해주길. A mi número de siempre = 항상 쓰는 번호로.'
+  },
+
+  // 🏠 집 구하기
+  { cat:'daily', topic:'🏠 집 — 방 구하기',
+    dialog:[
+      { speaker:'A', line:'Vi su anuncio de apartamento en alquiler.', ko:'임대 아파트 광고를 봤어요.' },
+      { speaker:'B', line:'Sí, está disponible desde el primero de mes.', ko:'네, 이달 1일부터 이용 가능해요.' },
+      { speaker:'A', line:'¿Cuánto es el alquiler mensual?', ko:'월세가 얼마예요?' },
+      { speaker:'B', line:'Dos mil quetzales al mes, incluidos los servicios.', ko:'월 2,000케찰이에요, 공과금 포함이에요.' },
+      { speaker:'A', line:'¿Puedo verlo esta tarde?', ko:'오늘 오후에 볼 수 있어요?' },
+      { speaker:'B', line:'Claro, a las cuatro le va bien.', ko:'물론이죠, 4시 괜찮으세요?' },
+    ],
+    question:'월세에 포함된 것은?',
+    options:['공과금 제외','공과금 포함','인터넷 포함','주차 포함'],
+    answer:'공과금 포함',
+    explanation:'Incluidos los servicios = 공과금 포함. Alquiler = 임대료.'
+  },
+
+  // 🏠 집 수리
+  { cat:'daily', topic:'🏠 집 — 수리 요청',
+    dialog:[
+      { speaker:'A', line:'El grifo del baño está goteando desde ayer.', ko:'욕실 수도꼭지에서 어제부터 물이 새고 있어요.' },
+      { speaker:'B', line:'¿Cuánta agua pierde?', ko:'물이 얼마나 새요?' },
+      { speaker:'A', line:'Bastante. Ya mojar el suelo.', ko:'꽤 많이요. 바닥이 이미 젖었어요.' },
+      { speaker:'B', line:'Mando a un técnico mañana por la mañana.', ko:'내일 아침에 기술자를 보낼게요.' },
+      { speaker:'A', line:'¿Puede ser antes? Es urgente.', ko:'더 빨리 될 수 있어요? 긴급해요.' },
+      { speaker:'B', line:'Voy a intentar mandarlo esta tarde entonces.', ko:'그럼 오늘 오후에 보내려고 해볼게요.' },
+    ],
+    question:'수리 기술자는 언제 오기로 했나요?',
+    options:['오늘 오전','오늘 오후','내일 오전','내일 오후'],
+    answer:'오늘 오후',
+    explanation:'Esta tarde = 오늘 오후. 처음엔 내일 아침이었지만 긴급하다고 해서 오늘 오후로 바뀌었어요.'
+  },
+
+  // 🤝 비즈니스
+  { cat:'work', topic:'🤝 비즈니스 — 가격 협상',
+    dialog:[
+      { speaker:'A', line:'El precio que propone es demasiado alto para nosotros.', ko:'제안하신 가격이 저희한테는 너무 높아요.' },
+      { speaker:'B', line:'¿Qué precio tenían en mente?', ko:'어떤 가격을 생각하고 계셨어요?' },
+      { speaker:'A', line:'Nos gustaría un descuento del quince por ciento.', ko:'15% 할인을 원해요.' },
+      { speaker:'B', line:'Lo máximo que puedo ofrecer es un diez por ciento.', ko:'제가 드릴 수 있는 최대는 10%예요.' },
+      { speaker:'A', line:'Está bien, aceptamos el diez por ciento.', ko:'좋아요, 10% 수락할게요.' },
+    ],
+    question:'최종 합의된 할인율은?',
+    options:['5%','10%','15%','20%'],
+    answer:'10%',
+    explanation:'Lo máximo que puedo ofrecer es un diez por ciento = 최대 10%. Aceptamos = 수락해요.'
+  },
+
+  // 🤝 비즈니스2
+  { cat:'work', topic:'🤝 비즈니스 — 납품 지연',
+    dialog:[
+      { speaker:'A', line:'El pedido debía llegar el lunes pero aún no ha llegado.', ko:'주문이 월요일에 와야 했는데 아직 안 왔어요.' },
+      { speaker:'B', line:'Lo siento mucho. Hubo un problema en la aduana.', ko:'정말 죄송해요. 세관에서 문제가 있었어요.' },
+      { speaker:'A', line:'¿Para cuándo podemos esperar la entrega?', ko:'납품을 언제쯤 기대할 수 있어요?' },
+      { speaker:'B', line:'El miércoles a más tardar, lo garantizo.', ko:'늦어도 수요일까지요, 보장해요.' },
+      { speaker:'A', line:'Esperamos que así sea. Lo necesitamos urgentemente.', ko:'그렇게 되길 바라요. 긴급하게 필요해요.' },
+    ],
+    question:'지연 이유는?',
+    options:['교통 문제','세관 문제','생산 지연','주문 오류'],
+    answer:'세관 문제',
+    explanation:'Hubo un problema en la aduana = 세관에서 문제가 있었어요. Aduana = 세관.'
+  },
+
+  // 🎉 파티
+  { cat:'daily', topic:'🎉 파티 — 생일 파티',
+    dialog:[
+      { speaker:'A', line:'¿Vas a venir a la fiesta de cumpleaños de Ana el sábado?', ko:'토요일에 아나 생일 파티에 올 거예요?' },
+      { speaker:'B', line:'¡Claro! ¿A qué hora empieza?', ko:'물론이죠! 몇 시에 시작해요?' },
+      { speaker:'A', line:'A las seis. Y hay que llevar algo para comer o beber.', ko:'6시예요. 먹을 거나 마실 걸 가져와야 해요.' },
+      { speaker:'B', line:'Yo llevo un pastel. ¿Sabes qué le gusta a Ana?', ko:'저는 케이크 가져갈게요. 아나가 뭘 좋아하는지 알아요?' },
+      { speaker:'A', line:'Le encanta el chocolate.', ko:'초콜릿을 정말 좋아해요.' },
+    ],
+    question:'B가 파티에 가져가기로 한 것은?',
+    options:['음료수','피자','케이크','샐러드'],
+    answer:'케이크',
+    explanation:'Yo llevo un pastel = 저는 케이크 가져갈게요. Le encanta el chocolate = 초콜릿을 정말 좋아해요.'
+  },
+
+  // 🎉 파티2
+  { cat:'daily', topic:'🎉 파티 — 초대 거절',
+    dialog:[
+      { speaker:'A', line:'Te invito a mi fiesta este sábado. ¿Puedes venir?', ko:'이번 토요일 파티에 초대할게요. 올 수 있어요?' },
+      { speaker:'B', line:'Me encantaría, pero tengo otro compromiso.', ko:'가고 싶은데 다른 약속이 있어요.' },
+      { speaker:'A', line:'¡Qué lástima! ¿Seguro que no puedes?', ko:'아쉽네요! 정말 못 와요?' },
+      { speaker:'B', line:'Ojalá pudiera, pero es una reunión de trabajo.', ko:'갈 수 있으면 좋겠지만 업무 미팅이에요.' },
+      { speaker:'A', line:'No te preocupes. Quedamos otro día.', ko:'걱정하지 마요. 다른 날 만나요.' },
+    ],
+    question:'B가 파티에 못 가는 이유는?',
+    options:['아프다','가족 방문','업무 미팅','여행'],
+    answer:'업무 미팅',
+    explanation:'Reunión de trabajo = 업무 미팅. Compromiso = 약속, 선약.'
+  },
+
+  // 🗣️ 일상 잡담
+  { cat:'daily', topic:'🗣️ 잡담 — 취미 이야기',
+    dialog:[
+      { speaker:'A', line:'¿Qué haces en tu tiempo libre?', ko:'여가 시간에 뭐 해요?' },
+      { speaker:'B', line:'Me gusta mucho la fotografía. ¿Y tú?', ko:'사진을 매우 좋아해요. 당신은요?' },
+      { speaker:'A', line:'Yo practico fútbol los fines de semana.', ko:'저는 주말에 축구를 해요.' },
+      { speaker:'B', line:'¡Qué interesante! ¿Con quién juegas?', ko:'흥미롭네요! 누구랑 해요?' },
+      { speaker:'A', line:'Con unos compañeros del trabajo. Somos ocho personas.', ko:'직장 동료들이랑요. 8명이에요.' },
+    ],
+    question:'A의 취미는?',
+    options:['사진','달리기','축구','독서'],
+    answer:'축구',
+    explanation:'Practico fútbol = 축구를 해요. Los fines de semana = 주말에.'
+  },
+
+  // 🗣️ 잡담2
+  { cat:'daily', topic:'🗣️ 잡담 — 날씨와 계획',
+    dialog:[
+      { speaker:'A', line:'¡Qué día tan bonito! ¿Tienes planes para hoy?', ko:'정말 좋은 날씨네요! 오늘 계획 있어요?' },
+      { speaker:'B', line:'Pensaba ir al parque con mi familia.', ko:'가족이랑 공원에 가려고 했어요.' },
+      { speaker:'A', line:'¡Perfecto! Hace mucho tiempo que no salgo.', ko:'완벽해요! 오랫동안 안 나갔어요.' },
+      { speaker:'B', line:'¿Quieres venir con nosotros?', ko:'우리랑 같이 올래요?' },
+      { speaker:'A', line:'Me encantaría. ¿A qué hora salen?', ko:'정말 좋겠어요. 몇 시에 출발해요?' },
+      { speaker:'B', line:'A las tres de la tarde.', ko:'오후 3시예요.' },
+    ],
+    question:'B의 오늘 계획은?',
+    options:['혼자 쇼핑','가족이랑 공원','친구랑 영화','집에서 휴식'],
+    answer:'가족이랑 공원',
+    explanation:'Ir al parque con mi familia = 가족이랑 공원에 가다. A las tres = 3시.'
+  },
+
+  // ✈️ 여행
+  { cat:'travel', topic:'✈️ 여행 — 관광 안내',
+    dialog:[
+      { speaker:'A', line:'Es mi primera vez en Guatemala. ¿Qué me recomienda visitar?', ko:'과테말라는 처음이에요. 어디를 방문하길 추천해요?' },
+      { speaker:'B', line:'Definitivamente Antigua y el lago Atitlán.', ko:'무조건 안티구아와 아티틀란 호수요.' },
+      { speaker:'A', line:'¿Cuánto tiempo necesito para cada lugar?', ko:'각 장소마다 얼마나 시간이 필요해요?' },
+      { speaker:'B', line:'Para Antigua un día es suficiente. El lago necesita dos días.', ko:'안티구아는 하루면 충분해요. 호수는 이틀이 필요해요.' },
+      { speaker:'A', line:'¿Cómo llego al lago desde la ciudad?', ko:'시내에서 호수까지 어떻게 가요?' },
+      { speaker:'B', line:'Hay shuttles directos desde el centro.', ko:'시내에서 직행 셔틀이 있어요.' },
+    ],
+    question:'아티틀란 호수 방문에 필요한 시간은?',
+    options:['반나절','하루','이틀','사흘'],
+    answer:'이틀',
+    explanation:'El lago necesita dos días = 호수는 이틀이 필요해요. Definitivamente = 무조건, 확실히.'
+  },
+
+  // ✈️ 여행2
+  { cat:'travel', topic:'✈️ 여행 — 환전',
+    dialog:[
+      { speaker:'A', line:'Quisiera cambiar dólares a quetzales.', ko:'달러를 케찰로 환전하고 싶어요.' },
+      { speaker:'B', line:'¿Cuánto quiere cambiar?', ko:'얼마 환전하고 싶으세요?' },
+      { speaker:'A', line:'Doscientos dólares.', ko:'200달러요.' },
+      { speaker:'B', line:'El tipo de cambio hoy es de 7.8 quetzales por dólar.', ko:'오늘 환율은 달러당 7.8케찰이에요.' },
+      { speaker:'A', line:'¿Hay comisión?', ko:'수수료가 있어요?' },
+      { speaker:'B', line:'Sí, el uno por ciento.', ko:'네, 1%예요.' },
+    ],
+    question:'오늘 환율은?',
+    options:['달러당 7.5 케찰','달러당 7.8 케찰','달러당 8.0 케찰','달러당 8.2 케찰'],
+    answer:'달러당 7.8 케찰',
+    explanation:'El tipo de cambio es de 7.8 quetzales por dólar = 환율은 달러당 7.8케찰. Comisión = 수수료.'
+  },
+
+  // 📊 회계 추가
+  { cat:'accounting', topic:'📊 회계 — 월말 마감',
+    dialog:[
+      { speaker:'A', line:'¿Cómo va el cierre del mes?', ko:'월말 마감이 어떻게 되고 있어요?' },
+      { speaker:'B', line:'Casi listo. Solo me falta cuadrar las cuentas por cobrar.', ko:'거의 다 됐어요. 미수금 대사만 남았어요.' },
+      { speaker:'A', line:'¿Cuánto hay pendiente?', ko:'미결된 금액이 얼마예요?' },
+      { speaker:'B', line:'Unos quince mil quetzales de tres clientes distintos.', ko:'세 고객에서 약 15,000케찰이에요.' },
+      { speaker:'A', line:'Hay que cobrar antes de que cierre el mes.', ko:'월말 마감 전에 수금해야 해요.' },
+    ],
+    question:'B에게 남은 업무는?',
+    options:['급여 지급','세금 신고','미수금 대사','청구서 발행'],
+    answer:'미수금 대사',
+    explanation:'Cuadrar las cuentas por cobrar = 미수금 대사. Pendiente = 미결, 대기 중.'
+  },
+
+  // 📊 회계2
+  { cat:'accounting', topic:'📊 회계 — 경비 처리',
+    dialog:[
+      { speaker:'A', line:'¿Puedo reembolsar los gastos de transporte?', ko:'교통비를 환급받을 수 있어요?' },
+      { speaker:'B', line:'Sí, pero necesitas los recibos originales.', ko:'네, 하지만 원본 영수증이 필요해요.' },
+      { speaker:'A', line:'Tengo todos los recibos. ¿Dónde entrego el formulario?', ko:'영수증 다 있어요. 양식을 어디에 제출해요?' },
+      { speaker:'B', line:'En contabilidad, antes del día diez de cada mes.', ko:'매월 10일 전까지 회계팀에요.' },
+      { speaker:'A', line:'¿Cuándo se hace el reembolso?', ko:'환급은 언제 돼요?' },
+      { speaker:'B', line:'Al final del mes, junto con el salario.', ko:'월말에 급여와 함께요.' },
+    ],
+    question:'경비 환급 신청 마감일은?',
+    options:['매월 5일','매월 10일','매월 15일','매월 말일'],
+    answer:'매월 10일',
+    explanation:'Antes del día diez = 10일 전까지. Reembolso = 환급. Contabilidad = 회계팀.'
+  },
+
+  // 💼 직장 - 평가
+  { cat:'work', topic:'💼 직장 — 업무 평가',
+    dialog:[
+      { speaker:'A', line:'¿Puedo hablar contigo sobre mi evaluación?', ko:'제 평가에 대해 이야기할 수 있어요?' },
+      { speaker:'B', line:'Claro. En general, tu desempeño ha sido muy bueno.', ko:'물론이죠. 전반적으로 업무 성과가 매우 좋았어요.' },
+      { speaker:'A', line:'¿Hay algo que pueda mejorar?', ko:'개선할 수 있는 게 있어요?' },
+      { speaker:'B', line:'Sí, sería bueno que mejores la comunicación con el equipo.', ko:'네, 팀과의 소통을 개선하면 좋겠어요.' },
+      { speaker:'A', line:'Entendido. Lo tendré en cuenta.', ko:'알겠어요. 명심할게요.' },
+    ],
+    question:'상사가 A에게 개선을 권유한 것은?',
+    options:['보고서 작성','시간 관리','팀과의 소통','기술 능력'],
+    answer:'팀과의 소통',
+    explanation:'Mejorar la comunicación con el equipo = 팀과의 소통 개선. Lo tendré en cuenta = 명심할게요.'
+  },
+
+  // 💼 직장 - 재택근무
+  { cat:'work', topic:'💼 직장 — 재택근무 요청',
+    dialog:[
+      { speaker:'A', line:'¿Puedo trabajar desde casa el próximo viernes?', ko:'다음 주 금요일에 재택근무 할 수 있어요?' },
+      { speaker:'B', line:'¿Cuál es el motivo?', ko:'이유가 뭐예요?' },
+      { speaker:'A', line:'Tengo una visita técnica en casa por la mañana.', ko:'오전에 집에 기술자 방문이 있어요.' },
+      { speaker:'B', line:'Está bien, siempre que estés disponible en las reuniones.', ko:'좋아요, 회의에는 참석 가능하면요.' },
+      { speaker:'A', line:'Por supuesto. Estaré conectado todo el día.', ko:'물론이죠. 하루 종일 접속해 있을게요.' },
+    ],
+    question:'상사가 재택근무를 허락한 조건은?',
+    options:['보고서 제출','회의 참석','초과 근무','일찍 출근'],
+    answer:'회의 참석',
+    explanation:'Siempre que estés disponible en las reuniones = 회의에 참석 가능하면. Disponible = 이용 가능한.'
   },
 ];
 
@@ -6543,6 +6845,7 @@ function lsShowScript() {
       return `<div style="margin-bottom:10px">
         <span style="font-size:11px;font-weight:700;color:${color};letter-spacing:1px">${line.speaker}</span>
         <div style="font-family:'Courier New',monospace;font-size:14px;color:var(--text);margin-top:3px;line-height:1.8">${clickable}</div>
+        ${line.ko ? `<div style="font-size:12px;color:var(--text3);font-style:italic;margin-top:2px;margin-bottom:4px">${line.ko}</div>` : ''}
         <button onclick="speakText('${line.line.replace(/'/g,"\\'")}');" style="background:none;border:1px solid var(--border);border-radius:100px;padding:2px 10px;font-size:11px;color:var(--accent3);cursor:pointer;margin-top:4px">🔊 듣기</button>
       </div>`;
     }).join('<div style="height:1px;background:var(--border);margin:8px 0"></div>');
@@ -8303,6 +8606,8 @@ const PATTERNS = [
     ]
   },
 ];
+
+function shuffle(arr) { return [...arr].sort(() => Math.random() - .5); }
 
 let patternCat = 'all';
 
