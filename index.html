@@ -1053,7 +1053,13 @@
 <div id="tab-wordlist" class="screen">
   <div class="panel">
     <div class="panel-title">단어장</div>
-    <input class="word-search" type="text" placeholder="한국어 또는 스페인어로 검색..." id="wordSearch" oninput="filterWords()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <!-- 검색창 -->
+    <div style="position:relative;margin-bottom:14px">
+      <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:14px">🔍</span>
+      <input class="word-search" type="text" placeholder="스페인어, 한국어, 발음 검색..." id="wordSearch" oninput="filterWords()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="padding-left:34px;padding-right:70px">
+      <button id="search-clear-btn" onclick="clearSearch()" style="display:none;position:absolute;right:40px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text3);font-size:16px;cursor:pointer;padding:4px">✕</button>
+      <span id="word-result-count" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--text3)"></span>
+    </div>
     <div class="filter-row">
       <button class="filter-btn active" onclick="setListFilter('all',this)">전체</button>
       <button class="filter-btn" onclick="setListFilter('starred',this)">⭐ 즐겨찾기</button>
@@ -1182,12 +1188,33 @@
 
 <!-- ══════ PROGRESS TAB ══════ -->
 <div id="tab-progress" class="screen">
+  <!-- 오늘 학습 현황 -->
   <div class="panel">
     <div class="panel-title">📊 학습 현황</div>
     <div id="prog-stats-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px"></div>
     <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);font-weight:500;margin-bottom:12px">카테고리별 숙련도</div>
     <div id="cat-prog-bars"></div>
   </div>
+
+  <!-- 오늘의 학습 요약 -->
+  <div class="panel">
+    <div class="panel-title">☀️ 오늘의 학습</div>
+    <div id="today-summary" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px"></div>
+  </div>
+
+  <!-- B1 달성 예측 -->
+  <div class="panel">
+    <div class="panel-title">🎯 B1 달성 예측</div>
+    <div id="b1-forecast"></div>
+  </div>
+
+  <!-- 틀린 단어 TOP -->
+  <div class="panel">
+    <div class="panel-title">❌ 자주 틀리는 단어 TOP 8</div>
+    <div id="wrong-words-list"></div>
+  </div>
+
+  <!-- 28일 스트릭 -->
   <div class="panel">
     <div class="panel-title">🔥 최근 28일 학습 기록</div>
     <div id="streak-cal" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:10px"></div>
@@ -1195,6 +1222,8 @@
       <span style="color:var(--correct)">🟩 학습함</span><span style="color:var(--accent)">◼ 오늘</span><span>⬜ 미학습</span>
     </div>
   </div>
+
+  <!-- 숙련도 분포 -->
   <div class="panel">
     <div class="panel-title">📈 단어 숙련도 분포</div>
     <div id="mastery-dist"></div>
@@ -1203,6 +1232,18 @@
 
 
 </main>
+
+<!-- 동사변화 탭 하단 고정 돌아가기 버튼 -->
+<div id="conj-back-float" style="display:none;position:fixed;bottom:52px;left:0;right:0;padding:8px 16px;z-index:19;pointer-events:none">
+  <button onclick="document.getElementById('conj-back-btn').querySelector('button').click()"
+    style="pointer-events:auto;width:100%;max-width:500px;display:block;margin:0 auto;
+           background:var(--surface);border:1.5px solid var(--accent);border-radius:14px;
+           padding:12px;color:var(--accent);font-family:'Noto Sans KR',sans-serif;
+           font-size:14px;font-weight:700;cursor:pointer;
+           box-shadow:0 4px 16px rgba(0,0,0,0.3);transition:all .2s">
+    <span id="conj-back-float-label">← 단어카드로 돌아가기</span>
+  </button>
+</div>
 
 <div style="position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);padding:7px 20px;display:flex;align-items:center;gap:10px;z-index:20;font-size:12px;color:var(--text3)">
   <span style="white-space:nowrap">오늘 목표</span>
@@ -5345,7 +5386,189 @@ const b1Expand = [
     example2:'Poco a poco se puede aprender.', ex2Pron:'뽀꼬 아 뽀꼬 쎄 뿌에데 아쁘렌데르', example2Ko:'조금씩 배울 수 있어요.' },
 ];
 
-const allWordsExtended = [...allWords, ...lifeWords, ...extraLifeWords, ...b1Words, ...b1GeneralWords, ...sentVocab, ...extraVocab2, ...b1Essential, ...everydayWords, ...b1Expand];
+// ══════════════════════════════════════════════════
+//  듣기 대화문 보조 어휘
+// ══════════════════════════════════════════════════
+const listeningVocab = [
+  // 음식·식당
+  { es:'sopa',         ko:'수프',              pron:'소빠',          type:'noun', cat:'restaurant',
+    example:'La sopa del día es de verduras.', exPron:'라 소빠 델 디아 에스 데 베르두라스', exampleKo:'오늘의 수프는 야채수프예요.',
+    example2:'¿Tiene sopa de mariscos?', ex2Pron:'띠에네 소빠 데 마리스꼬스?', example2Ko:'해산물 수프 있어요?' },
+  { es:'pollo',        ko:'닭고기',             pron:'뽀요',          type:'noun', cat:'restaurant',
+    example:'¿Cómo quiere el pollo?', exPron:'꼬모 끼에레 엘 뽀요?', exampleKo:'닭고기를 어떻게 드릴까요?',
+    example2:'El pollo asado está muy rico.', ex2Pron:'엘 뽀요 아사도 에스따 무이 리꼬', example2Ko:'구운 닭고기가 매우 맛있어요.' },
+  { es:'mariscos',     ko:'해산물',             pron:'마리스꼬스',    type:'noun', cat:'restaurant',
+    example:'Me encantan los mariscos.', exPron:'메 엔깐딴 로스 마리스꼬스', exampleKo:'해산물을 매우 좋아해요.',
+    example2:'¿Tiene algún plato de mariscos?', ex2Pron:'띠에네 알군 쁠라또 데 마리스꼬스?', example2Ko:'해산물 요리가 있나요?' },
+  { es:'camarones',    ko:'새우',               pron:'까마로네스',    type:'noun', cat:'restaurant',
+    example:'Los camarones al ajillo son deliciosos.', exPron:'로스 까마로네스 알 아히요 손 델리씨오소스', exampleKo:'마늘 새우가 맛있어요.',
+    example2:'¿Tiene alergia a los camarones?', ex2Pron:'띠에네 알레르히아 아 로스 까마로네스?', example2Ko:'새우 알레르기가 있어요?' },
+  { es:'frijoles',     ko:'콩 (과테말라 주식)', pron:'프리홀레스',    type:'noun', cat:'restaurant',
+    example:'¿Con o sin frijoles negros?', exPron:'꼰 오 씬 프리홀레스 네그로스?', exampleKo:'검은콩 넣을까요 말까요?',
+    example2:'Los frijoles son la base de la comida guatemalteca.', ex2Pron:'로스 프리홀레스 손 라 바세 데 라 꼬미다 과떼말떼까', example2Ko:'콩은 과테말라 음식의 기본이에요.' },
+  { es:'jugo',         ko:'주스',               pron:'후고',          type:'noun', cat:'restaurant',
+    example:'¿Qué jugos tienen?', exPron:'께 후고스 띠에넨?', exampleKo:'주스 종류가 뭐가 있어요?',
+    example2:'Un jugo de naranja, por favor.', ex2Pron:'운 후고 데 나란하, 뽀르 파보르', example2Ko:'오렌지 주스 하나 주세요.' },
+  { es:'naranja',      ko:'오렌지',              pron:'나란하',        type:'noun', cat:'restaurant',
+    example:'¿Tienes jugo de naranja?', exPron:'띠에네스 후고 데 나란하?', exampleKo:'오렌지 주스 있어요?',
+    example2:'La naranja es muy dulce.', ex2Pron:'라 나란하 에스 무이 둘쎄', example2Ko:'오렌지가 매우 달아요.' },
+  { es:'entrada',      ko:'입장, 입구, 전채요리', pron:'엔뜨라다',     type:'noun', cat:'restaurant',
+    example:'¿Cuánto cuesta la entrada?', exPron:'꽌또 꾸에스따 라 엔뜨라다?', exampleKo:'입장료가 얼마예요?',
+    example2:'La entrada está incluida.', ex2Pron:'라 엔뜨라다 에스따 인끌루이다', example2Ko:'입장료가 포함돼 있어요.' },
+  { es:'asado',        ko:'구운',               pron:'아사도',        type:'adj', cat:'restaurant',
+    example:'Prefiero el pollo asado.', exPron:'프레피에로 엘 뽀요 아사도', exampleKo:'구운 닭고기를 선호해요.',
+    example2:'¿Lo quiere asado o frito?', ex2Pron:'로 끼에레 아사도 오 프리또?', example2Ko:'구울까요 튀길까요?' },
+  { es:'separado',     ko:'따로, 별도로',        pron:'세빠라도',      type:'adj', cat:'restaurant',
+    example:'¿Lo pongo junto o separado?', exPron:'로 뽕고 훈또 오 세빠라도?', exampleKo:'같이 드릴까요 따로 드릴까요?',
+    example2:'Ponlo separado, por favor.', ex2Pron:'뽄로 세빠라도, 뽀르 파보르', example2Ko:'따로 주세요.' },
+
+  // 교통·이동
+  { es:'cuadra',       ko:'블록 (도로 한 구간)', pron:'꽈드라',        type:'noun', cat:'transport',
+    example:'Siga dos cuadras al norte.', exPron:'씨가 도스 꽈드라스 알 노르떼', exampleKo:'북쪽으로 두 블록 가요.',
+    example2:'Está a tres cuadras de aquí.', ex2Pron:'에스따 아 뜨레스 꽈드라스 데 아끼', example2Ko:'여기서 세 블록이에요.' },
+  { es:'izquierda',    ko:'왼쪽',               pron:'이스끼에르다',  type:'noun', cat:'transport',
+    example:'Doble a la izquierda.', exPron:'도블레 아 라 이스끼에르다', exampleKo:'왼쪽으로 도세요.',
+    example2:'Está a la izquierda.', ex2Pron:'에스따 아 라 이스끼에르다', example2Ko:'왼쪽에 있어요.' },
+  { es:'derecha',      ko:'오른쪽',             pron:'데레차',        type:'noun', cat:'transport',
+    example:'Doble a la derecha en el semáforo.', exPron:'도블레 아 라 데레차 엔 엘 쎄마포로', exampleKo:'신호등에서 오른쪽으로 도세요.',
+    example2:'El banco está a la derecha.', ex2Pron:'엘 반꼬 에스따 아 라 데레차', example2Ko:'은행이 오른쪽에 있어요.' },
+  { es:'parada',       ko:'버스 정류장',         pron:'빠라다',        type:'noun', cat:'transport',
+    example:'¿Cuántas paradas faltan?', exPron:'꽌따스 빠라다스 팔딴?', exampleKo:'정류장이 몇 개 남았어요?',
+    example2:'Me bajo en la próxima parada.', ex2Pron:'메 바호 엔 라 프록씨마 빠라다', example2Ko:'다음 정류장에서 내려요.' },
+  { es:'enfrente',     ko:'앞에, 맞은편에',      pron:'엔프렌떼',      type:'adv', cat:'transport',
+    example:'Está enfrente del banco.', exPron:'에스따 엔프렌떼 델 반꼬', exampleKo:'은행 맞은편에 있어요.',
+    example2:'El restaurante está justo enfrente.', ex2Pron:'엘 레스따우란떼 에스따 훈또 엔프렌떼', example2Ko:'식당이 바로 맞은편에 있어요.' },
+  { es:'lejos',        ko:'멀리, 멀다',          pron:'레호스',        type:'adv', cat:'transport',
+    example:'¿Está muy lejos?', exPron:'에스따 무이 레호스?', exampleKo:'매우 멀어요?',
+    example2:'No está lejos, a diez minutos.', ex2Pron:'노 에스따 레호스, 아 디에스 미누또스', example2Ko:'멀지 않아요, 10분 거리예요.' },
+  { es:'vuelta',       ko:'왕복, 돌아옴',        pron:'부엘따',        type:'noun', cat:'transport',
+    example:'Un billete de ida y vuelta.', exPron:'운 비예떼 데 이다 이 부엘따', exampleKo:'왕복 티켓 한 장이요.',
+    example2:'De vuelta al trabajo.', ex2Pron:'데 부엘따 알 뜨라바호', example2Ko:'직장으로 돌아가요.' },
+
+  // 쇼핑·소비
+  { es:'camisa',       ko:'셔츠',               pron:'까미사',        type:'noun', cat:'daily',
+    example:'¿Cuánto cuesta esta camisa?', exPron:'꽌또 꾸에스따 에스따 까미사?', exampleKo:'이 셔츠 얼마예요?',
+    example2:'Quiero una camisa azul.', ex2Pron:'끼에로 우나 까미사 아술', example2Ko:'파란 셔츠를 원해요.' },
+  { es:'bolso',        ko:'가방',               pron:'볼소',          type:'noun', cat:'daily',
+    example:'¿Dónde compraste ese bolso?', exPron:'돈데 꼼프라스떼 에세 볼소?', exampleKo:'그 가방 어디서 샀어요?',
+    example2:'El bolso es de cuero.', ex2Pron:'엘 볼소 에스 데 꾸에로', example2Ko:'가방이 가죽이에요.' },
+  { es:'probador',     ko:'탈의실',             pron:'프로바도르',    type:'noun', cat:'daily',
+    example:'¿Dónde están los probadores?', exPron:'돈데 에스딴 로스 프로바도레스?', exampleKo:'탈의실이 어디예요?',
+    example2:'¿Puedo pasar al probador?', ex2Pron:'뿌에도 빠사르 알 프로바도르?', example2Ko:'탈의실 들어가도 될까요?' },
+  { es:'probar',       ko:'입어보다, 시도하다',  pron:'프로바르',      type:'verb', cat:'daily',
+    example:'¿Puedo probármela?', exPron:'뿌에도 프로바르멜라?', exampleKo:'입어볼 수 있어요?',
+    example2:'Quiero probar ese plato.', ex2Pron:'끼에로 프로바르 에세 쁠라또', example2Ko:'그 요리를 먹어보고 싶어요.' },
+  { es:'devolver',     ko:'반품하다, 돌려주다',  pron:'데볼베르',      type:'verb', cat:'daily',
+    example:'Quiero devolver este producto.', exPron:'끼에로 데볼베르 에스떼 프로둑또', exampleKo:'이 제품을 반품하고 싶어요.',
+    example2:'¿Puedo devolverlo mañana?', ex2Pron:'뿌에도 데볼베를로 마냐나?', example2Ko:'내일 반품할 수 있어요?' },
+  { es:'mediano',      ko:'중간 사이즈의',       pron:'메디아노',      type:'adj', cat:'daily',
+    example:'¿Tiene talla mediana?', exPron:'띠에네 따야 메디아나?', exampleKo:'중간 사이즈 있어요?',
+    example2:'El mediano me queda bien.', ex2Pron:'엘 메디아노 메 께다 비엔', example2Ko:'중간 사이즈가 잘 맞아요.' },
+  { es:'azul',         ko:'파란색',              pron:'아술',          type:'adj', cat:'general',
+    example:'Quiero la camisa azul.', exPron:'끼에로 라 까미사 아술', exampleKo:'파란 셔츠를 원해요.',
+    example2:'El cielo está muy azul hoy.', ex2Pron:'엘 씨엘로 에스따 무이 아술 오이', example2Ko:'오늘 하늘이 매우 파래요.' },
+
+  // 건강·약국
+  { es:'paracetamol',  ko:'파라세타몰 (해열제)', pron:'빠라쎄따몰',    type:'noun', cat:'general',
+    example:'¿Tiene paracetamol?', exPron:'띠에네 빠라쎄따몰?', exampleKo:'파라세타몰 있어요?',
+    example2:'Toma paracetamol para la fiebre.', ex2Pron:'또마 빠라쎄따몰 빠라 라 피에브레', example2Ko:'열에는 파라세타몰을 먹어요.' },
+  { es:'ibuprofeno',   ko:'이부프로펜',          pron:'이부프로페노',  type:'noun', cat:'general',
+    example:'El ibuprofeno es para el dolor.', exPron:'엘 이부프로페노 에스 빠라 엘 돌로르', exampleKo:'이부프로펜은 진통제예요.',
+    example2:'¿Tienes ibuprofeno?', ex2Pron:'띠에네스 이부프로페노?', example2Ko:'이부프로펜 있어요?' },
+  { es:'alérgico',     ko:'알레르기가 있는',     pron:'알레르히꼬',    type:'adj', cat:'general',
+    example:'Soy alérgico al mariscos.', exPron:'소이 알레르히꼬 알 마리스꼬스', exampleKo:'해산물 알레르기가 있어요.',
+    example2:'¿Eres alérgico a algún medicamento?', ex2Pron:'에레스 알레르히꼬 아 알군 메디까멘또?', example2Ko:'약물 알레르기가 있어요?' },
+  { es:'pálido',       ko:'창백한',              pron:'빨리도',        type:'adj', cat:'general',
+    example:'Estás muy pálido, ¿te sientes bien?', exPron:'에스따스 무이 빨리도, 떼 씨엔떼스 비엔?', exampleKo:'너무 창백해요, 괜찮아요?',
+    example2:'Se puso pálido de repente.', ex2Pron:'쎄 뿌소 빨리도 데 레뻰떼', example2Ko:'갑자기 창백해졌어요.' },
+  { es:'síntoma',      ko:'증상',               pron:'씬또마',        type:'noun', cat:'general',
+    example:'¿Cuáles son sus síntomas?', exPron:'꽐레스 손 수스 씬또마스?', exampleKo:'증상이 어떻게 되세요?',
+    example2:'Los síntomas empezaron ayer.', ex2Pron:'로스 씬또마스 엠뻬사론 아예르', example2Ko:'증상이 어제부터 시작됐어요.' },
+
+  // 업무·직장
+  { es:'mediodía',     ko:'정오, 점심때',        pron:'메디오디아',    type:'noun', cat:'general',
+    example:'El plazo es antes del mediodía.', exPron:'엘 쁠라소 에스 안떼스 델 메디오디아', exampleKo:'기한이 정오 전이에요.',
+    example2:'Salgo a almorzar al mediodía.', ex2Pron:'살고 아 알모르사르 알 메디오디아', example2Ko:'정오에 점심 먹으러 나가요.' },
+  { es:'lunes',        ko:'월요일',              pron:'루네스',        type:'noun', cat:'general',
+    example:'La reunión es el lunes.', exPron:'라 레우니온 에스 엘 루네스', exampleKo:'회의가 월요일이에요.',
+    example2:'El lunes es el primer día de la semana.', ex2Pron:'엘 루네스 에스 엘 프리메르 디아 데 라 세마나', example2Ko:'월요일은 주의 첫 번째 날이에요.' },
+  { es:'martes',       ko:'화요일',              pron:'마르떼스',      type:'noun', cat:'general',
+    example:'La cita es el martes a las 3.', exPron:'라 씨따 에스 엘 마르떼스 아 라스 뜨레스', exampleKo:'약속이 화요일 3시예요.',
+    example2:'El martes tengo reunión.', ex2Pron:'엘 마르떼스 뗑고 레우니온', example2Ko:'화요일에 회의가 있어요.' },
+  { es:'miércoles',    ko:'수요일',              pron:'미에르꼴레스',  type:'noun', cat:'general',
+    example:'El informe es para el miércoles.', exPron:'엘 인포르메 에스 빠라 엘 미에르꼴레스', exampleKo:'보고서는 수요일이에요.',
+    example2:'Los miércoles hay capacitación.', ex2Pron:'로스 미에르꼴레스 아이 까빠씨따씨온', example2Ko:'수요일에 교육이 있어요.' },
+  { es:'jueves',       ko:'목요일',              pron:'후에베스',      type:'noun', cat:'general',
+    example:'La capacitación es el jueves.', exPron:'라 까빠씨따씨온 에스 엘 후에베스', exampleKo:'교육이 목요일이에요.',
+    example2:'¿Puedes el jueves?', ex2Pron:'뿌에데스 엘 후에베스?', example2Ko:'목요일에 가능해요?' },
+  { es:'domingo',      ko:'일요일',              pron:'도밍고',        type:'noun', cat:'general',
+    example:'El domingo es día de descanso.', exPron:'엘 도밍고 에스 디아 데 데스깐소', exampleKo:'일요일은 휴일이에요.',
+    example2:'¿Trabajas los domingos?', ex2Pron:'뜨라바하스 로스 도밍고스?', example2Ko:'일요일에도 일해요?' },
+  { es:'soporte',      ko:'기술 지원, 지지',     pron:'소뽀르떼',      type:'noun', cat:'general',
+    example:'Llama al soporte técnico.', exPron:'야마 알 소뽀르떼 떼끄니꼬', exampleKo:'기술 지원팀에 전화해요.',
+    example2:'El soporte está disponible 24 horas.', ex2Pron:'엘 소뽀르떼 에스따 디스뽀니블레 베인띠꽈뜨로 오라스', example2Ko:'지원팀은 24시간 이용 가능해요.' },
+  { es:'contador',     ko:'회계사',              pron:'꼰따도르',      type:'noun', cat:'accounting',
+    example:'Soy contador de profesión.', exPron:'소이 꼰따도르 데 프로페씨온', exampleKo:'직업이 회계사예요.',
+    example2:'El contador revisó los libros.', ex2Pron:'엘 꼰따도르 레비소 로스 리브로스', example2Ko:'회계사가 장부를 검토했어요.' },
+  { es:'formulario',   ko:'양식, 서류',          pron:'포르물라리오',  type:'noun', cat:'general',
+    example:'Hay que llenar el formulario.', exPron:'아이 께 예나르 엘 포르물라리오', exampleKo:'양식을 작성해야 해요.',
+    example2:'¿Puedo descargar el formulario?', ex2Pron:'뿌에도 데스까르가르 엘 포르물라리오?', example2Ko:'양식을 다운로드할 수 있어요?' },
+  { es:'acceder',      ko:'접근하다, 접속하다',  pron:'악쎄데르',      type:'verb', cat:'general',
+    example:'No puedo acceder al sistema.', exPron:'노 뿌에도 악쎄데르 알 씨스떼마', exampleKo:'시스템에 접속할 수 없어요.',
+    example2:'¿Cómo accedo a los archivos?', ex2Pron:'꼬모 악쎄도 아 로스 아르치보스?', example2Ko:'파일에 어떻게 접근해요?' },
+  { es:'contactar',    ko:'연락하다',            pron:'꼰딱따르',      type:'verb', cat:'general',
+    example:'Voy a contactar al proveedor.', exPron:'보이 아 꼰딱따르 알 프로베에도르', exampleKo:'공급업체에 연락할게요.',
+    example2:'¿Cómo te puedo contactar?', ex2Pron:'꼬모 떼 뿌에도 꼰딱따르?', example2Ko:'어떻게 연락할 수 있어요?' },
+
+  // 공통 유용 표현
+  { es:'bienvenido',   ko:'환영합니다',          pron:'비엔베니도',    type:'adj', cat:'general',
+    example:'Bienvenido al equipo.', exPron:'비엔베니도 알 에끼뽀', exampleKo:'팀에 오신 걸 환영해요.',
+    example2:'¡Bienvenidos a Guatemala!', ex2Pron:'비엔베니도스 아 과떼말라!', example2Ko:'과테말라에 오신 걸 환영해요!' },
+  { es:'grado',        ko:'도 (온도), 학위',     pron:'그라도',        type:'noun', cat:'general',
+    example:'Hoy hay 33 grados.', exPron:'오이 아이 뜨레인따 이 뜨레스 그라도스', exampleKo:'오늘 33도예요.',
+    example2:'¿Cuántos grados tienes de fiebre?', ex2Pron:'꽌또스 그라도스 띠에네스 데 피에브레?', example2Ko:'열이 몇 도예요?' },
+  { es:'señor',        ko:'씨 (경칭), 남성',     pron:'쎄뇨르',        type:'noun', cat:'general',
+    example:'El señor Pérez no está.', exPron:'엘 쎄뇨르 뻬레스 노 에스따', exampleKo:'페레스 씨가 안 계세요.',
+    example2:'Buenos días, señor.', ex2Pron:'부에노스 디아스, 쎄뇨르', example2Ko:'좋은 아침이에요, 선생님.' },
+  { es:'piso',         ko:'층, 바닥',            pron:'삐소',          type:'noun', cat:'daily',
+    example:'La habitación está en el tercer piso.', exPron:'라 아비따씨온 에스따 엔 엘 떼르쎄르 삐소', exampleKo:'방이 3층에 있어요.',
+    example2:'Vivo en el piso cuatro.', ex2Pron:'비보 엔 엘 삐소 꽈뜨로', example2Ko:'4층에 살아요.' },
+  { es:'centro',       ko:'중심, 센터',          pron:'쎈뜨로',        type:'noun', cat:'daily',
+    example:'Está en el centro de la ciudad.', exPron:'에스따 엔 엘 쎈뜨로 데 라 씨우닷', exampleKo:'시내 중심에 있어요.',
+    example2:'Vamos al centro comercial.', ex2Pron:'바모스 알 쎈뜨로 꼬메르씨알', example2Ko:'쇼핑몰에 가요.' },
+  { es:'terraza',      ko:'테라스',              pron:'떼라사',        type:'noun', cat:'daily',
+    example:'¿Hay mesa en la terraza?', exPron:'아이 메사 엔 라 떼라사?', exampleKo:'테라스에 자리 있어요?',
+    example2:'Me gusta sentarme en la terraza.', ex2Pron:'메 구스따 쎈따르메 엔 라 떼라사', example2Ko:'테라스에 앉는 걸 좋아해요.' },
+  { es:'dejar',        ko:'두다, 남기다, 허용하다', pron:'데하르',      type:'verb', cat:'general',
+    example:'Déjame pensarlo.', exPron:'데하메 뻰사를로', exampleKo:'생각해볼게요.',
+    example2:'¿Me puede dejar el mejor precio?', ex2Pron:'메 뿌에데 데하르 엘 메호르 프레씨오?', example2Ko:'최선의 가격으로 해주실 수 있어요?' },
+  { es:'inmediatamente',ko:'즉시',               pron:'인메디아따멘떼', type:'adv', cat:'general',
+    example:'Necesito una respuesta inmediatamente.', exPron:'네쎄씨또 우나 레스뿌에스따 인메디아따멘떼', exampleKo:'즉시 답변이 필요해요.',
+    example2:'Lo hago inmediatamente.', ex2Pron:'로 아고 인메디아따멘떼', example2Ko:'즉시 할게요.' },
+  { es:'en seguida',   ko:'곧, 바로',            pron:'엔 쎄기다',     type:'adv', cat:'general',
+    example:'En seguida lo traigo.', exPron:'엔 쎄기다 로 뜨라이고', exampleKo:'바로 가져다드릴게요.',
+    example2:'Vengo en seguida.', ex2Pron:'벵고 엔 쎄기다', example2Ko:'바로 올게요.' },
+  { es:'junto',        ko:'함께, 붙어서',         pron:'훈또',          type:'adv', cat:'general',
+    example:'¿Lo pongo junto o separado?', exPron:'로 뽕고 훈또 오 쎄빠라도?', exampleKo:'같이 드릴까요 따로 드릴까요?',
+    example2:'Trabajamos juntos.', ex2Pron:'뜨라바하모스 훈또스', example2Ko:'함께 일해요.' },
+  { es:'quetzal',      ko:'케찰 (과테말라 화폐)', pron:'께살',          type:'noun', cat:'daily',
+    example:'Son cien quetzales.', exPron:'손 씨엔 께살레스', exampleKo:'100케찰이에요.',
+    example2:'¿Aceptan quetzales?', ex2Pron:'악셉딴 께살레스?', example2Ko:'케찰 받아요?' },
+  { es:'kilo',         ko:'킬로그램',            pron:'낄로',          type:'noun', cat:'daily',
+    example:'La maleta pesa 23 kilos.', exPron:'라 말레따 뻬사 베인띠뜨레스 낄로스', exampleKo:'여행 가방이 23킬로예요.',
+    example2:'¿Cuántos kilos permite?', ex2Pron:'꽌또스 낄로스 뻬르미떼?', exampleKo:'몇 킬로 허용돼요?' },
+  { es:'panadería',    ko:'빵집, 베이커리',       pron:'빠나데리아',    type:'noun', cat:'daily',
+    example:'La panadería está al fondo.', exPron:'라 빠나데리아 에스따 알 폰도', exampleKo:'빵집이 안쪽에 있어요.',
+    example2:'¿Hay una panadería cerca?', ex2Pron:'아이 우나 빠나데리아 쎄르까?', example2Ko:'근처에 빵집이 있어요?' },
+  { es:'limpieza',     ko:'청소, 청결',          pron:'림삐에사',      type:'noun', cat:'factory_cleaning',
+    example:'Hoy toca limpieza general.', exPron:'오이 또까 림삐에사 헤네랄', exampleKo:'오늘 대청소 날이에요.',
+    example2:'El equipo de limpieza viene a las 8.', ex2Pron:'엘 에끼뽀 데 림삐에사 비에네 아 라스 오초', example2Ko:'청소팀이 8시에 와요.' },
+  { es:'producto',     ko:'제품, 상품',          pron:'프로둑또',      type:'noun', cat:'general',
+    example:'Este producto es de buena calidad.', exPron:'에스떼 프로둑또 에스 데 부에나 깔리닷', exampleKo:'이 제품은 품질이 좋아요.',
+    example2:'¿Cuántos productos fabrican al día?', ex2Pron:'꽌또스 프로둑또스 파브리깐 알 디아?', example2Ko:'하루에 몇 개 제품을 생산해요?' },
+];
+
+const allWordsExtended = [...allWords, ...lifeWords, ...extraLifeWords, ...b1Words, ...b1GeneralWords, ...sentVocab, ...extraVocab2, ...b1Essential, ...everydayWords, ...b1Expand, ...listeningVocab];
 
 // ══════════════════════════════════════════════════
 //  DATA SETUP
@@ -5646,10 +5869,7 @@ function showTab(name, btn) {
   if (name === 'quiz')        startQuiz();
   if (name === 'conjugation') {
     // 탭 버튼으로 직접 이동 시 돌아가기 버튼 숨김
-    if (!conjFromCards) {
-      const backBtn = document.getElementById('conj-back-btn');
-      if (backBtn) backBtn.style.display = 'none';
-    }
+    if (!conjFromCards) hideBackBtn();
     initConjugation();
     conjFromCards = false;  // initConjugation 실행 후에 초기화
   }
@@ -6287,13 +6507,21 @@ function lsShowScript() {
     dlg.style.display = 'block';
     btn.textContent = '📄 대화문 숨기기';
     lsScriptVisible = true;
-    dlg.innerHTML = d.dialog.map(line =>
-      `<div style="margin-bottom:10px">
-        <span style="font-size:11px;font-weight:700;color:${line.speaker==='A'||line.speaker==='손님A'?'var(--accent3)':'var(--accent)'};letter-spacing:1px">${line.speaker}</span>
-        <div style="font-family:'Courier New',monospace;font-size:14px;color:var(--text);margin-top:3px;line-height:1.6">${line.line}</div>
+    dlg.innerHTML = d.dialog.map(line => {
+      // 단어 클릭 가능하게 변환
+      const clickable = line.line.split(/(\s+)/).map(w => {
+        if (/^\s+$/.test(w)) return w;
+        const clean = w.replace(/[¿¡.,;:!?()"«»]/g, '').toLowerCase();
+        return `<span class="sent-word" onclick="lookupWord('${clean.replace(/'/g,"\\'")}',this)" style="cursor:pointer;border-radius:3px;padding:0 1px;transition:background .15s">${w}</span>`;
+      }).join('');
+      const speakerColors = ['A','손님','손님A'];
+      const color = speakerColors.includes(line.speaker) ? 'var(--accent3)' : 'var(--accent)';
+      return `<div style="margin-bottom:10px">
+        <span style="font-size:11px;font-weight:700;color:${color};letter-spacing:1px">${line.speaker}</span>
+        <div style="font-family:'Courier New',monospace;font-size:14px;color:var(--text);margin-top:3px;line-height:1.8">${clickable}</div>
         <button onclick="speakText('${line.line.replace(/'/g,"\\'")}');" style="background:none;border:1px solid var(--border);border-radius:100px;padding:2px 10px;font-size:11px;color:var(--accent3);cursor:pointer;margin-top:4px">🔊 듣기</button>
-      </div>`
-    ).join('<div style="height:1px;background:var(--border);margin:8px 0"></div>');
+      </div>`;
+    }).join('<div style="height:1px;background:var(--border);margin:8px 0"></div>');
   }
 }
 
@@ -6456,6 +6684,21 @@ let conjTense = 'present';
 // 단어카드 → 동사변화 탭 바로가기
 let conjFromCards = false;  // 단어카드에서 넘어왔는지 기억
 
+// 상단/하단 돌아가기 버튼 동기화
+function showBackBtn(label) {
+  document.getElementById('conj-back-btn').style.display = 'block';
+  document.getElementById('conj-back-label').textContent = label;
+  const fl = document.getElementById('conj-back-float');
+  const flLabel = document.getElementById('conj-back-float-label');
+  if (fl) fl.style.display = 'block';
+  if (flLabel) flLabel.textContent = label;
+}
+function hideBackBtn() {
+  document.getElementById('conj-back-btn').style.display = 'none';
+  const fl = document.getElementById('conj-back-float');
+  if (fl) fl.style.display = 'none';
+}
+
 function goToConjugation() {
   const card = filteredCards[cardIndex];
   if (!card) return;
@@ -6465,13 +6708,12 @@ function goToConjugation() {
   conjVerbIndex = idx;
   const conjTabBtn = document.querySelector('button.tab[onclick*="conjugation"]');
   showTab('conjugation', conjTabBtn);
-  document.getElementById('conj-back-btn').style.display = 'block';
-  document.getElementById('conj-back-label').textContent = '← 단어카드로 돌아가기';
+  showBackBtn('← 단어카드로 돌아가기');
 }
 
 function goBackToCards() {
   conjFromCards = false;
-  document.getElementById('conj-back-btn').style.display = 'none';
+  hideBackBtn();
   const cardsTabBtn = document.querySelector('button.tab[onclick*="cards"]');
   showTab('cards', cardsTabBtn);
 }
@@ -6731,6 +6973,13 @@ function checkAnswer(chosen, btn, q) {
   const correct = q.correct;
   const isCorrect = chosen === correct;
   if (isCorrect) { quizScore++; addScore(10); incDailyProgress(); updateStreak(); }
+  else {
+    // 틀린 단어 기록
+    const wrongData = lsGet('wrongWords', {});
+    const key = q.word || correct;
+    wrongData[key] = (wrongData[key] || 0) + 1;
+    lsSet('wrongWords', wrongData);
+  }
 
   document.querySelectorAll('.opt-btn').forEach(b => {
     b.disabled = true;
@@ -6781,7 +7030,32 @@ function setListFilter(f, el) {
   el.classList.add('active');
   renderWordTable();
 }
-function filterWords() { renderWordTable(); }
+function filterWords() {
+  const q = document.getElementById('wordSearch').value || '';
+  const clearBtn = document.getElementById('search-clear-btn');
+  if (clearBtn) clearBtn.style.display = q ? 'block' : 'none';
+  renderWordTable();
+}
+
+function clearSearch() {
+  const input = document.getElementById('wordSearch');
+  if (input) { input.value = ''; input.focus(); }
+  const clearBtn = document.getElementById('search-clear-btn');
+  if (clearBtn) clearBtn.style.display = 'none';
+  renderWordTable();
+}
+
+// 검색어 하이라이트 함수
+function highlight(text, q) {
+  if (!q) return text;
+  const qna = removeAccents(q.toLowerCase());
+  const textna = removeAccents(text.toLowerCase());
+  const idx = textna.indexOf(qna);
+  if (idx === -1) return text;
+  return text.slice(0, idx)
+    + `<mark style="background:var(--accent)33;color:var(--accent);border-radius:3px;padding:0 1px">${text.slice(idx, idx + q.length)}</mark>`
+    + text.slice(idx + q.length);
+}
 
 function renderWordTable() {
   const q = (document.getElementById('wordSearch').value || '').toLowerCase();
@@ -6795,10 +7069,25 @@ function renderWordTable() {
   else if (listFilter === 'starred')      words = words.filter(w => starredArr.includes(w.es));
   else if (listFilter === 'unlearned')    words = words.filter(w => getSRS(w.es).level === 0);
   else if (['verb','noun','adj','adv'].includes(listFilter)) words = words.filter(w => w.type === listFilter);
-  if (q) words = words.filter(w => w.es.toLowerCase().includes(q) || w.ko.includes(q) || (w.pron && w.pron.includes(q)));
+  if (q) words = words.filter(w => {
+    const qna = removeAccents(q);
+    return removeAccents(w.es.toLowerCase()).includes(qna)
+        || w.ko.includes(q)
+        || (w.pron && removeAccents(w.pron).includes(qna));
+  });
+
+  // 결과 수 표시
+  const countEl = document.getElementById('word-result-count');
+  if (countEl) countEl.textContent = q ? `${words.length}개 검색됨` : `총 ${words.length}개`;
 
   const tbody = document.getElementById('wordTableBody');
   tbody.innerHTML = '';
+  if (words.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--text3);font-size:14px">
+      검색 결과가 없어요 😅<br><span style="font-size:12px;margin-top:6px;display:block">스페인어, 한국어 뜻, 한글 발음으로 검색해보세요</span>
+    </td></tr>`;
+    return;
+  }
   words.forEach(w => {
     const isFactory = w.cat && w.cat.startsWith('factory');
     const isAcct    = w.cat === 'accounting';
@@ -6820,8 +7109,8 @@ function renderWordTable() {
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td><span class="wt-es">${w.es}</span><span class="wt-pron">🔊 ${w.pron || '—'}</span></td>
-      <td>${w.ko}</td>
+      <td><span class="wt-es">${highlight(w.es, q)}</span><span class="wt-pron">🔊 ${w.pron || '—'}</span></td>
+      <td>${highlight(w.ko, q)}</td>
       <td><span class="type-pill type-${w.type}">${typeLabelShort[w.type] || w.type}</span></td>
       <td>${catBadge}</td>
       <td>${dots}</td>
@@ -6971,28 +7260,28 @@ function renderProgress() {
   const mastered = WORDS.filter(w => getSRS(w.es).level === 3).length;
   const learning = WORDS.filter(w => getSRS(w.es).level > 0 && getSRS(w.es).level < 3).length;
   const newW     = total - mastered - learning;
+  const dueCount = WORDS.filter(w => isDue(w.es) && getSRS(w.es).level < 3).length;
 
-  // 통계 그리드
+  // ── 통계 그리드 ──
   const stats = [
-    { num: total,           label: '전체 단어',    color: 'var(--text)' },
-    { num: mastered,        label: '🟩 완전 숙달',  color: 'var(--correct)' },
-    { num: learning,        label: '🟨 학습 중',    color: 'var(--accent)' },
-    { num: newW,            label: '⬜ 미학습',     color: 'var(--text3)' },
+    { num: total,           label: '전체 단어',     color: 'var(--text)' },
+    { num: mastered,        label: '🟩 완전 숙달',   color: 'var(--correct)' },
+    { num: learning,        label: '🟨 학습 중',     color: 'var(--accent)' },
+    { num: newW,            label: '⬜ 미학습',      color: 'var(--text3)' },
     { num: getStreakCount(), label: '🔥 연속 학습일', color: 'var(--accent2)' },
-    { num: totalScore,      label: '🏆 총 점수',    color: 'var(--accent3)' },
+    { num: totalScore,      label: '🏆 총 점수',     color: 'var(--accent3)' },
   ];
   document.getElementById('prog-stats-grid').innerHTML = stats.map(s =>
-    `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center">
-      <div style="font-family:'Courier New',monospace;font-size:26px;color:${s.color};font-weight:500">${s.num}</div>
+    `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center">
+      <div style="font-family:'Courier New',monospace;font-size:24px;color:${s.color};font-weight:500">${s.num}</div>
       <div style="font-size:11px;color:var(--text3);margin-top:4px">${s.label}</div>
     </div>`
   ).join('');
 
-  // 카테고리별 달성률
+  // ── 카테고리별 달성률 ──
   const cats = [
     { label: '일반 단어',     fn: w => w.cat === 'general' },
     { label: '🏭 공장 전체',  fn: w => w.cat && w.cat.startsWith('factory') },
-    { label: '🏗️ 총무',      fn: w => ['factory_cleaning','factory_equipment','factory_sewing','factory_hardware','factory_laundry'].includes(w.cat) },
     { label: '💼 회계',      fn: w => ['factory_accounting','accounting'].includes(w.cat) },
     { label: '☕ 일상생활',   fn: w => w.cat === 'daily' },
     { label: '✈️ 여행',      fn: w => w.cat === 'travel' },
@@ -7005,17 +7294,100 @@ function renderProgress() {
     if (!ws.length) return '';
     const mas = ws.filter(w => getSRS(w.es).level === 3).length;
     const pct = Math.round(mas / ws.length * 100);
+    const barColor = pct >= 80 ? 'var(--correct)' : pct >= 40 ? 'var(--accent)' : 'var(--wrong)';
     return `<div style="margin-bottom:12px">
       <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:4px">
         <span>${c.label}</span><span>${mas}/${ws.length} (${pct}%)</span>
       </div>
       <div style="height:6px;background:var(--border);border-radius:100px;overflow:hidden">
-        <div style="height:100%;width:${pct}%;background:var(--correct);border-radius:100px;transition:width .6s"></div>
+        <div style="height:100%;width:${pct}%;background:${barColor};border-radius:100px;transition:width .6s"></div>
       </div>
     </div>`;
   }).join('');
 
-  // 28일 스트릭 캘린더
+  // ── 오늘의 학습 요약 ──
+  const todayDone  = dailyData.done || 0;
+  const todayGoal  = 20;
+  const todayRate  = Math.min(Math.round(todayDone / todayGoal * 100), 100);
+  const srsToday   = lsGet('srsToday', { date: '', cnt: 0 });
+  const srsReviewed = (srsToday.date === TODAY) ? srsToday.cnt : 0;
+  const wrongData  = lsGet('wrongWords', {});
+  const wrongTotal = Object.values(wrongData).reduce((a,b) => a + b, 0);
+  const todayItems = [
+    { icon:'📝', label:'오늘 학습 진행', val: `${todayDone}/${todayGoal}`, sub: `${todayRate}% 달성`, color: todayRate >= 100 ? 'var(--correct)' : 'var(--accent)' },
+    { icon:'🔁', label:'복습 대기 단어', val: `${dueCount}개`, sub: dueCount > 0 ? '학습이 필요해요' : '모두 완료!', color: dueCount > 0 ? 'var(--accent)' : 'var(--correct)' },
+    { icon:'🔥', label:'연속 학습일',    val: `${getStreakCount()}일`, sub: getStreakCount() >= 7 ? '대단해요! 🌟' : '계속 유지해요', color: 'var(--accent2)' },
+    { icon:'❌', label:'누적 오답 횟수', val: `${wrongTotal}회`, sub: '퀴즈 기준', color: 'var(--text3)' },
+  ];
+  document.getElementById('today-summary').innerHTML = todayItems.map(t =>
+    `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px">
+      <div style="font-size:18px;margin-bottom:6px">${t.icon}</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:4px">${t.label}</div>
+      <div style="font-family:'Courier New',monospace;font-size:20px;color:${t.color};font-weight:600">${t.val}</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:2px">${t.sub}</div>
+    </div>`
+  ).join('');
+
+  // ── B1 달성 예측 ──
+  const b1Target   = 2000; // B1 목표 어휘
+  const b1Progress = Math.round(total / b1Target * 100);
+  const mastPct    = total ? Math.round(mastered / total * 100) : 0;
+  const streak     = getStreakCount();
+  let forecast = '';
+  if (mastPct >= 80)      forecast = '🎉 B1 어휘 숙달 목표에 거의 도달했어요!';
+  else if (mastPct >= 50) forecast = `💪 꾸준히 학습 중이에요. 완전 숙달 ${mastered}/${total}개 (${mastPct}%)`;
+  else                    forecast = `📚 매일 조금씩! 현재 ${mastered}개 숙달. 목표까지 ${total - mastered}개 남았어요.`;
+  const daysLeft = mastPct < 80 ? Math.ceil((total * 0.8 - mastered) / Math.max(streak, 1) * 2) : 0;
+  document.getElementById('b1-forecast').innerHTML = `
+    <div style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:6px">
+        <span>📖 단어 수 (현재 ${total}개 / B1 목표 ${b1Target}개)</span><span>${b1Progress}%</span>
+      </div>
+      <div style="height:8px;background:var(--border);border-radius:100px;overflow:hidden;margin-bottom:12px">
+        <div style="height:100%;width:${Math.min(b1Progress,100)}%;background:var(--accent3);border-radius:100px;transition:width .6s"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:6px">
+        <span>🟩 숙달률 (${mastered}개 완전 숙달)</span><span>${mastPct}%</span>
+      </div>
+      <div style="height:8px;background:var(--border);border-radius:100px;overflow:hidden;margin-bottom:14px">
+        <div style="height:100%;width:${mastPct}%;background:var(--correct);border-radius:100px;transition:width .6s"></div>
+      </div>
+    </div>
+    <div style="background:var(--surface2);border-radius:12px;padding:14px;font-size:13px;color:var(--text2);line-height:1.7">
+      ${forecast}
+      ${daysLeft > 0 ? `<div style="margin-top:6px;font-size:12px;color:var(--text3)">📅 현재 페이스라면 약 <strong style="color:var(--accent)">${daysLeft}일</strong> 후 80% 달성 예상</div>` : ''}
+    </div>`;
+
+  // ── 자주 틀리는 단어 TOP 8 ──
+  const wrongList = Object.entries(wrongData)
+    .sort((a,b) => b[1] - a[1])
+    .slice(0, 8);
+  const wrongEl = document.getElementById('wrong-words-list');
+  if (wrongList.length === 0) {
+    wrongEl.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text3);font-size:13px">아직 틀린 단어가 없어요 👍<br><span style="font-size:12px">퀴즈를 풀면 여기에 표시돼요</span></div>`;
+  } else {
+    wrongEl.innerHTML = wrongList.map(([es, cnt], i) => {
+      const word = WORDS.find(w => w.es === es) || { ko: '—', pron: '' };
+      const maxCnt = wrongList[0][1];
+      const pct = Math.round(cnt / maxCnt * 100);
+      return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <span style="font-size:12px;color:var(--text3);width:16px;text-align:right">${i+1}</span>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+            <span style="font-family:'Courier New',monospace;font-size:14px;color:var(--text)">${es}</span>
+            <span style="font-size:12px;color:var(--wrong)">${cnt}회</span>
+          </div>
+          <div style="font-size:11px;color:var(--accent);margin-bottom:3px">${word.ko}</div>
+          <div style="height:4px;background:var(--border);border-radius:100px;overflow:hidden">
+            <div style="height:100%;width:${pct}%;background:var(--wrong);border-radius:100px"></div>
+          </div>
+        </div>
+        <button onclick="speakText('${es.replace(/'/g,"\\'")}');" style="background:none;border:1px solid var(--border);border-radius:8px;padding:4px 8px;color:var(--accent3);cursor:pointer;font-size:12px">🔊</button>
+      </div>`;
+    }).join('');
+  }
+
+  // ── 28일 스트릭 캘린더 ──
   const cal = document.getElementById('streak-cal');
   cal.innerHTML = '';
   for (let i = 27; i >= 0; i--) {
@@ -7023,12 +7395,12 @@ function renderProgress() {
     const done = streakDays.includes(ds);
     const isToday = ds === TODAY;
     const div = document.createElement('div');
-    div.title = ds;
+    div.title = ds.slice(5); // MM-DD만 표시
     div.style.cssText = `height:22px;border-radius:4px;background:${done ? 'var(--correct)' : 'var(--border)'};${isToday ? 'outline:2px solid var(--accent);outline-offset:1px' : ''}`;
     cal.appendChild(div);
   }
 
-  // 숙련도 분포
+  // ── 숙련도 분포 ──
   const lvlLabels = ['⬜ 미학습', '🟥 모름/처음', '🟨 학습 중', '🟩 완전 숙달'];
   const lvlColors = ['var(--border)', 'var(--wrong)', 'var(--accent)', 'var(--correct)'];
   document.getElementById('mastery-dist').innerHTML = [0,1,2,3].map(l => {
@@ -7572,27 +7944,39 @@ function goToConjugationFromSent(esWord, tense) {
   conjFromCards    = true;
   conjVerbIndex    = idx;
   conjReturnToSent = true;
-  // 시제 자동 선택
+  const fromListening = !!document.getElementById('tab-listening')?.classList.contains('active');
   if (tense) conjTense = tense;
   const conjTabBtn = document.querySelector('button.tab[onclick*="conjugation"]');
   showTab('conjugation', conjTabBtn);
-  // 시제 버튼 active 표시도 업데이트
   if (tense) {
     document.querySelectorAll('#tab-conjugation .pill').forEach(p => p.classList.remove('active'));
     const tBtn = document.getElementById(`tense-btn-${tense}`);
     if (tBtn) tBtn.classList.add('active');
   }
-  document.getElementById('conj-back-btn').style.display = 'block';
-  document.getElementById('conj-back-btn').querySelector('button').onclick = goBackToSentences;
-  document.getElementById('conj-back-label').textContent = '← 문장으로 돌아가기';
+  if (fromListening) {
+    document.getElementById('conj-back-btn').querySelector('button').onclick = goBackToListening;
+    document.getElementById('conj-back-float').querySelector('button').onclick = goBackToListening;
+    showBackBtn('← 듣기로 돌아가기');
+  } else {
+    document.getElementById('conj-back-btn').querySelector('button').onclick = goBackToSentences;
+    document.getElementById('conj-back-float').querySelector('button').onclick = goBackToSentences;
+    showBackBtn('← 문장으로 돌아가기');
+  }
 }
 
 function goBackToSentences() {
   conjReturnToSent = false;
-  document.getElementById('conj-back-btn').style.display = 'none';
+  hideBackBtn();
   document.getElementById('conj-back-btn').querySelector('button').onclick = goBackToCards;
   const sentTabBtn = document.querySelector('button.tab[onclick*="sentences"]');
   showTab('sentences', sentTabBtn);
+}
+
+function goBackToListening() {
+  hideBackBtn();
+  document.getElementById('conj-back-btn').querySelector('button').onclick = goBackToCards;
+  const listenTabBtn = document.querySelector('button.tab[onclick*="listening"]');
+  showTab('listening', listenTabBtn);
 }
 
 function closeWordPopup() {
