@@ -436,6 +436,7 @@
   <button class="tab" onclick="showTab('sentences',this)">💬 문장</button>
   <button class="tab" onclick="showTab('patterns',this)">📐 B1표현</button>
   <button class="tab" onclick="showTab('progress',this)">📊 진도</button>
+  <button class="tab" onclick="showTab('grammar',this)">🧩 문법</button>
 </nav>
 
 <main>
@@ -1252,6 +1253,290 @@
     <div id="mastery-dist"></div>
   </div>
 </div>
+
+<!-- ══════ GRAMMAR TAB ══════ -->
+<div id="tab-grammar" class="screen">
+
+<!-- ── 섹션 네비게이션 ── -->
+<div style="display:flex;gap:8px;flex-wrap:wrap;padding:4px 0 12px">
+  <button class="pill active" onclick="showGrammarSection('gIntro',this)" style="font-size:12px">📖 개념 설명</button>
+  <button class="pill" onclick="showGrammarSection('gTable',this)" style="font-size:12px">📋 대명사표</button>
+  <button class="pill" onclick="showGrammarSection('gPosition',this)" style="font-size:12px">📍 위치 규칙</button>
+  <button class="pill" onclick="showGrammarSection('gExercise',this)" style="font-size:12px">✏️ 연습문제</button>
+</div>
+
+<!-- ══ 섹션 1: 개념 설명 ══ -->
+<div id="gIntro" class="g-section">
+
+  <div class="panel">
+    <div class="panel-title">🎯 간접 목적어 vs 직접 목적어</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:14px">스페인어 문장에는 두 가지 목적어가 등장해요.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+      <div style="background:var(--surface2);border:1px solid #5c9eff44;border-radius:12px;padding:14px;text-align:center">
+        <div style="color:var(--accent3);font-weight:700;font-size:13px;margin-bottom:8px">간접 목적어</div>
+        <div style="font-size:22px;margin-bottom:6px">👤 ~에게</div>
+        <div style="font-size:11px;color:var(--text2)">행위의 수혜자<br>(누구에게 주는지)</div>
+      </div>
+      <div style="background:var(--surface2);border:1px solid #f0b42944;border-radius:12px;padding:14px;text-align:center">
+        <div style="color:var(--accent);font-weight:700;font-size:13px;margin-bottom:8px">직접 목적어</div>
+        <div style="font-size:22px;margin-bottom:6px">📦 ~을/를</div>
+        <div style="font-size:11px;color:var(--text2)">행위의 대상<br>(무엇을 주는지)</div>
+      </div>
+    </div>
+    <div style="background:var(--surface2);border-radius:12px;padding:14px;margin-bottom:12px">
+      <div style="font-size:12px;color:var(--text3);margin-bottom:8px;letter-spacing:1px;text-transform:uppercase">예문 분해</div>
+      <div style="font-size:15px;color:var(--accent);font-weight:600;margin-bottom:10px">Yo doy un libro a Juan.</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center">
+        <div style="background:#2a2650;border-radius:8px;padding:8px 4px"><div style="font-size:13px;font-weight:600">Yo</div><div style="font-size:9px;color:var(--text3);margin-top:3px">주어</div></div>
+        <div style="background:#2a2650;border-radius:8px;padding:8px 4px"><div style="font-size:13px;font-weight:600">doy</div><div style="font-size:9px;color:var(--text3);margin-top:3px">동사</div></div>
+        <div style="background:#f0b42922;border:1px solid #f0b42966;border-radius:8px;padding:8px 4px"><div style="font-size:13px;font-weight:600;color:var(--accent)">un libro</div><div style="font-size:9px;color:var(--accent);opacity:.8;margin-top:3px">직접 목적어</div></div>
+        <div style="background:#5c9eff22;border:1px solid #5c9eff66;border-radius:8px;padding:8px 4px"><div style="font-size:13px;font-weight:600;color:var(--accent3)">a Juan</div><div style="font-size:9px;color:var(--accent3);opacity:.8;margin-top:3px">간접 목적어</div></div>
+      </div>
+    </div>
+    <div style="background:#4ade8015;border:1px solid #4ade8044;border-radius:10px;padding:12px;font-size:12px;color:var(--text2)">
+      💡 <strong style="color:var(--correct)">스페인어 어순:</strong> 주어 + 동사 + <span style="color:var(--accent)">직접 목적어</span> + <span style="color:var(--accent3)">간접 목적어</span><br>
+      한국어와 달리 <strong>동사가 먼저</strong> 옵니다!
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">⚠️ 전치사 a 규칙</div>
+    <div style="display:grid;gap:10px">
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px">사물 직접 목적어 → a 없이</div>
+        <div style="font-size:13px;color:var(--text2)">Yo amo <span style="color:var(--accent)">la música</span>. [나는 음악을 사랑한다.]</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--accent3);margin-bottom:8px">사물이 의인화된 경우 → a 연결</div>
+        <div style="font-size:13px;color:var(--text2)">Yo amo <span style="color:var(--accent3)">a mi perro</span>. [나는 내 강아지를 사랑한다.]</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:#e05c5c;margin-bottom:8px">사람 직접 목적어 → 항상 a 연결</div>
+        <div style="font-size:13px;color:var(--text2)">Yo escucho <span style="color:#e05c5c">a la profesora</span>. [나는 선생님의 말을 듣는다.]</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">🔄 간접 목적어 중복 표기 규칙</div>
+    <div style="font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:12px">간접 목적어가 있으면 <strong style="color:var(--accent3)">대명사를 반드시 동사 앞에도</strong> 표기해야 해요.</div>
+    <div style="display:grid;gap:8px">
+      <div style="background:#f8717122;border:1px solid #f8717166;border-radius:10px;padding:10px 12px;font-size:13px">❌ Yo doy dinero <span style="color:#f87171">a mis hermanos</span>.</div>
+      <div style="background:#4ade8015;border:1px solid #4ade8066;border-radius:10px;padding:10px 12px;font-size:13px">✅ Yo <span style="color:var(--accent3)">les</span> doy dinero <span style="color:var(--accent3)">a mis hermanos</span>. [나는 형제들에게 돈을 준다.]</div>
+    </div>
+    <div style="margin-top:10px;background:#5c9eff15;border-radius:10px;padding:10px 12px;font-size:12px;color:var(--text2)">
+      💡 1·2인칭(te, me)은 인칭이 명확해 간접 목적어 <strong style="color:var(--accent3)">생략 가능</strong>. 3인칭(le, les)은 누구인지 알 수 없어 <strong style="color:var(--accent)">함께 표기가 일반적</strong>.
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">🔀 간접 + 직접 동시 사용</div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:12px">항상 <strong style="color:var(--accent3)">간접</strong> → <strong style="color:var(--accent)">직접</strong> 순서!</div>
+    <div style="display:grid;gap:8px;font-size:13px">
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px">
+        Yo <span style="color:var(--accent3)">te</span> compro <span style="color:var(--accent)">un café</span>. → Yo <span style="color:var(--accent3)">te</span> <span style="color:var(--accent)">lo</span> compro.
+        <div style="font-size:11px;color:var(--text3);margin-top:3px">[나는 너에게 그것을 산다.]</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;background:#e05c5c15;border:1px solid #e05c5c44;border-radius:10px;padding:10px 12px;font-size:12px;color:var(--text2)">
+      ⚠️ <strong style="color:#e05c5c">le/les + lo/la</strong> 만나면 → <strong style="color:var(--accent)">se</strong>로 변형!<br>
+      le lo compra → <strong style="color:var(--accent)">se lo</strong> compra
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ 섹션 2: 대명사표 ══ -->
+<div id="gTable" class="g-section" style="display:none">
+
+  <div class="panel">
+    <div class="panel-title">📋 간접 목적격 대명사 (~에게)</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:8px">
+      <thead><tr style="background:var(--surface2)">
+        <th style="padding:10px;text-align:left;color:var(--text3);font-weight:500;font-size:11px;border-bottom:1px solid var(--border)">주체</th>
+        <th style="padding:10px;text-align:center;color:var(--accent3);font-weight:700;border-bottom:1px solid var(--border)">단수</th>
+        <th style="padding:10px;text-align:left;color:var(--text3);font-weight:500;font-size:11px;border-bottom:1px solid var(--border)">주체</th>
+        <th style="padding:10px;text-align:center;color:var(--accent3);font-weight:700;border-bottom:1px solid var(--border)">복수</th>
+      </tr></thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:10px;color:var(--text2);font-size:11px">a mí (나에게)</td>
+          <td style="padding:10px;text-align:center;color:var(--accent3);font-weight:700;font-size:18px">me</td>
+          <td style="padding:10px;color:var(--text2);font-size:11px">a nosotros/as</td>
+          <td style="padding:10px;text-align:center;color:var(--accent3);font-weight:700;font-size:18px">nos</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:10px;color:var(--text2);font-size:11px">a ti (너에게)</td>
+          <td style="padding:10px;text-align:center;color:var(--accent3);font-weight:700;font-size:18px">te</td>
+          <td style="padding:10px;color:var(--text2);font-size:11px">a vosotros/as</td>
+          <td style="padding:10px;text-align:center;color:var(--accent3);font-weight:700;font-size:18px">os</td>
+        </tr>
+        <tr>
+          <td style="padding:10px;color:var(--text2);font-size:11px">a él/ella/usted<br>a Juan...</td>
+          <td style="padding:10px;text-align:center;color:var(--accent3);font-weight:700;font-size:18px">le</td>
+          <td style="padding:10px;color:var(--text2);font-size:11px">a ellos/ellas<br>a ustedes...</td>
+          <td style="padding:10px;text-align:center;color:var(--accent3);font-weight:700;font-size:18px">les</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="background:var(--surface2);border-radius:10px;padding:12px;font-size:12px;color:var(--text2)">
+      <strong style="color:var(--accent3)">예문:</strong> Yo <strong style="color:var(--accent3)">le</strong> doy un libro a Juan. / El profesor <strong style="color:var(--accent3)">nos</strong> deja mucha tarea.
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">📋 직접 목적격 대명사 (~을/를)</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:8px">
+      <thead><tr style="background:var(--surface2)">
+        <th style="padding:10px;text-align:left;color:var(--text3);font-weight:500;font-size:11px;border-bottom:1px solid var(--border)">주체</th>
+        <th style="padding:10px;text-align:center;color:var(--accent);font-weight:700;border-bottom:1px solid var(--border)">단수</th>
+        <th style="padding:10px;text-align:left;color:var(--text3);font-weight:500;font-size:11px;border-bottom:1px solid var(--border)">주체</th>
+        <th style="padding:10px;text-align:center;color:var(--accent);font-weight:700;border-bottom:1px solid var(--border)">복수</th>
+      </tr></thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:10px;color:var(--text2);font-size:11px">a mí (나를)</td>
+          <td style="padding:10px;text-align:center;color:var(--accent);font-weight:700;font-size:18px">me</td>
+          <td style="padding:10px;color:var(--text2);font-size:11px">a nosotros/as</td>
+          <td style="padding:10px;text-align:center;color:var(--accent);font-weight:700;font-size:18px">nos</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:10px;color:var(--text2);font-size:11px">a ti (너를)</td>
+          <td style="padding:10px;text-align:center;color:var(--accent);font-weight:700;font-size:18px">te</td>
+          <td style="padding:10px;color:var(--text2);font-size:11px">a vosotros/as</td>
+          <td style="padding:10px;text-align:center;color:var(--accent);font-weight:700;font-size:18px">os</td>
+        </tr>
+        <tr>
+          <td style="padding:10px;color:var(--text2);font-size:11px">a él (그를)<br>a ella (그녀를)<br>a usted / a Juan</td>
+          <td style="padding:10px;text-align:center;color:var(--accent);font-weight:700;font-size:18px">lo, la</td>
+          <td style="padding:10px;color:var(--text2);font-size:11px">a ellos/ellas<br>a ustedes...</td>
+          <td style="padding:10px;text-align:center;color:var(--accent);font-weight:700;font-size:18px">los, las</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="background:var(--surface2);border-radius:10px;padding:12px;font-size:12px;color:var(--text2)">
+      <strong style="color:var(--accent)">예문:</strong> Yo <strong style="color:var(--accent)">te</strong> amo a ti. / Yo <strong style="color:var(--accent)">lo</strong> quiero. / Yo <strong style="color:var(--accent)">la</strong> quiero.
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">🔀 간접 + 직접 동시 사용 조합표</div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:10px">항상 <strong style="color:var(--accent3)">간접</strong> 먼저 → <strong style="color:var(--accent)">직접</strong> 나중</div>
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead><tr style="background:var(--surface2)">
+        <th style="padding:9px;text-align:left;border-bottom:1px solid var(--border);color:var(--accent3)">간접</th>
+        <th style="padding:9px;text-align:center;border-bottom:1px solid var(--border);color:var(--accent)">+ lo/la/los/las</th>
+      </tr></thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:9px;color:var(--accent3);font-weight:700">me</td><td style="padding:9px;text-align:center">me lo / me la / me los / me las</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:9px;color:var(--accent3);font-weight:700">te</td><td style="padding:9px;text-align:center">te lo / te la / te los / te las</td></tr>
+        <tr style="border-bottom:1px solid var(--border);background:#e05c5c08"><td style="padding:9px;color:#e05c5c;font-weight:700">le → se ⚠️</td><td style="padding:9px;text-align:center;color:var(--accent)">se lo / se la / se los / se las</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:9px;color:var(--accent3);font-weight:700">nos</td><td style="padding:9px;text-align:center">nos lo / nos la / nos los / nos las</td></tr>
+        <tr style="background:#e05c5c08"><td style="padding:9px;color:#e05c5c;font-weight:700">les → se ⚠️</td><td style="padding:9px;text-align:center;color:var(--accent)">se lo / se la / se los / se las</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ══ 섹션 3: 위치 규칙 ══ -->
+<div id="gPosition" class="g-section" style="display:none">
+
+  <div class="panel">
+    <div class="panel-title">📍 목적격 대명사의 위치</div>
+    <div style="display:grid;gap:10px">
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span style="font-size:12px;font-weight:700;color:var(--accent3)">변형동사 앞</span>
+          <span style="font-size:10px;background:#5c9eff22;color:var(--accent3);padding:2px 8px;border-radius:100px">동사 앞</span>
+        </div>
+        <div style="font-size:13px"><strong style="color:var(--accent3)">Me</strong> compras un café. [너는 나에게 커피를 산다.]</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span style="font-size:12px;font-weight:700;color:#f87171">부정명령 앞</span>
+          <span style="font-size:10px;background:#f8717122;color:#f87171;padding:2px 8px;border-radius:100px">No + 앞</span>
+        </div>
+        <div style="font-size:13px">¡No <strong style="color:#f87171">me</strong> compres! [나에게 사주지 마!]</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span style="font-size:12px;font-weight:700;color:var(--accent)">원형동사 뒤 (or 앞)</span>
+          <span style="font-size:10px;background:#f0b42922;color:var(--accent);padding:2px 8px;border-radius:100px">둘 다 가능</span>
+        </div>
+        <div style="font-size:13px">Vas a comprar<strong style="color:var(--accent)">me</strong>. = <strong style="color:var(--accent)">Me</strong> vas a comprar.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span style="font-size:12px;font-weight:700;color:var(--accent)">현재분사 뒤 (or 앞)</span>
+          <span style="font-size:10px;background:#f0b42922;color:var(--accent);padding:2px 8px;border-radius:100px">둘 다 가능</span>
+        </div>
+        <div style="font-size:13px">Estás comprando<strong style="color:var(--accent)">me</strong>. = <strong style="color:var(--accent)">Me</strong> estás comprando.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span style="font-size:12px;font-weight:700;color:var(--correct)">긍정명령 뒤</span>
+          <span style="font-size:10px;background:#4ade8022;color:var(--correct);padding:2px 8px;border-radius:100px">반드시 뒤</span>
+        </div>
+        <div style="font-size:13px">¡Cómpra<strong style="color:var(--correct)">me</strong>! [나에게 사줘!]</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">⚡ 두 대명사 함께 — 악센트 주의</div>
+    <div style="font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:12px">원형동사·현재분사·긍정명령에 두 대명사가 붙으면 <strong style="color:var(--accent)">음절 분해로 악센트 표기 필요!</strong></div>
+    <div style="display:grid;gap:8px;font-size:13px">
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px">comprar + se + lo → compr<strong style="color:var(--accent)">á</strong>rselo</div>
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px">comprando + te + la → compr<strong style="color:var(--accent)">á</strong>ndotela</div>
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px">di + me + lo → d<strong style="color:var(--accent)">í</strong>melo [나에게 그것을 말해라!]</div>
+    </div>
+    <div style="margin-top:12px;background:#e05c5c15;border:1px solid #e05c5c44;border-radius:10px;padding:10px 12px;font-size:12px;color:var(--text2)">
+      ❌ 두 대명사 분리 위치 불가: Voy a d<strong style="color:var(--accent)">á</strong>rtelo. = Te lo voy a dar. ≠ <del>Te voy a darlo.</del>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">🇪🇸 Leísmo</div>
+    <div style="font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:12px">스페인 본토에서 <strong style="color:var(--accent)">남성 사람</strong>이 직접 목적어일 때 lo 대신 le를 쓰기도 해요.</div>
+    <div style="display:grid;gap:8px;font-size:13px">
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px">¿Conoces a Juan? → Sí. <strong style="color:var(--accent)">Lo</strong> conozco. (O) / Sí. <strong style="color:var(--accent3)">Le</strong> conozco. (O 스페인식)</div>
+      <div style="background:#e05c5c15;border:1px solid #e05c5c44;border-radius:10px;padding:10px 12px">¿Conoces a Juana? → Sí. <del style="color:#f87171">Le</del> conozco. (X) → Sí. <strong style="color:var(--accent)">La</strong> conozco. (O)</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ 섹션 4: 연습문제 ══ -->
+<div id="gExercise" class="g-section" style="display:none">
+
+  <div class="panel">
+    <div class="panel-title">✏️ 연습문제</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+      <button class="pill active" onclick="loadExerciseSet(0,this)" style="font-size:11px">1단계: 간접</button>
+      <button class="pill" onclick="loadExerciseSet(1,this)" style="font-size:11px">2단계: 직접</button>
+      <button class="pill" onclick="loadExerciseSet(2,this)" style="font-size:11px">3단계: le vs lo</button>
+      <button class="pill" onclick="loadExerciseSet(3,this)" style="font-size:11px">4단계: 동시 사용</button>
+      <button class="pill" onclick="loadExerciseSet(4,this)" style="font-size:11px">5단계: 위치</button>
+      <button class="pill" onclick="loadExerciseSet(5,this)" style="font-size:11px">6단계: se 변환</button>
+    </div>
+    <div id="exercise-container"></div>
+    <div id="exercise-result" style="display:none;margin-top:14px;padding:14px;border-radius:12px;text-align:center"></div>
+    <div style="display:flex;gap:10px;margin-top:14px">
+      <button id="btn-check-ex" onclick="checkExercise()" class="btn" style="flex:1">정답 확인</button>
+      <button onclick="loadExerciseSet(currentExSet, null)" class="btn" style="flex:1;background:var(--surface2);color:var(--text2)">🔄 새 문제</button>
+    </div>
+  </div>
+
+  <div class="panel" id="exercise-score-panel" style="display:none">
+    <div class="panel-title">🏆 결과</div>
+    <div id="exercise-score-display" style="text-align:center;font-size:28px;font-weight:700;color:var(--accent);margin-bottom:8px"></div>
+    <div id="exercise-score-detail" style="font-size:12px;color:var(--text2);text-align:center"></div>
+  </div>
+
+</div>
+
+</div><!-- /tab-grammar -->
 
 
 </main>
@@ -6325,6 +6610,7 @@ function showTab(name, btn) {
   if (name === 'patterns')    renderPatterns();
   if (name === 'cards')       renderCard();
   if (name === 'listening')   initListening();
+  if (name === 'grammar')     initGrammar();
 }
 
 // ══════════════════════════════════════════════════
@@ -9125,6 +9411,261 @@ function togglePattern(idx) {
   renderCard();
   renderWordTable();
 })();
+
+
+// ══════════════════════════════════════════════════
+// GRAMMAR TAB — 목적격 대명사
+// ══════════════════════════════════════════════════
+
+function showGrammarSection(id, btn) {
+  document.querySelectorAll('.g-section').forEach(s => s.style.display = 'none');
+  document.getElementById(id).style.display = '';
+  document.querySelectorAll('#tab-grammar .pill').forEach(p => p.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  if (id === 'gExercise') {
+    loadExerciseSet(currentExSet || 0, null);
+  }
+}
+
+// ── 연습문제 데이터 ──
+const exerciseSets = [
+  // 0단계: 간접 목적격 대명사
+  [
+    { type:'fill', sentence:'Mis padres ___ llaman todos los días.', blank_hint:'(a mí)', answer:'me', hint:'나에게 / 간접 목적격 a mí = me' },
+    { type:'fill', sentence:'___ veo mañana a las dos.', blank_hint:'(a ti)', answer:'Te', hint:'너를(에게) / 간접 a ti = te (문두라 대문자)' },
+    { type:'fill', sentence:'La señora ___ da un pan.', blank_hint:'(a nosotros)', answer:'nos', hint:'우리에게 / a nosotros = nos' },
+    { type:'fill', sentence:'Yo ___ doy dinero a mis hermanos.', blank_hint:'(a mis hermanos)', answer:'les', hint:'그들에게 / 3인칭 복수 = les' },
+    { type:'fill', sentence:'El profesor ___ deja mucha tarea.', blank_hint:'(a nosotros)', answer:'nos', hint:'우리에게 / nos' },
+    { type:'fill', sentence:'¿___ prestas un bolígrafo, por favor?', blank_hint:'(a mí)', answer:'Me', hint:'나에게 / me (문두라 대문자)' },
+    { type:'fill', sentence:'Yo ___ envío muchos mensajes a mis padres.', blank_hint:'(a mis padres)', answer:'les', hint:'그들에게 / 3인칭 복수 = les' },
+    { type:'fill', sentence:'Tengo un amigo y ___ veo cada fin de semana.', blank_hint:'(a él)', answer:'le', hint:'그를 / 3인칭 단수 간접 = le' },
+    { type:'fill', sentence:'Mi mamá siempre ___ pregunta cómo estoy.', blank_hint:'(a mí)', answer:'me', hint:'나에게 / me' },
+    { type:'fill', sentence:'¿Tú ___ dices la verdad a tu jefe?', blank_hint:'(a él)', answer:'le', hint:'그에게 / le' },
+  ],
+  // 1단계: 직접 목적격 대명사
+  [
+    { type:'fill', sentence:'Yo ___ quiero. [나는 그를 사랑한다.]', blank_hint:'(a Juan)', answer:'lo', hint:'사람 남성 직접 목적어 = lo' },
+    { type:'fill', sentence:'Yo ___ quiero. [나는 그녀를 사랑한다.]', blank_hint:'(a Juana)', answer:'la', hint:'사람 여성 직접 목적어 = la' },
+    { type:'fill', sentence:'Yo ___ invito a mi fiesta. [너를 초대한다.]', blank_hint:'(a ti)', answer:'te', hint:'2인칭 직접 목적 = te' },
+    { type:'fill', sentence:'Yo ___ veo. [나는 그들을 본다.]', blank_hint:'(a ellos)', answer:'los', hint:'3인칭 남성 복수 직접 = los' },
+    { type:'fill', sentence:'Mis amigos quieren venir. ¿Puedo invitar___?', blank_hint:'(a ellos)', answer:'los', hint:'원형동사 뒤에 붙이기 / 복수 = los' },
+    { type:'fill', sentence:'¿___ veo mañana? [나는 너를 내일 볼게.]', blank_hint:'(a ti)', answer:'Te', hint:'2인칭 직접 = te (문두 대문자)' },
+    { type:'fill', sentence:'Yo ___ busco. [나는 그를 찾는다.]', blank_hint:'(a Juan)', answer:'lo', hint:'남성 단수 직접 = lo' },
+    { type:'fill', sentence:'¿Tienes mi libro? No, no ___ tengo.', blank_hint:'(el libro)', answer:'lo', hint:'사물 남성 단수 직접 = lo' },
+    { type:'fill', sentence:'¿Visitas mucho a tu abuela? Sí, ___ visito mucho.', blank_hint:'(a mi abuela)', answer:'la', hint:'여성 단수 직접 = la' },
+    { type:'fill', sentence:'Perdóna___. [나를 용서해줘.]', blank_hint:'(a mí)', answer:'me', hint:'긍정명령 뒤에 붙이기 / 나를 = me' },
+  ],
+  // 2단계: le vs lo/la
+  [
+    { type:'choice', sentence:'Tú ___ quieres mucho. [너는 그를 무척 좋아한다.]', choices:['le','lo','la','les'], answer:'lo', hint:'"그를" = 직접 목적어 → lo (사람 남성 단수)' },
+    { type:'choice', sentence:'Tú ___ dices la verdad. [너는 그에게 사실을 말한다.]', choices:['lo','la','le','les'], answer:'le', hint:'"그에게" = 간접 목적어 → le' },
+    { type:'choice', sentence:'Tú ___ buscas. [너는 그를 찾는다.]', choices:['le','lo','la','les'], answer:'lo', hint:'"그를" = 직접 → lo' },
+    { type:'choice', sentence:'Tú ___ das tu número. [너는 그에게 네 번호를 준다.]', choices:['lo','le','la','los'], answer:'le', hint:'"그에게" = 간접 → le' },
+    { type:'choice', sentence:'¿Conoces a Antonio? Sí, ___ conozco.', choices:['le / lo','la','les','los'], answer:'le / lo', hint:'남성 사람 직접 목적 → lo (표준) / le (스페인식 Leísmo)' },
+    { type:'choice', sentence:'¿Conoces a Juana? Sí, ___ conozco.', choices:['lo','le','la','las'], answer:'la', hint:'여성 사람 직접 목적 → la (le 불가)' },
+    { type:'choice', sentence:'Yo ___ invito. [나는 그를 초대한다.]', choices:['le','lo','la','les'], answer:'lo', hint:'"그를" = 직접 → lo' },
+    { type:'choice', sentence:'Yo ___ presto dinero. [나는 그에게 돈을 빌려준다.]', choices:['lo','la','le','les'], answer:'le', hint:'"그에게" = 간접 → le' },
+    { type:'choice', sentence:'Yo ___ compro un libro. [나는 그에게 책 한 권을 사준다.]', choices:['lo','la','le','les'], answer:'le', hint:'"그에게" = 간접 → le' },
+    { type:'choice', sentence:'Yo ___ busco. [나는 그녀를 찾는다.]', choices:['lo','le','la','las'], answer:'la', hint:'"그녀를" = 직접 여성 → la' },
+  ],
+  // 3단계: 간접+직접 동시 사용
+  [
+    { type:'fill', sentence:'Yo compro un café para ti. → Yo ___ ___ compro.', blank_hint:'(너에게 / 그것을)', answer:'te lo', hint:'간접 te + 직접 lo → te lo' },
+    { type:'fill', sentence:'Mi novia me envía el mensaje. → Mi novia ___ ___ envía.', blank_hint:'(나에게 / 그것을)', answer:'me lo', hint:'간접 me + 직접 lo → me lo' },
+    { type:'fill', sentence:'Mi papá le regala un libro a tu mamá. → Mi papá ___ ___ regala.', blank_hint:'(그녀에게 / 그것을)', answer:'se lo', hint:'le + lo → se로 변형! → se lo' },
+    { type:'fill', sentence:'Mi papá le regala una flor a tu mamá. → Mi papá ___ ___ regala.', blank_hint:'(그녀에게 / 그것을)', answer:'se la', hint:'le + la → se로 변형! → se la' },
+    { type:'fill', sentence:'Mi tía les regala los chocolates a los niños. → Mi tía ___ ___ regala.', blank_hint:'(그들에게 / 그것들을)', answer:'se los', hint:'les + los → se로 변형! → se los' },
+    { type:'fill', sentence:'¿Quién te da dinero? Mis padres ___ ___ dan.', blank_hint:'(나에게 / 그것을)', answer:'me lo', hint:'간접 me + 직접 lo → me lo' },
+    { type:'fill', sentence:'¿Quién le da la comida a tu perro? Yo ___ ___ doy.', blank_hint:'(그에게 / 그것을)', answer:'se la', hint:'le + la → se la' },
+    { type:'fill', sentence:'José tiene mi libro. Quiero que ___ ___ devuelva.', blank_hint:'(나에게 / 그것을)', answer:'me lo', hint:'간접 me + 직접 lo → me lo' },
+    { type:'fill', sentence:'Hoy lo voy a ver. ___ ___ digo yo.', blank_hint:'(그에게 / 그것을)', answer:'Se lo', hint:'le + lo → se lo (문두 대문자)' },
+    { type:'fill', sentence:'¿Puedo comprar eso para ti? ¿Me ___ ___ permites?', blank_hint:'(너에게/그것을)', answer:'te lo', hint:'간접 te + 직접 lo → te lo' },
+  ],
+  // 4단계: 위치 규칙 (변형/원형/분사/명령)
+  [
+    { type:'choice', sentence:'[원형동사] Vas a comprar___ un café. (나에게) → 괄호 안을 채워 올바른 형태를 고르시오.', choices:['comprarme','comprarle','comprarla','comprarte'], answer:'comprarme', hint:'원형동사 뒤에 붙이기 / 나에게 = me → comprarme' },
+    { type:'choice', sentence:'[변형동사] ___ compras un café. (나에게)', choices:['Me','Le','La','Te'], answer:'Me', hint:'변형동사 앞 / 나에게 = me → Me (문두 대문자)' },
+    { type:'choice', sentence:'[긍정명령] ¡Cómpra___! (나에게)', choices:['me','le','lo','te'], answer:'me', hint:'긍정명령 뒤에 붙이기 → Cómprame' },
+    { type:'choice', sentence:'[부정명령] ¡No ___ compres! (나에게)', choices:['me','les','lo','te'], answer:'me', hint:'부정명령 앞 → No me compres' },
+    { type:'choice', sentence:'[현재분사] Estás comprando___ un café. (나에게)', choices:['me','le','lo','te'], answer:'me', hint:'현재분사 뒤에 붙이기 → comprándom' },
+    { type:'choice', sentence:'두 대명사 함께 — 원형동사 Vas a comprar___ a Juan. (그에게 / 그것을 커피를) → 올바른 형태를 고르시오.', choices:['sela','selA','selo','selo'], answer:'selo', hint:'le + lo → se + lo → selo → comprárselo (악센트 추가)' },
+    { type:'choice', sentence:'¡Cómpra___! (나에게 그것을)', choices:['melo','teselo','mela','noslo'], answer:'melo', hint:'긍정명령 뒤 / me + lo → melo → Cómpramelo (악센트)' },
+    { type:'choice', sentence:'Voy a dár___. [나에게 그것을 줄 것이다.] → 괄호를 채우시오.', choices:['telo','melo','sela','nosto'], answer:'melo', hint:'원형동사 뒤 / me + lo → melo → dármelo' },
+    { type:'choice', sentence:'D___. [나에게 그것을 말해라!] (긍정명령 di)', choices:['imelo','melo','meselo','selome'], answer:'imelo', hint:'di + me + lo → dímelo (악센트: i → í)' },
+    { type:'choice', sentence:'[두 대명사 분리] 다음 중 틀린 문장을 고르시오.', choices:['Te lo voy a dar.','Voy a dártelo.','Te voy a darlo.','Me lo estás comprando.'], answer:'Te voy a darlo.', hint:'두 대명사를 분리하여 위치하는 것은 불가! te...lo 분리 → 오류' },
+  ],
+  // 5단계: le/les → se 변환
+  [
+    { type:'transform', before:'Le compro un libro a María.', after:'___ ___ compro a María.', answer:'Se lo', hint:'le + lo → se + lo → Se lo compro a María.' },
+    { type:'transform', before:'Le doy la carta a mi jefe.', after:'___ ___ doy a mi jefe.', answer:'Se la', hint:'le + la → se + la → Se la doy.' },
+    { type:'transform', before:'Les envío los documentos a mis clientes.', after:'___ ___ envío a mis clientes.', answer:'Se los', hint:'les + los → se + los → Se los envío.' },
+    { type:'transform', before:'Le mando las fotos a mi amigo.', after:'___ ___ mando a mi amigo.', answer:'Se las', hint:'les + las → se + las → Se las mando.' },
+    { type:'transform', before:'Le regalo un café a mi jefa.', after:'___ ___ regalo a mi jefa.', answer:'Se lo', hint:'le + lo → se lo → Se lo regalo.' },
+    { type:'transform', before:'Les presto dinero a mis hermanos.', after:'___ ___ presto a mis hermanos.', answer:'Se lo', hint:'les + lo → se lo → Se lo presto.' },
+    { type:'transform', before:'Le devuelvo el libro a Juan.', after:'___ ___ devuelvo a Juan.', answer:'Se lo', hint:'le + lo → se lo → Se lo devuelvo.' },
+    { type:'transform', before:'Le compro las flores a mi madre.', after:'___ ___ compro a mi madre.', answer:'Se las', hint:'le + las → se las → Se las compro.' },
+    { type:'transform', before:'Le voy a dar el informe al gerente.', after:'Voy a dár___', answer:'sêlo', hint:'le + lo → se lo → comprimido al infinitivo → dárselo (악센트 변화)' },
+    { type:'transform', before:'Les mando los contratos a los clientes.', after:'___ ___ mando a los clientes.', answer:'Se los', hint:'les + los → se los → Se los mando.' },
+  ],
+];
+
+let currentExSet = 0;
+let currentExercises = [];
+let currentAnswers = [];
+
+function loadExerciseSet(setIdx, btn) {
+  currentExSet = setIdx || 0;
+  if (btn) {
+    document.querySelectorAll('#tab-grammar .pill').forEach(p => {
+      if (p.getAttribute('onclick') && p.getAttribute('onclick').includes('loadExerciseSet')) {
+        p.classList.remove('active');
+      }
+    });
+    btn.classList.add('active');
+  }
+
+  const pool = exerciseSets[currentExSet];
+  // 최대 8문제 무작위 선택
+  const shuffled = [...pool].sort(() => Math.random() - 0.5);
+  currentExercises = shuffled.slice(0, Math.min(8, shuffled.length));
+  currentAnswers = [];
+
+  document.getElementById('exercise-result').style.display = 'none';
+  document.getElementById('exercise-score-panel').style.display = 'none';
+
+  const container = document.getElementById('exercise-container');
+  container.innerHTML = '';
+
+  currentExercises.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.style.cssText = 'background:var(--surface2);border-radius:12px;padding:14px;margin-bottom:12px;border:1px solid var(--border)';
+
+    let innerHTML = `<div style="font-size:11px;color:var(--text3);margin-bottom:6px;letter-spacing:1px">Q${i+1}. ${q.type === 'transform' ? '변환' : q.type === 'choice' ? '선택' : '빈칸 채우기'}</div>`;
+
+    if (q.type === 'fill') {
+      const parts = q.sentence.split('___');
+      innerHTML += `<div style="font-size:14px;line-height:1.9;margin-bottom:10px">`;
+      parts.forEach((part, pi) => {
+        innerHTML += `<span>${part}</span>`;
+        if (pi < parts.length - 1) {
+          innerHTML += `<input id="ex-${i}-0" type="text" autocomplete="off" autocorrect="off" spellcheck="false"
+            style="display:inline-block;width:70px;background:#1a1830;border:1px solid var(--border);border-radius:6px;
+            color:var(--text);font-size:13px;padding:3px 8px;text-align:center;margin:0 2px;outline:none"
+            placeholder="${q.blank_hint||'__'}">`;
+        }
+      });
+      innerHTML += `</div>`;
+
+    } else if (q.type === 'choice') {
+      innerHTML += `<div style="font-size:14px;line-height:1.7;margin-bottom:10px;white-space:pre-line">${q.sentence}</div>`;
+      innerHTML += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="choices-${i}">`;
+      q.choices.forEach((c, ci) => {
+        innerHTML += `<button onclick="selectChoice(${i},${ci},'${c}')"
+          id="choice-${i}-${ci}"
+          style="background:#1a1830;border:1px solid var(--border);border-radius:10px;padding:10px;
+          color:var(--text);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s">
+          ${c}
+        </button>`;
+      });
+      innerHTML += `</div>`;
+
+    } else if (q.type === 'transform') {
+      innerHTML += `<div style="font-size:13px;color:var(--text2);margin-bottom:8px">${q.before}</div>`;
+      const parts = q.after.split('___');
+      innerHTML += `<div style="font-size:14px;line-height:1.9;margin-bottom:6px">`;
+      parts.forEach((part, pi) => {
+        innerHTML += `<span>${part}</span>`;
+        if (pi < parts.length - 1) {
+          innerHTML += `<input id="ex-${i}-0" type="text" autocomplete="off" autocorrect="off" spellcheck="false"
+            style="display:inline-block;width:70px;background:#1a1830;border:1px solid var(--border);border-radius:6px;
+            color:var(--text);font-size:13px;padding:3px 8px;text-align:center;margin:0 2px;outline:none"
+            placeholder="___">`;
+        }
+      });
+      innerHTML += `</div>`;
+    }
+
+    innerHTML += `<div id="hint-${i}" style="display:none;font-size:11px;color:var(--accent);margin-top:6px;padding:6px 8px;background:#f0b42910;border-radius:6px">💡 ${q.hint}</div>`;
+    div.innerHTML = innerHTML;
+    container.appendChild(div);
+  });
+}
+
+const choiceSelections = {};
+
+function selectChoice(qIdx, choiceIdx, val) {
+  choiceSelections[qIdx] = val;
+  const btns = document.querySelectorAll(`#choices-${qIdx} button`);
+  btns.forEach((b, i) => {
+    b.style.background = i === choiceIdx ? 'var(--accent)' : '#1a1830';
+    b.style.color = i === choiceIdx ? '#000' : 'var(--text)';
+    b.style.borderColor = i === choiceIdx ? 'var(--accent)' : 'var(--border)';
+  });
+}
+
+function checkExercise() {
+  let correct = 0;
+  let total = currentExercises.length;
+
+  currentExercises.forEach((q, i) => {
+    let userAnswer = '';
+    const hintEl = document.getElementById(`hint-${i}`);
+
+    if (q.type === 'fill' || q.type === 'transform') {
+      const inp = document.getElementById(`ex-${i}-0`);
+      userAnswer = inp ? inp.value.trim() : '';
+    } else if (q.type === 'choice') {
+      userAnswer = choiceSelections[i] || '';
+    }
+
+    const expected = q.answer.toLowerCase().trim();
+    const actual = userAnswer.toLowerCase().trim();
+    const isOk = actual === expected || actual === expected.replace(/[^\w\s]/g,'');
+
+    // 입력창 색상
+    if (q.type !== 'choice') {
+      const inp = document.getElementById(`ex-${i}-0`);
+      if (inp) {
+        inp.style.borderColor = isOk ? 'var(--correct)' : 'var(--wrong)';
+        inp.style.color = isOk ? 'var(--correct)' : 'var(--wrong)';
+        if (!isOk) inp.setAttribute('placeholder', q.answer);
+      }
+    } else {
+      // 선택지 색상
+      const btns = document.querySelectorAll(`#choices-${i} button`);
+      btns.forEach(b => {
+        if (b.textContent.trim() === q.answer) {
+          b.style.background = 'var(--correct)';
+          b.style.color = '#000';
+          b.style.borderColor = 'var(--correct)';
+        } else if (b.style.background === 'var(--accent)' || b.style.background.includes('f0b429')) {
+          b.style.background = 'var(--wrong)';
+          b.style.color = '#fff';
+          b.style.borderColor = 'var(--wrong)';
+        }
+      });
+    }
+
+    if (isOk) correct++;
+    // 힌트 표시
+    if (hintEl) hintEl.style.display = '';
+  });
+
+  // 점수 표시
+  const scorePanel = document.getElementById('exercise-score-panel');
+  const scoreDisplay = document.getElementById('exercise-score-display');
+  const scoreDetail = document.getElementById('exercise-score-detail');
+  const pct = Math.round(correct / total * 100);
+  scoreDisplay.textContent = `${correct} / ${total}점 (${pct}%)`;
+  scoreDetail.textContent = pct >= 80 ? '🎉 훌륭해요! 다음 단계에 도전해보세요!' : pct >= 50 ? '👍 절반 이상 맞았어요. 조금만 더 연습해봐요!' : '💪 힌트를 참고해서 다시 도전해보세요!';
+  scorePanel.style.display = '';
+  scorePanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// grammar 탭 초기화
+function initGrammar() {
+  showGrammarSection('gIntro', document.querySelector('#tab-grammar .pill'));
+}
 
 </script>
 </body>
