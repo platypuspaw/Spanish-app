@@ -1262,6 +1262,7 @@
   <button class="pill active" onclick="showGrammarSection('gIntro',this)" style="font-size:12px">📖 개념 설명</button>
   <button class="pill" onclick="showGrammarSection('gTable',this)" style="font-size:12px">📋 대명사표</button>
   <button class="pill" onclick="showGrammarSection('gPosition',this)" style="font-size:12px">📍 위치 규칙</button>
+  <button class="pill" onclick="showGrammarSection('gReflexive',this)" style="font-size:12px">🔄 재귀동사</button>
   <button class="pill" onclick="showGrammarSection('gExercise',this)" style="font-size:12px">✏️ 연습문제</button>
 </div>
 
@@ -1507,6 +1508,224 @@
 
 </div>
 
+
+<!-- ══ 섹션 5: 재귀동사 ══ -->
+<div id="gReflexive" class="g-section" style="display:none">
+
+  <div class="panel">
+    <div class="panel-title">🔄 재귀동사란?</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:14px">
+      타동사는 주어와 목적어가 <strong style="color:#e05c5c">다른</strong> 경우, 재귀동사는 주어와 목적어가 <strong style="color:var(--correct)">같은</strong> 경우예요.
+    </div>
+    <div style="display:grid;gap:10px;margin-bottom:14px">
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:6px">타동사 — 주어 ≠ 목적어</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center;margin-bottom:8px">
+          <div style="background:#2a2650;border-radius:8px;padding:8px"><div style="font-size:12px">Yo</div><div style="font-size:9px;color:var(--text3);margin-top:2px">나는</div></div>
+          <div style="background:#f0b42922;border:1px solid #f0b42966;border-radius:8px;padding:8px"><div style="font-size:12px;color:var(--accent)">te</div><div style="font-size:9px;color:var(--accent);margin-top:2px">너를</div></div>
+          <div style="background:#2a2650;border-radius:8px;padding:8px"><div style="font-size:12px">levanto</div><div style="font-size:9px;color:var(--text3);margin-top:2px">일으킨다</div></div>
+        </div>
+        <div style="font-size:12px;color:var(--text2)">Yo <strong style="color:var(--accent)">te</strong> levanto. [나는 <strong>너를</strong> 일으킨다.]</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:11px;color:var(--correct);margin-bottom:6px">재귀동사 — 주어 = 목적어</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center;margin-bottom:8px">
+          <div style="background:#2a2650;border-radius:8px;padding:8px"><div style="font-size:12px">Yo</div><div style="font-size:9px;color:var(--text3);margin-top:2px">나는</div></div>
+          <div style="background:#4ade8022;border:1px solid #4ade8066;border-radius:8px;padding:8px"><div style="font-size:12px;color:var(--correct)">me</div><div style="font-size:9px;color:var(--correct);margin-top:2px">나 자신을</div></div>
+          <div style="background:#2a2650;border-radius:8px;padding:8px"><div style="font-size:12px">levanto</div><div style="font-size:9px;color:var(--text3);margin-top:2px">일으킨다</div></div>
+        </div>
+        <div style="font-size:12px;color:var(--text2)">Yo <strong style="color:var(--correct)">me</strong> levanto. [나는 <strong>일어난다</strong>.]</div>
+      </div>
+    </div>
+    <div style="background:#5c9eff15;border:1px solid #5c9eff33;border-radius:10px;padding:12px;font-size:12px;color:var(--text2)">
+      💡 재귀동사는 원형이 <strong style="color:var(--accent3)">-se</strong>로 끝나요: levant<strong style="color:var(--accent3)">ar</strong> → levant<strong style="color:var(--accent3)">arse</strong>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">📋 재귀대명사표</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px">
+      <thead><tr style="background:var(--surface2)">
+        <th style="padding:10px;text-align:left;color:var(--text3);font-weight:500;font-size:11px;border-bottom:1px solid var(--border)">주체</th>
+        <th style="padding:10px;text-align:center;color:var(--correct);font-weight:700;border-bottom:1px solid var(--border)">단수</th>
+        <th style="padding:10px;text-align:left;color:var(--text3);font-weight:500;font-size:11px;border-bottom:1px solid var(--border)">주체</th>
+        <th style="padding:10px;text-align:center;color:var(--correct);font-weight:700;border-bottom:1px solid var(--border)">복수</th>
+      </tr></thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:10px;color:var(--text2);font-size:11px">a mí</td>
+          <td style="padding:10px;text-align:center;color:var(--correct);font-weight:700;font-size:18px">me</td>
+          <td style="padding:10px;color:var(--text2);font-size:11px">a nosotros/as</td>
+          <td style="padding:10px;text-align:center;color:var(--correct);font-weight:700;font-size:18px">nos</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:10px;color:var(--text2);font-size:11px">a ti</td>
+          <td style="padding:10px;text-align:center;color:var(--correct);font-weight:700;font-size:18px">te</td>
+          <td style="padding:10px;color:var(--text2);font-size:11px">a vosotros/as</td>
+          <td style="padding:10px;text-align:center;color:var(--correct);font-weight:700;font-size:18px">os</td>
+        </tr>
+        <tr>
+          <td style="padding:10px;color:var(--text2);font-size:11px">a él/ella/usted<br>a Juan...</td>
+          <td style="padding:10px;text-align:center;color:var(--correct);font-weight:700;font-size:18px">se</td>
+          <td style="padding:10px;color:var(--text2);font-size:11px">a ellos/ellas<br>a ustedes...</td>
+          <td style="padding:10px;text-align:center;color:var(--correct);font-weight:700;font-size:18px">se</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="background:#e05c5c15;border:1px solid #e05c5c33;border-radius:10px;padding:10px 12px;font-size:12px;color:var(--text2)">
+      ⚠️ 간접/직접 목적격과 달리 3인칭은 단·복수 모두 <strong style="color:#e05c5c">se</strong> 하나예요.
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">📌 직접 재귀 vs 간접 재귀</div>
+    <div style="display:grid;gap:10px">
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--accent3);margin-bottom:8px">직접 재귀 — 나 자신을 직접 목적으로</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.7">
+          levantarse: [나 자신을] 일으킨다 = 일어나다<br>
+          Yo <strong style="color:var(--correct)">me</strong> levanto. [나는 일어난다.]<br>
+          <span style="font-size:11px;color:var(--text3)">me = 나를 (직접 목적격)</span>
+        </div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px">간접 재귀 — 나 자신에게 행위</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.7">
+          lavarse las manos: [나 자신에게] 손을 씻어주다 = 손을 씻다<br>
+          Yo <strong style="color:var(--correct)">me</strong> lavo las manos. [나는 손을 씻는다.]<br>
+          <span style="font-size:11px;color:var(--text3)">me = 나에게 (간접 목적격) / las manos = 손을 (직접)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">🗂 주요 재귀동사 활용표</div>
+    <div style="display:grid;gap:12px">
+
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px">levantarse — 일어나다</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:12px">
+          <div style="background:#1a1830;border-radius:6px;padding:6px 10px"><span style="color:var(--correct)">me</span> levanto</div>
+          <div style="background:#1a1830;border-radius:6px;padding:6px 10px"><span style="color:var(--correct)">nos</span> levantamos</div>
+          <div style="background:#1a1830;border-radius:6px;padding:6px 10px"><span style="color:var(--correct)">te</span> levantas</div>
+          <div style="background:#1a1830;border-radius:6px;padding:6px 10px"><span style="color:var(--correct)">os</span> levantáis</div>
+          <div style="background:#1a1830;border-radius:6px;padding:6px 10px"><span style="color:var(--correct)">se</span> levanta</div>
+          <div style="background:#1a1830;border-radius:6px;padding:6px 10px"><span style="color:var(--correct)">se</span> levantan</div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--accent3);margin-bottom:8px">ponerse — 입다, 걸치다</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;font-size:12px">
+          <div style="background:#1a1830;border-radius:6px;padding:6px 10px"><span style="color:var(--correct)">me</span> pongo</div>
+          <div style="background:#1a1830;border-radius:6px;padding:6px 10px"><span style="color:var(--correct)">nos</span> ponemos</div>
+          <div style="background:#1a1830;border-radius:6px;padding:6px 10px"><span style="color:var(--correct)">te</span> pones</div>
+          <div style="background:#1a1830;border-radius:6px;padding:6px 10px"><span style="color:var(--correct)">os</span> ponéis</div>
+          <div style="background:#1a1830;border-radius:6px;padding:6px 10px"><span style="color:var(--correct)">se</span> pone</div>
+          <div style="background:#1a1830;border-radius:6px;padding:6px 10px"><span style="color:var(--correct)">se</span> ponen</div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:#e05c5c;margin-bottom:6px">자주 쓰는 재귀동사 목록</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;color:var(--text2)">
+          <div>levantarse — 일어나다</div>
+          <div>acostarse — 자다, 눕다</div>
+          <div>ducharse — 샤워하다</div>
+          <div>lavarse — 씻다</div>
+          <div>peinarse — 빗질하다</div>
+          <div>afeitarse — 면도하다</div>
+          <div>ponerse — 입다, 착용하다</div>
+          <div>quitarse — 벗다</div>
+          <div>llamarse — ~라고 불리다</div>
+          <div>casarse — 결혼하다</div>
+          <div>dormirse — 잠들다</div>
+          <div>irse — 가버리다</div>
+          <div>mirarse — 자신을 보다</div>
+          <div>comprarse — 사버리다</div>
+          <div>sentarse — 앉다</div>
+          <div>despertarse — 잠에서 깨다</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">🔀 상호 재귀 & 강조 재귀</div>
+    <div style="display:grid;gap:10px">
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px">상호 재귀 — 서로서로</div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:8px">복수 주어(nosotros/vosotros/ellos)가 서로를 목적어로 취하는 경우. nos/os/se만 사용.</div>
+        <div style="display:grid;gap:6px;font-size:13px">
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px"><strong style="color:var(--correct)">Nos</strong> vemos. [우리는 서로 본다. = 우리는 만난다.]</div>
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px"><strong style="color:var(--correct)">Nos</strong> saludamos. [우리는 서로 인사한다.]</div>
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">Juan y María <strong style="color:var(--correct)">se</strong> quieren mucho. [후안과 마리아는 서로 정말 사랑한다.]</div>
+        </div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--accent3);margin-bottom:8px">강조 재귀 — 의미가 달라지는 동사</div>
+        <div style="display:grid;gap:6px;font-size:13px;color:var(--text2)">
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">
+            dormir → dormirse<br>
+            Duermo 8 horas. [8시간 잔다.] vs Me duermo a las 8. [8시에 <strong style="color:var(--accent3)">잠이 든다</strong>.]
+          </div>
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">
+            ir → irse<br>
+            Voy a la escuela. [학교에 간다.] vs <strong style="color:var(--accent3)">Me voy</strong> a la escuela. [학교로 <strong style="color:var(--accent3)">떠난다</strong>.]
+          </div>
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">
+            comprar → comprarse<br>
+            Compro un móvil. [폰을 산다.] vs <strong style="color:var(--accent3)">Me compro</strong> este móvil. [이 폰을 <strong style="color:var(--accent3)">사버린다</strong>.]
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">📍 재귀대명사의 위치 (levantarse)</div>
+    <div style="display:grid;gap:8px">
+      <div style="background:var(--surface2);border-radius:10px;padding:12px;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:11px;color:var(--accent3);font-weight:700;margin-bottom:4px">변형동사 앞</div>
+          <div style="font-size:13px"><strong style="color:var(--correct)">Te</strong> levantas. [너는 일어난다.]</div>
+        </div>
+        <span style="font-size:10px;background:#5c9eff22;color:var(--accent3);padding:2px 8px;border-radius:100px">앞</span>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:11px;color:#f87171;font-weight:700;margin-bottom:4px">부정명령 앞</div>
+          <div style="font-size:13px">¡No <strong style="color:var(--correct)">te</strong> levantes! [일어나지 마!]</div>
+        </div>
+        <span style="font-size:10px;background:#f8717122;color:#f87171;padding:2px 8px;border-radius:100px">앞</span>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:11px;color:var(--accent);font-weight:700;margin-bottom:4px">원형동사 뒤</div>
+          <div style="font-size:13px">Vas a levantar<strong style="color:var(--correct)">te</strong>. [너는 일어날 것이다.]</div>
+        </div>
+        <span style="font-size:10px;background:#f0b42922;color:var(--accent);padding:2px 8px;border-radius:100px">뒤 (or 앞)</span>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:11px;color:var(--accent);font-weight:700;margin-bottom:4px">현재분사 뒤</div>
+          <div style="font-size:13px">Estás levantándo<strong style="color:var(--correct)">te</strong>. [너는 일어나는 중이다.]</div>
+        </div>
+        <span style="font-size:10px;background:#f0b42922;color:var(--accent);padding:2px 8px;border-radius:100px">뒤 (or 앞)</span>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:11px;color:var(--correct);font-weight:700;margin-bottom:4px">긍정명령 뒤</div>
+          <div style="font-size:13px">¡Lévánta<strong style="color:var(--correct)">te</strong>! [일어나!]</div>
+        </div>
+        <span style="font-size:10px;background:#4ade8022;color:var(--correct);padding:2px 8px;border-radius:100px">반드시 뒤</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /gReflexive -->
+
 <!-- ══ 섹션 4: 연습문제 ══ -->
 <div id="gExercise" class="g-section" style="display:none">
 
@@ -1519,6 +1738,8 @@
       <button class="pill" onclick="loadExerciseSet(3,this)" style="font-size:11px">4단계: 동시 사용</button>
       <button class="pill" onclick="loadExerciseSet(4,this)" style="font-size:11px">5단계: 위치</button>
       <button class="pill" onclick="loadExerciseSet(5,this)" style="font-size:11px">6단계: se 변환</button>
+      <button class="pill" onclick="loadExerciseSet(6,this)" style="font-size:11px">7단계: 재귀 활용</button>
+      <button class="pill" onclick="loadExerciseSet(7,this)" style="font-size:11px">8단계: 재귀 구분</button>
     </div>
     <div id="exercise-container"></div>
     <div id="exercise-result" style="display:none;margin-top:14px;padding:14px;border-radius:12px;text-align:center"></div>
@@ -9507,6 +9728,33 @@ const exerciseSets = [
     { type:'transform', before:'Le voy a dar el informe al gerente.', after:'Voy a dár___', answer:'sêlo', hint:'le + lo → se lo → comprimido al infinitivo → dárselo (악센트 변화)' },
     { type:'transform', before:'Les mando los contratos a los clientes.', after:'___ ___ mando a los clientes.', answer:'Se los', hint:'les + los → se los → Se los mando.' },
   ],
+  // 6단계: 재귀동사 — 재귀대명사 선택
+  [
+    { type:'fill', sentence:'Luis ___ levanta muy tarde. [루이스는 매우 늦게 일어난다.]', blank_hint:'재귀대명사', answer:'se', hint:'3인칭 단수 재귀대명사 = se' },
+    { type:'fill', sentence:'Yo ___ ducho antes de dormir. [나는 자기 전에 샤워한다.]', blank_hint:'재귀대명사', answer:'me', hint:'1인칭 단수 재귀대명사 = me' },
+    { type:'fill', sentence:'¡___ vemos mañana! [우리 내일 봐!]', blank_hint:'재귀대명사', answer:'Nos', hint:'1인칭 복수 상호 재귀 = nos (문두 대문자)' },
+    { type:'fill', sentence:'Siempre ___ miras en el espejo. [너는 항상 거울을 본다.]', blank_hint:'재귀대명사', answer:'te', hint:'2인칭 단수 재귀대명사 = te' },
+    { type:'fill', sentence:'Las chicas ___ pintan las uñas. [그 여자들은 매니큐어를 바른다.]', blank_hint:'재귀대명사', answer:'se', hint:'3인칭 복수 재귀대명사 = se' },
+    { type:'fill', sentence:'___ pongo las gafas de sol. [나는 선글라스를 낀다.]', blank_hint:'재귀대명사', answer:'Me', hint:'1인칭 단수 재귀대명사 = me (문두 대문자)' },
+    { type:'fill', sentence:'Juan y María ___ quieren mucho. [후안과 마리아는 서로 정말 사랑한다.]', blank_hint:'재귀대명사', answer:'se', hint:'3인칭 복수 상호 재귀 = se' },
+    { type:'fill', sentence:'Quiero lavar___ las manos. [나는 손을 씻고 싶다.]', blank_hint:'재귀대명사', answer:'me', hint:'원형동사 뒤에 붙이기 / 1인칭 = me → lavarme' },
+    { type:'fill', sentence:'¡Lévanta___! [일어나!] (tú)', blank_hint:'재귀대명사', answer:'te', hint:'긍정명령 뒤에 붙이기 / 2인칭 = te → Levántate' },
+    { type:'fill', sentence:'¡No ___ levantes! [일어나지 마!]', blank_hint:'재귀대명사', answer:'te', hint:'부정명령 앞 / 2인칭 = te' },
+  ],
+  // 7단계: 재귀 vs 타동사 구분
+  [
+    { type:'choice', sentence:'Yo ___ miro en el espejo. [나는 거울로 나를 본다.] → 어떤 용법?', choices:['직접 재귀 — me','타동사 — te','간접 재귀 — me','타동사 — lo'], answer:'직접 재귀 — me', hint:'주어=목적어(나 자신을 봄) → 직접 재귀, me levanto 구조' },
+    { type:'choice', sentence:'Yo ___ lavo las manos. [나는 손을 씻는다.] → 어떤 용법?', choices:['직접 재귀 — me','간접 재귀 — me','타동사 — te','타동사 — le'], answer:'간접 재귀 — me', hint:'las manos = 직접목적어, me = 나에게(간접) → 간접 재귀' },
+    { type:'choice', sentence:'Yo ___ levanto a las 7. → 올바른 재귀대명사는?', choices:['me','te','se','nos'], answer:'me', hint:'주어 Yo → 재귀대명사 me' },
+    { type:'choice', sentence:'Ella ___ ducha por la mañana. → 올바른 재귀대명사는?', choices:['me','te','se','nos'], answer:'se', hint:'주어 ella → 재귀대명사 se' },
+    { type:'choice', sentence:'Nosotros ___ acostamos a las 11. → 올바른 재귀대명사는?', choices:['me','te','se','nos'], answer:'nos', hint:'주어 nosotros → 재귀대명사 nos' },
+    { type:'choice', sentence:'dormir vs dormirse 다음 중 "잠이 들다"의 뜻은?', choices:['Duermo 8 horas.','Me duermo a las 10.','Él duerme bien.','¿Duermes poco?'], answer:'Me duermo a las 10.', hint:'dormirse = 잠들다 / 재귀형은 "잠에 빠져드는" 강조 의미' },
+    { type:'choice', sentence:'ir vs irse "나는 학교로 떠난다."의 올바른 표현은?', choices:['Voy a la escuela.','Me voy a la escuela.','Te vas a la escuela.','Se va a la escuela.'], answer:'Me voy a la escuela.', hint:'irse = 가버리다, 떠나다 / 1인칭 → me voy' },
+    { type:'choice', sentence:'다음 중 재귀동사 구조의 문장은?', choices:['Mi amigo me llama.','El novio de Sara la quiere.','Nos ponemos la chaqueta.','Yo lo busco.'], answer:'Nos ponemos la chaqueta.', hint:'ponerse = 재귀동사 / 주어(nosotros)=목적어(nos) → 재귀' },
+    { type:'choice', sentence:'¡Son las ocho! Tengo que ___. → "일어나야 한다"의 올바른 형태는?', choices:['levantarme','levantarte','levantar me','me levantarme'], answer:'levantarme', hint:'원형동사 뒤에 재귀대명사 붙이기 / 주어=yo → me → levantarme' },
+    { type:'choice', sentence:'Mi padre y yo ___ hablamos mucho. → 올바른 표현인가?', choices:['옳다 — 상호 재귀','틀리다 — nos 불필요','틀리다 — se로 바꿔야','옳다 — 강조 재귀'], answer:'옳다 — 상호 재귀', hint:'mi padre y yo = nosotros → 상호 재귀 nos hablamos (서로 이야기한다) → 정상' },
+  ],
+
 ];
 
 let currentExSet = 0;
