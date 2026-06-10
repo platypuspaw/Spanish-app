@@ -536,6 +536,27 @@
         <span id="conj-back-label">← 단어카드로 돌아가기</span>
       </button>
     </div>
+    <!-- 동사 검색 -->
+    <div style="position:relative;margin-bottom:14px">
+      <input id="conj-search-input" type="text" autocomplete="off" autocorrect="off" spellcheck="false"
+        placeholder="🔍 동사 원형으로 검색 (예: hablar, ser...)"
+        oninput="conjSearchInput(this.value)"
+        onfocus="conjSearchInput(this.value)"
+        style="width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;
+               padding:11px 40px 11px 14px;color:var(--text);font-family:'Noto Sans KR',sans-serif;
+               font-size:13px;outline:none;box-sizing:border-box;transition:border-color .2s"
+        onfocus="this.style.borderColor='var(--accent)';conjSearchInput(this.value)"
+        onblur="setTimeout(()=>{document.getElementById('conj-search-drop').style.display='none'},200)">
+      <button onclick="document.getElementById('conj-search-input').value='';document.getElementById('conj-search-drop').style.display='none'"
+        style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;
+               color:var(--text3);font-size:16px;cursor:pointer;padding:4px;line-height:1">✕</button>
+      <!-- 드롭다운 -->
+      <div id="conj-search-drop"
+        style="display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--surface2);
+               border:1.5px solid var(--accent);border-radius:12px;z-index:50;max-height:260px;
+               overflow-y:auto;box-shadow:0 8px 24px #0006">
+      </div>
+    </div>
     <!-- 이전/다음 네비게이션 -->
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
       <button class="card-btn" onclick="conjPrev()">← 이전</button>
@@ -552,7 +573,8 @@
       <button class="pill active" id="tense-btn-present"     onclick="selectTense('present',this)">현재</button>
       <button class="pill"        id="tense-btn-preterite"   onclick="selectTense('preterite',this)">단순과거</button>
       <button class="pill"        id="tense-btn-imperfect"   onclick="selectTense('imperfect',this)">불완료과거</button>
-      <button class="pill"        id="tense-btn-perfect"     onclick="selectTense('perfect',this)">과거완료</button>
+      <button class="pill"        id="tense-btn-perfect"     onclick="selectTense('perfect',this)">현재완료</button>
+      <button class="pill"        id="tense-btn-pluperfect"  onclick="selectTense('pluperfect',this)">과거완료</button>
       <button class="pill"        id="tense-btn-future"      onclick="selectTense('future',this)">미래</button>
       <button class="pill"        id="tense-btn-conditional" onclick="selectTense('conditional',this)">조건법</button>
       <button class="pill"        id="tense-btn-progressive" onclick="selectTense('progressive',this)">진행</button>
@@ -1258,12 +1280,33 @@
 <div id="tab-grammar" class="screen">
 
 <!-- ── 섹션 네비게이션 ── -->
-<div style="display:flex;gap:8px;flex-wrap:wrap;padding:4px 0 12px">
-  <button class="pill active" onclick="showGrammarSection('gIntro',this)" style="font-size:12px">📖 개념 설명</button>
-  <button class="pill" onclick="showGrammarSection('gTable',this)" style="font-size:12px">📋 대명사표</button>
-  <button class="pill" onclick="showGrammarSection('gPosition',this)" style="font-size:12px">📍 위치 규칙</button>
-  <button class="pill" onclick="showGrammarSection('gReflexive',this)" style="font-size:12px">🔄 재귀동사</button>
-  <button class="pill" onclick="showGrammarSection('gExercise',this)" style="font-size:12px">✏️ 연습문제</button>
+<!-- ── 상위 카테고리 ── -->
+<div style="display:flex;gap:8px;flex-wrap:wrap;padding:4px 0 10px" id="grammar-top-nav">
+  <button class="pill active" id="gtab-obj" onclick="showGrammarTop('obj',this)" style="font-size:12px">🎯 목적격 대명사</button>
+  <button class="pill" id="gtab-refl" onclick="showGrammarTop('refl',this)" style="font-size:12px">🔄 재귀동사</button>
+  <button class="pill" id="gtab-inv" onclick="showGrammarTop('inv',this)" style="font-size:12px">↩️ 역구조 동사</button>
+  <button class="pill" id="gtab-prep" onclick="showGrammarTop('prep',this)" style="font-size:12px">🔗 전치사</button>
+  <button class="pill" id="gtab-ex" onclick="showGrammarTop('ex',this)" style="font-size:12px">✏️ 연습문제</button>
+</div>
+
+<!-- ── 목적격 대명사 하위 탭 ── -->
+<div id="grammar-sub-obj" style="display:flex;gap:6px;flex-wrap:wrap;padding:0 0 12px;border-bottom:1px solid var(--border);margin-bottom:12px">
+  <button class="pill active" id="gsub-intro" onclick="showGrammarSub('gIntro',this)" style="font-size:11px;padding:4px 12px">📖 개념 설명</button>
+  <button class="pill" id="gsub-table" onclick="showGrammarSub('gTable',this)" style="font-size:11px;padding:4px 12px">📋 대명사표</button>
+  <button class="pill" id="gsub-pos" onclick="showGrammarSub('gPosition',this)" style="font-size:11px;padding:4px 12px">📍 위치 규칙</button>
+</div>
+
+<!-- ── 역구조 동사 하위 탭 ── -->
+<div id="grammar-sub-inv" style="display:none;gap:6px;flex-wrap:wrap;padding:0 0 12px;border-bottom:1px solid var(--border);margin-bottom:12px">
+  <button class="pill active" id="gsub-inv1" onclick="showGrammarSub('gInverse',this)" style="font-size:11px;padding:4px 12px">📖 기초</button>
+  <button class="pill" id="gsub-inv2" onclick="showGrammarSub('gInverse2',this)" style="font-size:11px;padding:4px 12px">📚 심화</button>
+</div>
+
+<!-- ── 전치사 하위 탭 ── -->
+<div id="grammar-sub-prep" style="display:none;gap:6px;flex-wrap:wrap;padding:0 0 12px;border-bottom:1px solid var(--border);margin-bottom:12px">
+  <button class="pill active" id="gsub-prep1" onclick="showGrammarSub('gPrep1',this)" style="font-size:11px;padding:4px 12px">De / A / En / Con</button>
+  <button class="pill" id="gsub-prep2" onclick="showGrammarSub('gPrep2',this)" style="font-size:11px;padding:4px 12px">Por / Para</button>
+  <button class="pill" id="gsub-prep3" onclick="showGrammarSub('gPrep3',this)" style="font-size:11px;padding:4px 12px">기타 전치사</button>
 </div>
 
 <!-- ══ 섹션 1: 개념 설명 ══ -->
@@ -1726,6 +1769,597 @@
 
 </div><!-- /gReflexive -->
 
+
+<!-- ══ 섹션 6: 역구조 동사 ══ -->
+<div id="gInverse" class="g-section" style="display:none">
+
+  <div class="panel">
+    <div class="panel-title">↩️ 역구조 동사란?</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:14px">
+      일반 동사와 <strong style="color:#e05c5c">어순이 반대</strong>예요. "나는 음악을 좋아한다"고 말하려면?
+    </div>
+    <div style="display:grid;gap:10px;margin-bottom:14px">
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:11px;color:#e05c5c;margin-bottom:8px;font-weight:700">❌ 일반 어순으로 말하면 틀림</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center">
+          <div style="background:#2a2650;border-radius:8px;padding:8px"><div style="font-size:12px">Yo</div><div style="font-size:9px;color:var(--text3);margin-top:2px">주어</div></div>
+          <div style="background:#f8717122;border:1px solid #f87171;border-radius:8px;padding:8px"><div style="font-size:12px;color:#f87171">gusto</div><div style="font-size:9px;color:#f87171;margin-top:2px">동사</div></div>
+          <div style="background:#2a2650;border-radius:8px;padding:8px"><div style="font-size:12px">la música</div><div style="font-size:9px;color:var(--text3);margin-top:2px">목적어</div></div>
+        </div>
+        <div style="font-size:11px;color:#f87171;margin-top:8px;text-align:center">Yo gusto la música. (X)</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:11px;color:var(--correct);margin-bottom:8px;font-weight:700">✅ 역구조로 말하면 정확</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center">
+          <div style="background:#5c9eff22;border:1px solid #5c9eff66;border-radius:8px;padding:8px"><div style="font-size:12px;color:var(--accent3)">me</div><div style="font-size:9px;color:var(--accent3);margin-top:2px">간접 목적격 대명사</div></div>
+          <div style="background:#4ade8022;border:1px solid #4ade8066;border-radius:8px;padding:8px"><div style="font-size:12px;color:var(--correct)">gusta</div><div style="font-size:9px;color:var(--correct);margin-top:2px">동사</div></div>
+          <div style="background:#f0b42922;border:1px solid #f0b42966;border-radius:8px;padding:8px"><div style="font-size:12px;color:var(--accent)">la música</div><div style="font-size:9px;color:var(--accent);margin-top:2px">문법적 주어</div></div>
+        </div>
+        <div style="font-size:11px;color:var(--correct);margin-top:8px;text-align:center">Me gusta la música. (O) [음악이 나에게 즐거움을 준다.]</div>
+      </div>
+    </div>
+    <div style="background:#5c9eff15;border:1px solid #5c9eff33;border-radius:10px;padding:12px;font-size:12px;color:var(--text2)">
+      💡 <strong style="color:var(--accent3)">gustar의 진짜 뜻:</strong> "좋아하다"가 아니라 <strong>"즐거움을 주다, 마음에 들다"</strong><br>
+      "나"는 문법적 주어가 아닌 <strong style="color:var(--accent3)">간접 목적어</strong>예요!
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">📋 gustar 활용표</div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:10px">동사는 <strong style="color:var(--correct)">문법적 주어(= 좋아하는 대상)</strong>에 맞춰 변해요.</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:11px;color:var(--correct);font-weight:700;margin-bottom:8px">주어가 단수 / 동사원형</div>
+        <div style="font-size:15px;text-align:center;color:var(--correct);font-weight:700;margin-bottom:8px">gusta</div>
+        <div style="display:grid;gap:4px;font-size:12px;color:var(--text2)">
+          <div>Me <strong style="color:var(--correct)">gusta</strong> el café.</div>
+          <div>Te <strong style="color:var(--correct)">gusta</strong> la playa.</div>
+          <div>Le <strong style="color:var(--correct)">gusta</strong> España.</div>
+          <div>Nos <strong style="color:var(--correct)">gusta</strong> bailar.</div>
+        </div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:11px;color:var(--accent);font-weight:700;margin-bottom:8px">주어가 복수</div>
+        <div style="font-size:15px;text-align:center;color:var(--accent);font-weight:700;margin-bottom:8px">gustan</div>
+        <div style="display:grid;gap:4px;font-size:12px;color:var(--text2)">
+          <div>Me <strong style="color:var(--accent)">gustan</strong> los chocolates.</div>
+          <div>Te <strong style="color:var(--accent)">gustan</strong> las flores.</div>
+          <div>Le <strong style="color:var(--accent)">gustan</strong> las manzanas.</div>
+          <div>Nos <strong style="color:var(--accent)">gustan</strong> los españoles.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#e05c5c15;border:1px solid #e05c5c33;border-radius:10px;padding:12px;font-size:12px;color:var(--text2)">
+      ⚠️ <strong style="color:#e05c5c">동사원형이 주어면 항상 gusta (단수)!</strong><br>
+      Me <strong style="color:var(--correct)">gusta</strong> cocinar, leer y pintar. [동사원형이 여러 개여도 gusta]
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">📌 gustar 유의사항</div>
+    <div style="display:grid;gap:10px">
+
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--accent3);margin-bottom:8px">① 간접 목적격 대명사는 반드시 표기</div>
+        <div style="display:grid;gap:6px;font-size:13px">
+          <div style="background:#f8717122;border-radius:8px;padding:8px 10px">❌ A mí gusta el libro. / Gusta el libro a Juan.</div>
+          <div style="background:#4ade8015;border-radius:8px;padding:8px 10px">✅ <strong style="color:var(--accent3)">Me</strong> gusta el libro. / <strong style="color:var(--accent3)">Le</strong> gusta el libro a Juan.</div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px">② mucho의 위치 — 동사 뒤</div>
+        <div style="font-size:13px;color:var(--text2)">Me gusta <strong style="color:var(--accent)">mucho</strong> el libro. [나는 책을 정말 좋아한다.]</div>
+      </div>
+
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--accent3);margin-bottom:8px">③ 주격 인칭 대명사(Yo/Tú) 사용 불가 → a mí / a ti 사용</div>
+        <div style="display:grid;gap:6px;font-size:13px">
+          <div style="background:#f8717122;border-radius:8px;padding:8px 10px">❌ Yo me gusta. / Tú te gusta.</div>
+          <div style="background:#4ade8015;border-radius:8px;padding:8px 10px">✅ <strong style="color:var(--accent3)">A mí</strong> me gusta. / <strong style="color:var(--accent3)">A ti</strong> te gusta. (강조 시)</div>
+        </div>
+        <div style="font-size:11px;color:var(--text3);margin-top:6px">강조 없이 쓸 땐 그냥 Me gusta. / Te gusta. 로 충분!</div>
+      </div>
+
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:#e05c5c;margin-bottom:8px">④ "너에게는?" 물어볼 때</div>
+        <div style="display:grid;gap:6px;font-size:13px;color:var(--text2)">
+          <div style="background:#f8717122;border-radius:8px;padding:8px 10px">❌ ¿Y tú? / ¿Y te?</div>
+          <div style="background:#4ade8015;border-radius:8px;padding:8px 10px">✅ ¿Y <strong style="color:var(--accent3)">a ti</strong>? [너에게는?]</div>
+          <div style="background:#4ade8015;border-radius:8px;padding:8px 10px">✅ <strong style="color:var(--accent3)">A mí</strong> también. [나도 그러해.] / A mí no me gusta. [나는 아니야.]</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">🩺 Doler 동사 — 아프다</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:12px">
+      doler도 gustar처럼 역구조 동사예요. <strong style="color:var(--correct)">"~가 나를 아프게 한다"</strong> 구조!
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+      <div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:6px">신체 부위 단수</div>
+        <div style="font-size:20px;font-weight:700;color:var(--correct)">duele</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:6px">Me <strong style="color:var(--correct)">duele</strong> la cabeza. [머리가 아파.]</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:6px">신체 부위 복수</div>
+        <div style="font-size:20px;font-weight:700;color:var(--accent)">duelen</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:6px">Me <strong style="color:var(--accent)">duelen</strong> los pies. [발들이 아파.]</div>
+      </div>
+    </div>
+
+    <div style="background:var(--surface2);border-radius:12px;padding:14px;margin-bottom:10px">
+      <div style="font-size:12px;color:var(--text3);margin-bottom:10px;font-weight:700">📍 신체 부위별 예문</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;color:var(--text2)">
+        <div style="background:#1a1830;border-radius:8px;padding:8px">Me <strong style="color:var(--correct)">duele</strong> la cabeza. [머리]</div>
+        <div style="background:#1a1830;border-radius:8px;padding:8px">Me <strong style="color:var(--correct)">duele</strong> la nariz. [코]</div>
+        <div style="background:#1a1830;border-radius:8px;padding:8px">Me <strong style="color:var(--correct)">duele</strong> el estómago. [배]</div>
+        <div style="background:#1a1830;border-radius:8px;padding:8px">Me <strong style="color:var(--correct)">duele</strong> la garganta. [목]</div>
+        <div style="background:#1a1830;border-radius:8px;padding:8px">Me <strong style="color:var(--accent)">duelen</strong> los ojos. [눈들]</div>
+        <div style="background:#1a1830;border-radius:8px;padding:8px">Me <strong style="color:var(--accent)">duelen</strong> las rodillas. [무릎들]</div>
+        <div style="background:#1a1830;border-radius:8px;padding:8px">Me <strong style="color:var(--accent)">duelen</strong> los pies. [발들]</div>
+        <div style="background:#1a1830;border-radius:8px;padding:8px">Me <strong style="color:var(--accent)">duelen</strong> los dedos. [손가락들]</div>
+      </div>
+    </div>
+
+    <div style="background:#5c9eff15;border:1px solid #5c9eff33;border-radius:10px;padding:12px;font-size:12px;color:var(--text2)">
+      💡 <strong style="color:var(--accent3)">= Tengo dolor de + 신체부위</strong> 표현도 함께 기억!<br>
+      Me duele la cabeza. = <strong style="color:var(--accent3)">Tengo dolor de cabeza</strong>. [나 머리 아파.]
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">🗂 역구조 동사 추가 목록</div>
+    <div style="display:grid;gap:6px;font-size:12px;color:var(--text2)">
+      <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between">
+        <span><strong style="color:var(--accent)">gustar</strong></span><span>좋아하다 (마음에 들다)</span><span style="color:var(--text3)">Me gusta el café.</span>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between">
+        <span><strong style="color:var(--accent)">doler</strong></span><span>아프다</span><span style="color:var(--text3)">Me duele la cabeza.</span>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between">
+        <span><strong style="color:var(--accent)">encantar</strong></span><span>매우 좋아하다</span><span style="color:var(--text3)">Me encanta viajar.</span>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between">
+        <span><strong style="color:var(--accent)">molestar</strong></span><span>귀찮다, 신경 쓰이다</span><span style="color:var(--text3)">Me molesta el ruido.</span>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between">
+        <span><strong style="color:var(--accent)">faltar</strong></span><span>부족하다, 없다</span><span style="color:var(--text3)">Me falta dinero.</span>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between">
+        <span><strong style="color:var(--accent)">quedar</strong></span><span>남다</span><span style="color:var(--text3)">Me quedan 5 días.</span>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between">
+        <span><strong style="color:var(--accent)">interesar</strong></span><span>흥미롭다</span><span style="color:var(--text3)">Me interesa la historia.</span>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between">
+        <span><strong style="color:var(--accent)">parecer</strong></span><span>~인 것 같다</span><span style="color:var(--text3)">Me parece bien.</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /gInverse -->
+
+
+<!-- ══ 섹션 7: 역구조 동사 심화 ══ -->
+<div id="gInverse2" class="g-section" style="display:none">
+
+  <div class="panel">
+    <div class="panel-title">↩️ 역구조 동사 심화 — gustar 계열 전체</div>
+    <div style="font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:12px">
+      모두 <strong style="color:var(--accent3)">목적격 대명사 + 동사 + 주어</strong> 구조로 작동해요. 동사는 문법적 주어(= 마지막 명사)에 수일치!
+    </div>
+    <div style="display:grid;gap:8px">
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:6px;font-size:12px;margin-bottom:4px">
+          <div style="color:var(--accent3);font-weight:700">동사</div>
+          <div style="color:var(--accent3);font-weight:700">뜻</div>
+          <div style="color:var(--accent3);font-weight:700">예문</div>
+        </div>
+        <div style="display:grid;gap:5px;font-size:12px;color:var(--text2)">
+          <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:6px;padding:6px;background:#1a1830;border-radius:6px"><span style="color:var(--accent)">gustar</span><span>좋아하다 (마음에 들다)</span><span>Me gusta el café.</span></div>
+          <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:6px;padding:6px;background:#1a1830;border-radius:6px"><span style="color:var(--accent)">encantar</span><span>매우 좋아하다</span><span>Me encantan los chocolates.</span></div>
+          <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:6px;padding:6px;background:#1a1830;border-radius:6px"><span style="color:var(--accent)">interesar</span><span>흥미롭다, 관심이 있다</span><span>Me interesa la historia.</span></div>
+          <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:6px;padding:6px;background:#1a1830;border-radius:6px"><span style="color:var(--accent)">importar</span><span>중요하다, 상관이 있다</span><span>No me importa nada.</span></div>
+          <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:6px;padding:6px;background:#1a1830;border-radius:6px"><span style="color:var(--accent)">apetecer</span><span>당기다, 내키다</span><span>Me apetece una pizza.</span></div>
+          <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:6px;padding:6px;background:#1a1830;border-radius:6px"><span style="color:var(--accent)">agradar</span><span>마음에 들다</span><span>Me agrada su voz.</span></div>
+          <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:6px;padding:6px;background:#1a1830;border-radius:6px"><span style="color:var(--accent)">divertir</span><span>재미있다, 즐겁다</span><span>Me divierten las películas.</span></div>
+          <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:6px;padding:6px;background:#1a1830;border-radius:6px"><span style="color:var(--accent)">aburrir</span><span>지루하다</span><span>Me aburren los libros.</span></div>
+          <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:6px;padding:6px;background:#1a1830;border-radius:6px"><span style="color:var(--accent)">molestar</span><span>불쾌하다, 짜증나다</span><span>Me molesta el ruido.</span></div>
+          <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:6px;padding:6px;background:#1a1830;border-radius:6px"><span style="color:var(--accent)">doler</span><span>아프다</span><span>Me duelen los pies.</span></div>
+          <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:6px;padding:6px;background:#1a1830;border-radius:6px"><span style="color:var(--accent)">faltar</span><span>부족하다, 모자라다</span><span>Me faltan 100 euros.</span></div>
+          <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:6px;padding:6px;background:#1a1830;border-radius:6px"><span style="color:var(--accent)">quedar</span><span>남아있다</span><span>Me queda una hora.</span></div>
+          <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:6px;padding:6px;background:#1a1830;border-radius:6px"><span style="color:var(--accent)">tocar</span><span>차례가 되다, 당첨되다</span><span>Me toca tirar la basura.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">↩️ 역구조 동사 심화 — bien/mal·형용사·명사 함께</div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:12px">부사·형용사·명사를 함께 쓸 때 어순: <strong style="color:var(--accent3)">목적격 대명사 + 동사 + 부사/형용사/명사 + 주어</strong></div>
+
+    <div style="display:grid;gap:10px">
+
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px">caer bien/mal — 느낌이 좋다/나쁘다, 잘 맞다/안 맞다</div>
+        <div style="display:grid;gap:5px;font-size:13px;color:var(--text2)">
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">¿Cómo te <strong style="color:var(--accent)">cae</strong> María? [마리아가 너에게 어때(잘 맞아)?]</div>
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">Me <strong style="color:var(--accent)">cae</strong> muy <strong style="color:var(--accent3)">bien</strong> María. [나에게 마리아는 아주 잘 맞아.]</div>
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">No me <strong style="color:var(--accent)">cae</strong> <strong style="color:var(--accent3)">bien</strong> Juan. [나에게는 후안이 잘 맞지 않아.]</div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px">sentar bien/mal — 소화되다/안 되다, 잘 받다/안 받다</div>
+        <div style="display:grid;gap:5px;font-size:13px;color:var(--text2)">
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">A mí me <strong style="color:var(--accent)">sienta</strong> <strong style="color:var(--accent3)">mal</strong> la leche. [나에게 우유가 잘 받지 않는다.]</div>
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">Te <strong style="color:var(--accent)">sienta</strong> <strong style="color:var(--accent3)">bien</strong> ese color de pelo. [그 머리색이 잘 받는다.]</div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px">ir bien/mal — 잘 되다/안 되다 (근황·건강)</div>
+        <div style="display:grid;gap:5px;font-size:13px;color:var(--text2)">
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">¿Cómo te <strong style="color:var(--accent)">va</strong>? [어떻게 지내?]</div>
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">Me <strong style="color:var(--accent)">va</strong> muy <strong style="color:var(--accent3)">bien</strong>. [나는 아주 잘 지내.]</div>
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">¿Cómo te <strong style="color:var(--accent)">fue</strong> el examen? [시험 어떻게 됐어?] Me <strong style="color:var(--accent)">fue</strong> muy <strong style="color:var(--accent3)">mal</strong>. [아주 안 좋게 됐어.]</div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px">parecer + 형용사/부사 — ~하게 여겨지다, 보이다</div>
+        <div style="display:grid;gap:5px;font-size:13px;color:var(--text2)">
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">¿Qué te <strong style="color:var(--accent)">parece</strong> la película? [그 영화 어때 보여?]</div>
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">Me <strong style="color:var(--accent)">parece</strong> muy <strong style="color:var(--accent3)">interesante</strong>. [나에게는 아주 재미있어 보여.]</div>
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">Me <strong style="color:var(--accent)">parecen</strong> muy <strong style="color:var(--accent3)">caras</strong> las entradas. [입장권들이 매우 비싸다고 여겨진다.]</div>
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">¿Te <strong style="color:var(--accent)">parece</strong> bien? [괜찮을까?(너는 어때?)]</div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px">quedar + 형용사 — 어울리다, 맞다</div>
+        <div style="display:grid;gap:5px;font-size:13px;color:var(--text2)">
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">¿Cómo te <strong style="color:var(--accent)">queda</strong> el abrigo? [그 외투 어때(잘 맞아)?]</div>
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">Me <strong style="color:var(--accent)">queda</strong> muy <strong style="color:var(--accent3)">grande</strong> el abrigo. [그 외투는 나에게 아주 커.]</div>
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">Te <strong style="color:var(--accent)">quedan</strong> muy <strong style="color:var(--accent3)">bien</strong> esos pantalones. [그 바지가 너에게 아주 잘 어울려.]</div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px">dar + 명사 — ~이 밀려오다, 생기다 (감정·느낌)</div>
+        <div style="display:grid;gap:5px;font-size:13px;color:var(--text2)">
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">¿Qué te <strong style="color:var(--accent)">da</strong> miedo? [무엇이 무서워?] → Me <strong style="color:var(--accent)">dan</strong> <strong style="color:var(--accent3)">miedo</strong> los fantasmas. [귀신이 무서워.]</div>
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">A mí me <strong style="color:var(--accent)">da</strong> <strong style="color:var(--accent3)">pereza</strong> las matemáticas. [나는 수학이 하기 싫어.]</div>
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">Me <strong style="color:var(--accent)">dan</strong> <strong style="color:var(--accent3)">sueño</strong> los libros. [책이 졸리게 해.]</div>
+        </div>
+      </div>
+
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px">costar + 명사 — (시간·돈·노력이) 들다, 걸리다</div>
+        <div style="display:grid;gap:5px;font-size:13px;color:var(--text2)">
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">A mí me <strong style="color:var(--accent)">cuesta</strong> mucho <strong style="color:var(--accent3)">trabajo</strong> cocinar. [요리하는 것은 나에게 많은 힘이 든다.]</div>
+          <div style="background:#1a1830;border-radius:8px;padding:8px 10px">Le <strong style="color:var(--accent)">costó</strong> tres <strong style="color:var(--accent3)">horas</strong> el trabajo. [그 일은 그 사람에게 3시간이 걸렸다.]</div>
+        </div>
+        <div style="margin-top:8px;background:#5c9eff15;border-radius:8px;padding:8px 10px;font-size:11px;color:var(--text2)">
+          💡 costar + trabajo/tiempo/dinero = 노력/시간/돈이 들다
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">📌 일반 vs 개인 표현 비교</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:8px;font-weight:700">일반적 사실</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">El chocolate es rico.<br>El chocolate es encantador.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px;text-align:center">
+        <div style="font-size:11px;color:var(--accent3);margin-bottom:8px;font-weight:700">개인적 취향/감정</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.8">(A mí) <strong style="color:var(--accent3)">Me gusta</strong> el chocolate.<br><strong style="color:var(--accent3)">Me encantan</strong> los chocolates.</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;background:#e05c5c15;border:1px solid #e05c5c33;border-radius:10px;padding:10px 12px;font-size:12px;color:var(--text2)">
+      ⚠️ <strong style="color:#e05c5c">수일치 주의:</strong> 동사는 항상 문법적 주어(뒤에 오는 명사)에 맞춤!<br>
+      A mis padres les <strong style="color:var(--accent)">parece</strong> mala la película. (la película = 단수 → parece)<br>
+      Me <strong style="color:var(--accent)">parecen</strong> muy caras las entradas. (las entradas = 복수 → parecen)
+    </div>
+  </div>
+
+</div><!-- /gInverse2 -->
+
+
+<!-- ══ 섹션 A: 전치사 De/A/En/Con ══ -->
+<div id="gPrep1" class="g-section" style="display:none">
+
+  <div class="panel">
+    <div class="panel-title">🔗 전치사란?</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:12px">
+      두 단어를 연결하는 역할. 스페인어에서는 명사가 단독으로 다른 명사를 꾸미지 못하므로 전치사가 필수예요.
+    </div>
+    <div style="display:grid;gap:6px;font-size:13px;margin-bottom:12px">
+      <div style="background:var(--surface2);border-radius:8px;padding:8px 12px">clase <strong style="color:var(--accent)">de</strong> español [스페인어 수업]</div>
+      <div style="background:var(--surface2);border-radius:8px;padding:8px 12px">café <strong style="color:var(--accent)">con</strong> leche [카페 라떼]</div>
+      <div style="background:var(--surface2);border-radius:8px;padding:8px 12px">bueno <strong style="color:var(--accent)">para</strong> la salud [건강을 위해 좋은]</div>
+    </div>
+    <div style="background:#5c9eff15;border:1px solid #5c9eff33;border-radius:10px;padding:10px 12px;font-size:12px;color:var(--text2)">
+      ⚠️ <strong style="color:var(--accent3)">전치격 인칭대명사:</strong> 전치사 뒤에는 yo/tú 대신 <strong>mí / ti</strong> 사용<br>
+      단, con + mí/ti → <strong style="color:var(--accent)">conmigo / contigo</strong> (합성형)<br>
+      entre ti y mí (X) → <strong style="color:var(--accent)">entre tú y yo</strong> (O)
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">1️⃣ DE — ~의, ~로부터</div>
+    <div style="display:grid;gap:6px;margin-bottom:12px">
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px">
+        <div style="font-size:11px;color:var(--accent3);font-weight:700;margin-bottom:6px">귀속·소유</div>
+        <div style="font-size:13px;color:var(--text2)">el coche <strong style="color:var(--accent)">de</strong> mi padre [아버지 소유의 차] · 27 <strong style="color:var(--accent)">de</strong> junio [6월 27일]</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px">
+        <div style="font-size:11px;color:var(--accent3);font-weight:700;margin-bottom:6px">출신·출처</div>
+        <div style="font-size:13px;color:var(--text2)">Soy <strong style="color:var(--accent)">de</strong> Corea. [나는 한국 출신이다.] · El avión sale <strong style="color:var(--accent)">de</strong> Madrid.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px">
+        <div style="font-size:11px;color:var(--accent3);font-weight:700;margin-bottom:6px">재료·내용</div>
+        <div style="font-size:13px;color:var(--text2)">anillo <strong style="color:var(--accent)">de</strong> oro [금 반지] · botella <strong style="color:var(--accent)">de</strong> agua [물 병]</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px">
+        <div style="font-size:11px;color:var(--accent3);font-weight:700;margin-bottom:6px">시간·방식</div>
+        <div style="font-size:13px;color:var(--text2)"><strong style="color:var(--accent)">de</strong> día / <strong style="color:var(--accent)">de</strong> noche [낮에/밤에] · <strong style="color:var(--accent)">de</strong> pie [서서] · <strong style="color:var(--accent)">de</strong> repente [갑자기]</div>
+      </div>
+    </div>
+    <div style="background:var(--surface2);border-radius:10px;padding:12px">
+      <div style="font-size:11px;color:var(--accent);font-weight:700;margin-bottom:8px">✏️ de 동사 표현</div>
+      <div style="display:grid;gap:5px;font-size:12px;color:var(--text2)">
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">acordarse de</strong>: ~을 기억하다 → Él no se acuerda de nada.</div>
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">olvidarse de</strong>: ~을 잊다 → Siempre me olvido de cerrar la puerta.</div>
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">dejar de</strong> INF: ~하는 것을 그만두다 → No dejan de hacer ruido.</div>
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">enamorarse de</strong>: 사랑에 빠지다 → Me estoy enamorando de ti.</div>
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">depender de</strong>: 좌우되다 → El resultado depende de tu esfuerzo.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">2️⃣ A — ~로, ~에게</div>
+    <div style="display:grid;gap:6px;margin-bottom:12px">
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px">
+        <div style="font-size:11px;color:var(--accent3);font-weight:700;margin-bottom:6px">방향·시간·수단</div>
+        <div style="font-size:13px;color:var(--text2)">Voy <strong style="color:var(--accent)">a</strong> casa. · <strong style="color:var(--accent)">a</strong> las dos [2시에] · <strong style="color:var(--accent)">a</strong> pie [걸어서] · <strong style="color:var(--accent)">a</strong> mano [손으로]</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px">
+        <div style="font-size:11px;color:var(--accent3);font-weight:700;margin-bottom:6px">사람 직접 목적어</div>
+        <div style="font-size:13px;color:var(--text2)">Visito <strong style="color:var(--accent)">a</strong> mi abuela. · Le presté un libro <strong style="color:var(--accent)">a</strong> Juan.</div>
+      </div>
+    </div>
+    <div style="background:var(--surface2);border-radius:10px;padding:12px">
+      <div style="font-size:11px;color:var(--accent);font-weight:700;margin-bottom:8px">✏️ a 동사 표현</div>
+      <div style="display:grid;gap:5px;font-size:12px;color:var(--text2)">
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">empezar a</strong> INF: ~하기 시작하다 → Pronto empezará a llover.</div>
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">aprender a</strong> INF: ~하는 것을 배우다 → Quiero aprender a bailar.</div>
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">ayudar a</strong> INF: ~하는 것을 돕다 → ¿Me ayudas a abrir la caja?</div>
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">acostumbrarse a</strong>: ~에 익숙해지다 → Ya me he acostumbrado al nuevo trabajo.</div>
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">jugar a</strong>: ~를 하고 놀다 → Siempre jugamos al tenis.</div>
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">saber a</strong>: ~의 맛이 나다 → Este pan sabe a maní.</div>
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">oler a</strong>: ~의 냄새가 나다 → Huele a quemado.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">3️⃣ EN — ~안에서, ~에서</div>
+    <div style="display:grid;gap:6px;margin-bottom:12px">
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px">
+        <div style="font-size:11px;color:var(--accent3);font-weight:700;margin-bottom:6px">장소·시간·수단·방식</div>
+        <div style="font-size:13px;color:var(--text2)">Vivo <strong style="color:var(--accent)">en</strong> Seúl. · <strong style="color:var(--accent)">en</strong> 2002 · <strong style="color:var(--accent)">en</strong> coche/tren [차로/기차로] · <strong style="color:var(--accent)">en</strong> serio [진지하게]</div>
+      </div>
+    </div>
+    <div style="background:var(--surface2);border-radius:10px;padding:12px">
+      <div style="font-size:11px;color:var(--accent);font-weight:700;margin-bottom:8px">✏️ en 동사 표현</div>
+      <div style="display:grid;gap:5px;font-size:12px;color:var(--text2)">
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">pensar en</strong>: ~을 생각하다 → Siempre pienso en ti.</div>
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">confiar en</strong>: ~을 믿다 → Mis padres confían en mí.</div>
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">convertirse en</strong>: ~으로 변하다 → Ariel se convirtió en humano.</div>
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">quedar en</strong>: 약속을 정하다 → Quedamos en vernos hoy.</div>
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">tardar en</strong>: ~하는데 시간이 걸리다 → Tardamos una hora en cenar.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">4️⃣ CON — ~와 함께, ~을 가지고</div>
+    <div style="display:grid;gap:6px;margin-bottom:12px">
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px">
+        <div style="font-size:11px;color:var(--accent3);font-weight:700;margin-bottom:6px">동반·도구·부사구</div>
+        <div style="font-size:13px;color:var(--text2)">café <strong style="color:var(--accent)">con</strong> leche · comer <strong style="color:var(--accent)">con</strong> palillos [젓가락으로] · <strong style="color:var(--accent)">con</strong> cuidado [조심스럽게] · <strong style="color:var(--accent)">con</strong> frecuencia [자주]</div>
+      </div>
+      <div style="background:#e05c5c15;border:1px solid #e05c5c33;border-radius:10px;padding:10px 12px;font-size:12px;color:var(--text2)">
+        ⚠️ con + yo/mí → <strong style="color:var(--accent)">conmigo</strong> / con + tú/ti → <strong style="color:var(--accent)">contigo</strong>
+      </div>
+    </div>
+    <div style="background:var(--surface2);border-radius:10px;padding:12px">
+      <div style="font-size:11px;color:var(--accent);font-weight:700;margin-bottom:8px">✏️ con 동사 표현</div>
+      <div style="display:grid;gap:5px;font-size:12px;color:var(--text2)">
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">casarse con</strong>: ~와 결혼하다 → ¿Te quieres casar conmigo?</div>
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">enfadarse con</strong>: ~에게 화나다 → Ana se enfadó mucho con su novio.</div>
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">soñar con</strong>: ~를 꿈에서 보다 → Ayer soñé contigo.</div>
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">encontrarse con</strong>: ~와 우연히 만나다 → Me encontré con Juan en la plaza.</div>
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">contar con</strong>: ~을 갖추고 있다, 의지하다 → ¡Cuenta conmigo!</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /gPrep1 -->
+
+<!-- ══ 섹션 B: 전치사 Por/Para ══ -->
+<div id="gPrep2" class="g-section" style="display:none">
+
+  <div class="panel">
+    <div class="panel-title">🆚 POR vs PARA 핵심 비교</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+      <div style="background:#f0b42915;border:1px solid #f0b42944;border-radius:10px;padding:12px;text-align:center">
+        <div style="font-size:18px;font-weight:700;color:var(--accent);margin-bottom:6px">POR</div>
+        <div style="font-size:12px;color:var(--text2)">~때문에<br><span style="color:var(--text3);font-size:11px">이미 발생한 이유<br>이미 지나온 시점<br>통하는·지나는 장소</span></div>
+      </div>
+      <div style="background:#5c9eff15;border:1px solid #5c9eff44;border-radius:10px;padding:12px;text-align:center">
+        <div style="font-size:18px;font-weight:700;color:var(--accent3);margin-bottom:6px">PARA</div>
+        <div style="font-size:12px;color:var(--text2)">~위하여<br><span style="color:var(--text3);font-size:11px">아직 초래하지 않은 목적<br>아직 오지 않은 시점<br>향하는 곳·방향</span></div>
+      </div>
+    </div>
+    <div style="display:grid;gap:6px;font-size:13px">
+      <div style="background:var(--surface2);border-radius:8px;padding:8px 12px">bueno <strong style="color:var(--accent3)">para</strong> la salud [건강을 <strong style="color:var(--accent3)">위해</strong> 좋은] vs feliz <strong style="color:var(--accent)">por</strong> el regalo [선물 <strong style="color:var(--accent)">때문에</strong> 행복한]</div>
+      <div style="background:var(--surface2);border-radius:8px;padding:8px 12px">"¿Vivir <strong style="color:var(--accent3)">para</strong> trabajar o trabajar <strong style="color:var(--accent3)">para</strong> vivir?" [일하기 위해 사는가, 살기 위해 일하는가?]</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">5️⃣ POR — ~때문에, ~에 의해서</div>
+    <div style="display:grid;gap:6px;margin-bottom:12px">
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px">
+        <div style="font-size:11px;color:var(--accent3);font-weight:700;margin-bottom:6px">원인·이유</div>
+        <div style="font-size:13px;color:var(--text2)">vuelo cancelado <strong style="color:var(--accent)">por</strong> mal tiempo [나쁜 날씨 때문에] · ¡Gracias <strong style="color:var(--accent)">por</strong> venir!</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px">
+        <div style="font-size:11px;color:var(--accent3);font-weight:700;margin-bottom:6px">행위자 (수동태)</div>
+        <div style="font-size:13px;color:var(--text2)">libro firmado <strong style="color:var(--accent)">por</strong> el autor [작가에 의해 서명된 책] → 과거분사 + por + 행위자</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px">
+        <div style="font-size:11px;color:var(--accent3);font-weight:700;margin-bottom:6px">대체·수단</div>
+        <div style="font-size:13px;color:var(--text2)">cambiar dólares <strong style="color:var(--accent)">por</strong> euros · hablar <strong style="color:var(--accent)">por</strong> teléfono</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px">
+        <div style="font-size:11px;color:var(--accent3);font-weight:700;margin-bottom:6px">대략적 시간·장소</div>
+        <div style="font-size:13px;color:var(--text2)"><strong style="color:var(--accent)">por</strong> la mañana/tarde/noche [아침에/점심에/밤에] · pasear <strong style="color:var(--accent)">por</strong> el parque</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px">
+        <div style="font-size:11px;color:var(--accent3);font-weight:700;margin-bottom:6px">관용 표현</div>
+        <div style="font-size:13px;color:var(--text2)"><strong style="color:var(--accent)">por favor</strong> [부탁합니다] · <strong style="color:var(--accent)">por cierto</strong> [그런데] · <strong style="color:var(--accent)">por fin</strong> [마침내] · <strong style="color:var(--accent)">por lo tanto</strong> [그래서]</div>
+      </div>
+    </div>
+    <div style="background:var(--surface2);border-radius:10px;padding:12px">
+      <div style="font-size:11px;color:var(--accent);font-weight:700;margin-bottom:8px">✏️ por 숙어 표현</div>
+      <div style="display:grid;gap:5px;font-size:12px;color:var(--text2)">
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">estar por</strong> INF: ~이 되어 있지 않다 → La casa está por limpiar. [청소 안 됨]</div>
+        <div style="background:#1a1830;border-radius:6px;padding:7px 10px"><strong style="color:var(--accent)">estar loco por</strong>: ~에 아주 열중하다 → Raúl está loco por las fotografías.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">6️⃣ PARA — ~을 위하여</div>
+    <div style="display:grid;gap:6px;margin-bottom:12px">
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px">
+        <div style="font-size:11px;color:var(--accent3);font-weight:700;margin-bottom:6px">목적·용도</div>
+        <div style="font-size:13px;color:var(--text2)">comer <strong style="color:var(--accent3)">para</strong> vivir [살기 위해 먹다] · juguete <strong style="color:var(--accent3)">para</strong> niños [아이들용 장난감]</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:10px 12px">
+        <div style="font-size:11px;color:var(--accent3);font-weight:700;margin-bottom:6px">기한·방향</div>
+        <div style="font-size:13px;color:var(--text2)">tarea <strong style="color:var(--accent3)">para</strong> mañana [내일까지 과제] · vuelo <strong style="color:var(--accent3)">para</strong> Madrid [마드리드행 비행기]</div>
+      </div>
+    </div>
+    <div style="background:var(--surface2);border-radius:10px;padding:12px">
+      <div style="font-size:11px;color:var(--accent3);font-weight:700;margin-bottom:8px">✏️ para 숙어 표현</div>
+      <div style="background:#1a1830;border-radius:6px;padding:7px 10px;font-size:12px;color:var(--text2)">
+        <strong style="color:var(--accent3)">estar para</strong> INF: 이제 막 ~하려 하다 → El avión está para salir. (= está a punto de salir)
+      </div>
+    </div>
+  </div>
+
+</div><!-- /gPrep2 -->
+
+<!-- ══ 섹션 C: 기타 전치사 ══ -->
+<div id="gPrep3" class="g-section" style="display:none">
+
+  <div class="panel">
+    <div class="panel-title">🔗 기타 전치사 정리</div>
+    <div style="display:grid;gap:8px">
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="display:flex;gap:12px;align-items:baseline;margin-bottom:6px">
+          <span style="font-size:16px;font-weight:700;color:var(--accent);min-width:50px">sobre</span>
+          <span style="font-size:12px;color:var(--text3)">~위에(서) / ~에 대해 / ~쯤</span>
+        </div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.8">
+          Hay un libro <strong style="color:var(--accent)">sobre</strong> la mesa. [책상 위에] · Hablamos <strong style="color:var(--accent)">sobre</strong> la salud. [건강에 대해] · Llegará <strong style="color:var(--accent)">sobre</strong> las cinco. [5시쯤]
+        </div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="display:flex;gap:12px;align-items:baseline;margin-bottom:6px">
+          <span style="font-size:16px;font-weight:700;color:var(--accent);min-width:50px">sin</span>
+          <span style="font-size:12px;color:var(--text3)">~없이</span>
+        </div>
+        <div style="font-size:12px;color:var(--text2)">Viajaron <strong style="color:var(--accent)">sin</strong> dinero. [무전 여행]</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="display:flex;gap:12px;align-items:baseline;margin-bottom:6px">
+          <span style="font-size:16px;font-weight:700;color:var(--accent);min-width:50px">desde</span>
+          <span style="font-size:12px;color:var(--text3)">~부터</span>
+        </div>
+        <div style="font-size:12px;color:var(--text2)">Trabajo <strong style="color:var(--accent)">desde</strong> el lunes. · <strong style="color:var(--accent)">de</strong> lunes <strong style="color:var(--accent3)">a</strong> viernes = <strong style="color:var(--accent)">desde</strong> el lunes <strong style="color:var(--accent3)">hasta</strong> el viernes</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="display:flex;gap:12px;align-items:baseline;margin-bottom:6px">
+          <span style="font-size:16px;font-weight:700;color:var(--accent);min-width:50px">hasta</span>
+          <span style="font-size:12px;color:var(--text3)">~까지</span>
+        </div>
+        <div style="font-size:12px;color:var(--text2)">Tengo que volver <strong style="color:var(--accent)">hasta</strong> las ocho. [8시까지]</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="display:flex;gap:12px;align-items:baseline;margin-bottom:6px">
+          <span style="font-size:16px;font-weight:700;color:var(--accent);min-width:50px">hacia</span>
+          <span style="font-size:12px;color:var(--text3)">~쪽으로 (방향, para 동의어)</span>
+        </div>
+        <div style="font-size:12px;color:var(--text2)">Voy <strong style="color:var(--accent)">hacia</strong> la plaza. [광장 쪽으로]</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:10px;padding:12px">
+        <div style="display:flex;gap:12px;align-items:baseline;margin-bottom:6px">
+          <span style="font-size:16px;font-weight:700;color:var(--accent);min-width:50px">entre</span>
+          <span style="font-size:12px;color:var(--text3)">~사이에</span>
+        </div>
+        <div style="font-size:12px;color:var(--text2)">El gato está <strong style="color:var(--accent)">entre</strong> la mesa y la cama.<br>
+          ⚠️ entre ti y mí (X) → <strong style="color:var(--accent)">entre tú y yo</strong> (O)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">📊 전치사 총정리표</div>
+    <div style="overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead><tr style="background:var(--surface2)">
+        <th style="padding:9px;text-align:left;border-bottom:1px solid var(--border);color:var(--accent);font-size:13px">전치사</th>
+        <th style="padding:9px;text-align:left;border-bottom:1px solid var(--border);color:var(--text3)">핵심 의미</th>
+        <th style="padding:9px;text-align:left;border-bottom:1px solid var(--border);color:var(--text3)">주요 용법</th>
+      </tr></thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px;color:var(--accent);font-weight:700">de</td><td style="padding:8px;color:var(--text2)">~의, ~로부터</td><td style="padding:8px;color:var(--text3);font-size:11px">귀속·소유, 출신, 재료, 출발점</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px;color:var(--accent);font-weight:700">a</td><td style="padding:8px;color:var(--text2)">~로, ~에</td><td style="padding:8px;color:var(--text3);font-size:11px">방향, 시간, 수단, 사람 목적어</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px;color:var(--accent);font-weight:700">en</td><td style="padding:8px;color:var(--text2)">~안에서</td><td style="padding:8px;color:var(--text3);font-size:11px">장소, 시간, 이동수단, 방식</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px;color:var(--accent);font-weight:700">con</td><td style="padding:8px;color:var(--text2)">~와 함께</td><td style="padding:8px;color:var(--text3);font-size:11px">동반, 도구, 부사구 / conmigo·contigo</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px;color:var(--accent);font-weight:700">por</td><td style="padding:8px;color:var(--text2)">~때문에</td><td style="padding:8px;color:var(--text3);font-size:11px">원인, 행위자, 대체, 수단, 대략적 시간·장소</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px;color:var(--accent3);font-weight:700">para</td><td style="padding:8px;color:var(--text2)">~위하여</td><td style="padding:8px;color:var(--text3);font-size:11px">목적, 용도, 기한, 방향</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px;color:var(--accent);font-weight:700">sobre</td><td style="padding:8px;color:var(--text2)">~위에, ~에 대해</td><td style="padding:8px;color:var(--text3);font-size:11px">위치, 주제, 대략적 시간(~쯤)</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px;color:var(--accent);font-weight:700">sin</td><td style="padding:8px;color:var(--text2)">~없이</td><td style="padding:8px;color:var(--text3);font-size:11px">부재</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px;color:var(--accent);font-weight:700">desde</td><td style="padding:8px;color:var(--text2)">~부터</td><td style="padding:8px;color:var(--text3);font-size:11px">시간·공간 출발점</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px;color:var(--accent);font-weight:700">hasta</td><td style="padding:8px;color:var(--text2)">~까지</td><td style="padding:8px;color:var(--text3);font-size:11px">시간·공간 도달점</td></tr>
+        <tr style="border-bottom:1px solid var(--border)"><td style="padding:8px;color:var(--accent);font-weight:700">hacia</td><td style="padding:8px;color:var(--text2)">~쪽으로</td><td style="padding:8px;color:var(--text3);font-size:11px">방향 (para 유사)</td></tr>
+        <tr><td style="padding:8px;color:var(--accent);font-weight:700">entre</td><td style="padding:8px;color:var(--text2)">~사이에</td><td style="padding:8px;color:var(--text3);font-size:11px">위치 / entre tú y yo</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+</div><!-- /gPrep3 -->
+
 <!-- ══ 섹션 4: 연습문제 ══ -->
 <div id="gExercise" class="g-section" style="display:none">
 
@@ -1740,6 +2374,12 @@
       <button class="pill" onclick="loadExerciseSet(5,this)" style="font-size:11px">6단계: se 변환</button>
       <button class="pill" onclick="loadExerciseSet(6,this)" style="font-size:11px">7단계: 재귀 활용</button>
       <button class="pill" onclick="loadExerciseSet(7,this)" style="font-size:11px">8단계: 재귀 구분</button>
+      <button class="pill" onclick="loadExerciseSet(8,this)" style="font-size:11px">9단계: gustar 활용</button>
+      <button class="pill" onclick="loadExerciseSet(9,this)" style="font-size:11px">10단계: doler 활용</button>
+      <button class="pill" onclick="loadExerciseSet(10,this)" style="font-size:11px">11단계: 역구조 심화</button>
+      <button class="pill" onclick="loadExerciseSet(11,this)" style="font-size:11px">12단계: 역구조 종합</button>
+      <button class="pill" onclick="loadExerciseSet(12,this)" style="font-size:11px">13단계: 전치사 1</button>
+      <button class="pill" onclick="loadExerciseSet(13,this)" style="font-size:11px">14단계: 전치사 2</button>
     </div>
     <div id="exercise-container"></div>
     <div id="exercise-result" style="display:none;margin-top:14px;padding:14px;border-radius:12px;text-align:center"></div>
@@ -8032,6 +8672,96 @@ function initConjugation() {
   updateConjugation();
 }
 
+
+function conjSearchInput(val) {
+  const drop = document.getElementById('conj-search-drop');
+  const q = val.trim().toLowerCase();
+  if (!q) { drop.style.display = 'none'; return; }
+
+  const results = verbs
+    .map((v, i) => ({ v, i }))
+    .filter(({ v }) =>
+      v.es.toLowerCase().includes(q) ||
+      v.ko.includes(q) ||
+      (v.pron && v.pron.toLowerCase().includes(q))
+    )
+    .slice(0, 12);
+
+  if (!results.length) {
+    drop.innerHTML = '<div style="padding:14px;text-align:center;color:var(--text3);font-size:13px">결과 없음</div>';
+    drop.style.display = '';
+    return;
+  }
+
+  drop.innerHTML = results.map(({ v, i }) => {
+    const hi = (str) => str.replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'gi'),
+      m => `<strong style="color:var(--accent)">${m}</strong>`);
+    const badge = v.irregular
+      ? `<span style="font-size:10px;padding:1px 7px;border-radius:100px;background:#f0b42922;color:var(--accent);font-weight:700">불규칙</span>`
+      : `<span style="font-size:10px;padding:1px 7px;border-radius:100px;background:#5c9eff11;color:var(--accent3)">-${v.verbType}</span>`;
+    return `<div onmousedown="conjSearchSelect(${i})"
+      style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;
+             cursor:pointer;border-bottom:1px solid var(--border);gap:8px;transition:background .15s"
+      onmouseover="this.style.background='var(--surface)'" onmouseout="this.style.background=''">
+      <span style="font-size:15px;font-weight:600">${hi(v.es)}</span>
+      <span style="font-size:12px;color:var(--text2);flex:1;text-align:left;padding-left:8px">${v.ko}</span>
+      ${badge}
+    </div>`;
+  }).join('');
+
+  drop.style.display = '';
+}
+
+function conjSearchSelect(idx) {
+  conjVerbIndex = idx;
+  conjFromCards = false;
+  updateConjugation();
+  const inp = document.getElementById('conj-search-input');
+  inp.value = verbs[idx].es;
+  document.getElementById('conj-search-drop').style.display = 'none';
+  inp.blur();
+}
+
+
+function getPluperfect(verb) {
+  // perfect 데이터에서 haber 현재형 → 과거형(imperfecto)으로 교체
+  const perf = verb.conjugations && verb.conjugations.perfect;
+  if (!perf) return null;
+  const map = [
+    [/^he /, 'había '],
+    [/^has /, 'habías '],
+    [/^ha /, 'había '],
+    [/^hemos /, 'habíamos '],
+    [/^habéis /, 'habíais '],
+    [/^han /, 'habían '],
+  ];
+  return perf.map(f => {
+    for (const [pat, rep] of map) {
+      if (pat.test(f)) return f.replace(pat, rep);
+    }
+    return f;
+  });
+}
+
+function getPluperfectPron(verb) {
+  const perf = verb.conjPron && verb.conjPron.perfect;
+  if (!perf) return null;
+  const map = [
+    [/^에 /, '아비아 '],
+    [/^아스 /, '아비아스 '],
+    [/^아 /, '아비아 '],
+    [/^에모스 /, '아비아모스 '],
+    [/^아베이스 /, '아비아이스 '],
+    [/^안 /, '아비안 '],
+  ];
+  return perf.map(f => {
+    for (const [pat, rep] of map) {
+      if (pat.test(f)) return f.replace(pat, rep);
+    }
+    return f;
+  });
+}
+
 function conjNext() {
   conjVerbIndex = (conjVerbIndex + 1) % verbs.length;
   updateConjugation();
@@ -8060,8 +8790,12 @@ function updateConjugation() {
   document.getElementById('conj-meaning').innerHTML = `${verb.ko} &nbsp;${badge}`;
   document.getElementById('conj-counter').textContent = `${conjVerbIndex + 1} / ${verbs.length}`;
 
-  const forms = verb.conjugations[conjTense];
-  const prons = verb.conjPron ? verb.conjPron[conjTense] : null;
+  const forms = conjTense === 'pluperfect'
+    ? getPluperfect(verb)
+    : verb.conjugations[conjTense];
+  const prons = conjTense === 'pluperfect'
+    ? getPluperfectPron(verb)
+    : (verb.conjPron ? verb.conjPron[conjTense] : null);
   const grid  = document.getElementById('conjGrid');
   grid.innerHTML = '';
 
@@ -8090,7 +8824,7 @@ function updateConjugation() {
   if (subjBtn)      subjBtn.style.display      = conjTense === 'subjunctive' ? 'inline-block' : 'none';
   if (imperfectBtn) imperfectBtn.style.display = conjTense === 'imperfect'   ? 'inline-block' : 'none';
   if (preteriteBtn) preteriteBtn.style.display = conjTense === 'preterite'   ? 'inline-block' : 'none';
-  if (perfectBtn)   perfectBtn.style.display   = conjTense === 'perfect'     ? 'inline-block' : 'none';
+  if (perfectBtn)   perfectBtn.style.display   = (conjTense === 'perfect' || conjTense === 'pluperfect') ? 'inline-block' : 'none';
 
   // 단수(0,1,2) → 복수(3,4,5) 순서로 표시
   const singularLabel = `<div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);font-weight:600;grid-column:1/-1;margin-top:4px;margin-bottom:2px;padding-bottom:4px;border-bottom:1px solid var(--border)">단수 (Singular)</div>`;
@@ -8134,7 +8868,8 @@ function updateConjugation() {
     present:     `<strong style="color:var(--text)">현재형 (Presente)</strong><br>현재의 습관적 행동, 사실, 일반적 진리를 나타냅니다.<br>• <em>-ar</em>: -o, -as, -a, -amos, -áis, -an<br>• <em>-er</em>: -o, -es, -e, -emos, -éis, -en<br>• <em>-ir</em>: -o, -es, -e, -imos, -ís, -en`,
     preterite:   `<strong style="color:var(--text)">단순 과거형 (Pretérito Indefinido)</strong><br>과거에 완료된 특정 시점의 행동을 나타냅니다.<br>• <em>-ar</em>: -é, -aste, -ó, -amos, -asteis, -aron<br>• <em>-er/-ir</em>: -í, -iste, -ió, -imos, -isteis, -ieron`,
     imperfect:   `<strong style="color:var(--text)">불완료 과거 (Pretérito Imperfecto)</strong><br>과거의 반복적 습관, 진행 중이던 상태, 배경 묘사에 사용합니다.<br>예: <em>Cuando era niño, vivía en Seúl.</em> (어렸을 때 서울에 살았다)<br>• <em>-ar</em>: -aba, -abas, -aba, -ábamos, -abais, -aban<br>• <em>-er/-ir</em>: -ía, -ías, -ía, -íamos, -íais, -ían`,
-    perfect:     `<strong style="color:var(--text)">과거완료 (Pretérito Perfecto)</strong><br><em>haber</em> 현재형 + 과거분사로 구성. 현재와 연결된 과거 경험을 나타냅니다.<br>예: <em>He comido ya.</em> (이미 먹었어요)<br>• haber 현재형: he, has, ha, hemos, habéis, han<br>• 과거분사: -ar → -ado, -er/-ir → -ido`,
+    perfect:     `<strong style="color:var(--text)">현재완료 (Pretérito Perfecto Compuesto)</strong><br><em>haber</em> 현재형 + 과거분사로 구성. 현재와 연결된 과거 경험·최근 완료를 나타냅니다.<br>예: <em>He comido ya.</em> (이미 먹었어요)<br>• haber 현재형: he, has, ha, hemos, habéis, han<br>• 과거분사: -ar → -ado, -er/-ir → -ido`,
+    pluperfect:  `<strong style="color:var(--text)">과거완료 (Pretérito Pluscuamperfecto)</strong><br><em>haber</em> 과거형(imperfecto) + 과거분사로 구성. 과거의 어떤 시점보다 더 이전에 일어난 일을 나타냅니다.<br>예: <em>Cuando llegué, ya había comido.</em> (내가 도착했을 때 이미 먹어버렸었다.)<br>• haber 과거형: había, habías, había, habíamos, habíais, habían<br>• 과거분사: -ar → -ado, -er/-ir → -ido (현재완료와 동일)`,
     future:      `<strong style="color:var(--text)">미래형 (Futuro Simple)</strong><br>미래의 행동, 예측, 추측을 나타냅니다.<br>예: <em>Mañana hablaré con el jefe.</em> (내일 상사와 얘기할 거예요)<br>• 규칙: 원형 + -é, -ás, -á, -emos, -éis, -án<br>• 불규칙: tener→tendr-, hacer→har-, poder→podr-`,
     conditional: `<strong style="color:var(--text)">조건법 (Condicional Simple)</strong><br>가정, 공손한 표현, 불확실한 추측에 사용합니다.<br>예: <em>¿Podría ayudarme?</em> (도와주실 수 있을까요?)<br>• 규칙: 원형 + -ía, -ías, -ía, -íamos, -íais, -ían<br>• 불규칙: tener→tendr-, hacer→har-, poder→podr-`,
     progressive: `<strong style="color:var(--text)">현재진행형 (Presente Progresivo)</strong><br><em>estar</em> 현재형 + 현재분사(-ando/-iendo)로 구성됩니다.<br>• <em>-ar</em> 분사: -ando (comprando, lavando)<br>• <em>-er/-ir</em> 분사: -iendo (cosiendo, revisando)`,
@@ -9638,11 +10373,50 @@ function togglePattern(idx) {
 // GRAMMAR TAB — 목적격 대명사
 // ══════════════════════════════════════════════════
 
+// 상위 카테고리 전환
+function showGrammarTop(cat, btn) {
+  // 상위 버튼 active
+  document.querySelectorAll('#grammar-top-nav .pill').forEach(p => p.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  // 하위 탭 표시/숨김
+  const subObj = document.getElementById('grammar-sub-obj');
+  const subInv = document.getElementById('grammar-sub-inv');
+  if (subObj) subObj.style.display = cat === 'obj' ? 'flex' : 'none';
+  if (subInv) subInv.style.display = cat === 'inv' ? 'flex' : 'none';
+  const subPrep = document.getElementById('grammar-sub-prep');
+  if (subPrep) subPrep.style.display = cat === 'prep' ? 'flex' : 'none';
+
+  // 섹션 전환
+  if (cat === 'obj') {
+    showGrammarSub('gIntro', document.getElementById('gsub-intro'));
+  } else if (cat === 'refl') {
+    showGrammarSection('gReflexive', null);
+  } else if (cat === 'inv') {
+    showGrammarSub('gInverse', document.getElementById('gsub-inv1'));
+  } else if (cat === 'prep') {
+    showGrammarSub('gPrep1', document.getElementById('gsub-prep1'));
+  } else if (cat === 'ex') {
+    showGrammarSection('gExercise', null);
+  }
+}
+
+// 하위 탭 전환 (목적격 / 역구조 공용)
+function showGrammarSub(id, btn) {
+  // 현재 활성 하위 탭 그룹에서 active 제거
+  const subNavs = document.querySelectorAll('[id^="grammar-sub-"]');
+  subNavs.forEach(nav => {
+    if (nav.style.display !== 'none') {
+      nav.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    }
+  });
+  if (btn) btn.classList.add('active');
+  showGrammarSection(id, null);
+}
+
 function showGrammarSection(id, btn) {
   document.querySelectorAll('.g-section').forEach(s => s.style.display = 'none');
   document.getElementById(id).style.display = '';
-  document.querySelectorAll('#tab-grammar .pill').forEach(p => p.classList.remove('active'));
-  if (btn) btn.classList.add('active');
   if (id === 'gExercise') {
     loadExerciseSet(currentExSet || 0, null);
   }
@@ -9652,29 +10426,29 @@ function showGrammarSection(id, btn) {
 const exerciseSets = [
   // 0단계: 간접 목적격 대명사
   [
-    { type:'fill', sentence:'Mis padres ___ llaman todos los días.', blank_hint:'(a mí)', answer:'me', hint:'나에게 / 간접 목적격 a mí = me' },
-    { type:'fill', sentence:'___ veo mañana a las dos.', blank_hint:'(a ti)', answer:'Te', hint:'너를(에게) / 간접 a ti = te (문두라 대문자)' },
-    { type:'fill', sentence:'La señora ___ da un pan.', blank_hint:'(a nosotros)', answer:'nos', hint:'우리에게 / a nosotros = nos' },
-    { type:'fill', sentence:'Yo ___ doy dinero a mis hermanos.', blank_hint:'(a mis hermanos)', answer:'les', hint:'그들에게 / 3인칭 복수 = les' },
-    { type:'fill', sentence:'El profesor ___ deja mucha tarea.', blank_hint:'(a nosotros)', answer:'nos', hint:'우리에게 / nos' },
-    { type:'fill', sentence:'¿___ prestas un bolígrafo, por favor?', blank_hint:'(a mí)', answer:'Me', hint:'나에게 / me (문두라 대문자)' },
-    { type:'fill', sentence:'Yo ___ envío muchos mensajes a mis padres.', blank_hint:'(a mis padres)', answer:'les', hint:'그들에게 / 3인칭 복수 = les' },
-    { type:'fill', sentence:'Tengo un amigo y ___ veo cada fin de semana.', blank_hint:'(a él)', answer:'le', hint:'그를 / 3인칭 단수 간접 = le' },
-    { type:'fill', sentence:'Mi mamá siempre ___ pregunta cómo estoy.', blank_hint:'(a mí)', answer:'me', hint:'나에게 / me' },
-    { type:'fill', sentence:'¿Tú ___ dices la verdad a tu jefe?', blank_hint:'(a él)', answer:'le', hint:'그에게 / le' },
+    { type:'choice', sentence:'Mis padres ___ llaman todos los días.', choices:['me','nos','le','te'], answer:'me', hint:'나에게 / 간접 목적격 a mí = me' },
+    { type:'choice', sentence:'___ veo mañana a las dos.', choices:['Me','Les','Le','Te'], answer:'Te', hint:'너를(에게) / 간접 a ti = te (문두라 대문자)' },
+    { type:'choice', sentence:'La señora ___ da un pan.', choices:['les','me','nos','le'], answer:'nos', hint:'우리에게 / a nosotros = nos' },
+    { type:'choice', sentence:'Yo ___ doy dinero a mis hermanos.', choices:['me','les','te','le'], answer:'les', hint:'그들에게 / 3인칭 복수 = les' },
+    { type:'choice', sentence:'El profesor ___ deja mucha tarea.', choices:['nos','me','les','te'], answer:'nos', hint:'우리에게 / nos' },
+    { type:'choice', sentence:'¿___ prestas un bolígrafo, por favor?', choices:['Me','Os','Te','Le'], answer:'Me', hint:'나에게 / me (문두라 대문자)' },
+    { type:'choice', sentence:'Yo ___ envío muchos mensajes a mis padres.', choices:['me','les','te','le'], answer:'les', hint:'그들에게 / 3인칭 복수 = les' },
+    { type:'choice', sentence:'Tengo un amigo y ___ veo cada fin de semana.', choices:['nos','les','os','le'], answer:'le', hint:'그를 / 3인칭 단수 간접 = le' },
+    { type:'choice', sentence:'Mi mamá siempre ___ pregunta cómo estoy.', choices:['me','les','nos','os'], answer:'me', hint:'나에게 / me' },
+    { type:'choice', sentence:'¿Tú ___ dices la verdad a tu jefe?', choices:['te','nos','les','le'], answer:'le', hint:'그에게 / le' },
   ],
   // 1단계: 직접 목적격 대명사
   [
-    { type:'fill', sentence:'Yo ___ quiero. [나는 그를 사랑한다.]', blank_hint:'(a Juan)', answer:'lo', hint:'사람 남성 직접 목적어 = lo' },
-    { type:'fill', sentence:'Yo ___ quiero. [나는 그녀를 사랑한다.]', blank_hint:'(a Juana)', answer:'la', hint:'사람 여성 직접 목적어 = la' },
-    { type:'fill', sentence:'Yo ___ invito a mi fiesta. [너를 초대한다.]', blank_hint:'(a ti)', answer:'te', hint:'2인칭 직접 목적 = te' },
-    { type:'fill', sentence:'Yo ___ veo. [나는 그들을 본다.]', blank_hint:'(a ellos)', answer:'los', hint:'3인칭 남성 복수 직접 = los' },
-    { type:'fill', sentence:'Mis amigos quieren venir. ¿Puedo invitar___?', blank_hint:'(a ellos)', answer:'los', hint:'원형동사 뒤에 붙이기 / 복수 = los' },
-    { type:'fill', sentence:'¿___ veo mañana? [나는 너를 내일 볼게.]', blank_hint:'(a ti)', answer:'Te', hint:'2인칭 직접 = te (문두 대문자)' },
-    { type:'fill', sentence:'Yo ___ busco. [나는 그를 찾는다.]', blank_hint:'(a Juan)', answer:'lo', hint:'남성 단수 직접 = lo' },
-    { type:'fill', sentence:'¿Tienes mi libro? No, no ___ tengo.', blank_hint:'(el libro)', answer:'lo', hint:'사물 남성 단수 직접 = lo' },
-    { type:'fill', sentence:'¿Visitas mucho a tu abuela? Sí, ___ visito mucho.', blank_hint:'(a mi abuela)', answer:'la', hint:'여성 단수 직접 = la' },
-    { type:'fill', sentence:'Perdóna___. [나를 용서해줘.]', blank_hint:'(a mí)', answer:'me', hint:'긍정명령 뒤에 붙이기 / 나를 = me' },
+    { type:'choice', sentence:'Yo ___ quiero. [나는 그를 사랑한다.]', choices:['me','te','la','lo'], answer:'lo', hint:'사람 남성 직접 목적어 = lo' },
+    { type:'choice', sentence:'Yo ___ quiero. [나는 그녀를 사랑한다.]', choices:['me','te','los','la'], answer:'la', hint:'사람 여성 직접 목적어 = la' },
+    { type:'choice', sentence:'Yo ___ invito a mi fiesta. [너를 초대한다.]', choices:['las','la','me','te'], answer:'te', hint:'2인칭 직접 목적 = te' },
+    { type:'choice', sentence:'Yo ___ veo. [나는 그들을 본다.]', choices:['la','me','las','los'], answer:'los', hint:'3인칭 남성 복수 직접 = los' },
+    { type:'choice', sentence:'Mis amigos quieren venir. ¿Puedo invitar___?', choices:['los','les','las','lo'], answer:'los', hint:'원형동사 뒤에 붙이기 / 복수 = los' },
+    { type:'choice', sentence:'¿___ veo mañana? [나는 너를 내일 볼게.]', choices:['Me','Te','Las','La'], answer:'Te', hint:'2인칭 직접 = te (문두 대문자)' },
+    { type:'choice', sentence:'Yo ___ busco. [나는 그를 찾는다.]', choices:['los','te','me','lo'], answer:'lo', hint:'남성 단수 직접 = lo' },
+    { type:'choice', sentence:'¿Tienes mi libro? No, no ___ tengo.', choices:['los','lo','las','me'], answer:'lo', hint:'사물 남성 단수 직접 = lo' },
+    { type:'choice', sentence:'¿Visitas mucho a tu abuela? Sí, ___ visito mucho.', choices:['lo','la','me','los'], answer:'la', hint:'여성 단수 직접 = la' },
+    { type:'choice', sentence:'Perdóna___. [나를 용서해줘.]', choices:['los','me','lo','las'], answer:'me', hint:'긍정명령 뒤에 붙이기 / 나를 = me' },
   ],
   // 2단계: le vs lo/la
   [
@@ -9691,16 +10465,16 @@ const exerciseSets = [
   ],
   // 3단계: 간접+직접 동시 사용
   [
-    { type:'fill', sentence:'Yo compro un café para ti. → Yo ___ ___ compro.', blank_hint:'(너에게 / 그것을)', answer:'te lo', hint:'간접 te + 직접 lo → te lo' },
-    { type:'fill', sentence:'Mi novia me envía el mensaje. → Mi novia ___ ___ envía.', blank_hint:'(나에게 / 그것을)', answer:'me lo', hint:'간접 me + 직접 lo → me lo' },
-    { type:'fill', sentence:'Mi papá le regala un libro a tu mamá. → Mi papá ___ ___ regala.', blank_hint:'(그녀에게 / 그것을)', answer:'se lo', hint:'le + lo → se로 변형! → se lo' },
-    { type:'fill', sentence:'Mi papá le regala una flor a tu mamá. → Mi papá ___ ___ regala.', blank_hint:'(그녀에게 / 그것을)', answer:'se la', hint:'le + la → se로 변형! → se la' },
-    { type:'fill', sentence:'Mi tía les regala los chocolates a los niños. → Mi tía ___ ___ regala.', blank_hint:'(그들에게 / 그것들을)', answer:'se los', hint:'les + los → se로 변형! → se los' },
-    { type:'fill', sentence:'¿Quién te da dinero? Mis padres ___ ___ dan.', blank_hint:'(나에게 / 그것을)', answer:'me lo', hint:'간접 me + 직접 lo → me lo' },
-    { type:'fill', sentence:'¿Quién le da la comida a tu perro? Yo ___ ___ doy.', blank_hint:'(그에게 / 그것을)', answer:'se la', hint:'le + la → se la' },
-    { type:'fill', sentence:'José tiene mi libro. Quiero que ___ ___ devuelva.', blank_hint:'(나에게 / 그것을)', answer:'me lo', hint:'간접 me + 직접 lo → me lo' },
-    { type:'fill', sentence:'Hoy lo voy a ver. ___ ___ digo yo.', blank_hint:'(그에게 / 그것을)', answer:'Se lo', hint:'le + lo → se lo (문두 대문자)' },
-    { type:'fill', sentence:'¿Puedo comprar eso para ti? ¿Me ___ ___ permites?', blank_hint:'(너에게/그것을)', answer:'te lo', hint:'간접 te + 직접 lo → te lo' },
+    { type:'choice', sentence:'Yo compro un café para ti. → Yo ___ ___ compro.', choices:['se los','se lo','te lo','nos lo'], answer:'te lo', hint:'간접 te + 직접 lo → te lo' },
+    { type:'choice', sentence:'Mi novia me envía el mensaje. → Mi novia ___ ___ envía.', choices:['me lo','se lo','se la','te la'], answer:'me lo', hint:'간접 me + 직접 lo → me lo' },
+    { type:'choice', sentence:'Mi papá le regala un libro a tu mamá. → Mi papá ___ ___ regala.', choices:['se lo','se los','te lo','se la'], answer:'se lo', hint:'le + lo → se로 변형! → se lo' },
+    { type:'choice', sentence:'Mi papá le regala una flor a tu mamá. → Mi papá ___ ___ regala.', choices:['te lo','se la','nos lo','me lo'], answer:'se la', hint:'le + la → se로 변형! → se la' },
+    { type:'choice', sentence:'Mi tía les regala los chocolates a los niños. → Mi tía ___ ___ regala.', choices:['me la','te la','nos lo','se los'], answer:'se los', hint:'les + los → se로 변형! → se los' },
+    { type:'choice', sentence:'¿Quién te da dinero? Mis padres ___ ___ dan.', choices:['me lo','se lo','se la','te la'], answer:'me lo', hint:'간접 me + 직접 lo → me lo' },
+    { type:'choice', sentence:'¿Quién le da la comida a tu perro? Yo ___ ___ doy.', choices:['te lo','se la','nos lo','me lo'], answer:'se la', hint:'le + la → se la' },
+    { type:'choice', sentence:'José tiene mi libro. Quiero que ___ ___ devuelva.', choices:['me lo','se lo','se la','te la'], answer:'me lo', hint:'간접 me + 직접 lo → me lo' },
+    { type:'choice', sentence:'Hoy lo voy a ver. ___ ___ digo yo.', choices:['Me la','Se la','Te la','Se lo'], answer:'Se lo', hint:'le + lo → se lo (문두 대문자)' },
+    { type:'choice', sentence:'¿Puedo comprar eso para ti? ¿Me ___ ___ permites?', choices:['se los','se lo','te lo','nos lo'], answer:'te lo', hint:'간접 te + 직접 lo → te lo' },
   ],
   // 4단계: 위치 규칙 (변형/원형/분사/명령)
   [
@@ -9717,29 +10491,29 @@ const exerciseSets = [
   ],
   // 5단계: le/les → se 변환
   [
-    { type:'transform', before:'Le compro un libro a María.', after:'___ ___ compro a María.', answer:'Se lo', hint:'le + lo → se + lo → Se lo compro a María.' },
-    { type:'transform', before:'Le doy la carta a mi jefe.', after:'___ ___ doy a mi jefe.', answer:'Se la', hint:'le + la → se + la → Se la doy.' },
-    { type:'transform', before:'Les envío los documentos a mis clientes.', after:'___ ___ envío a mis clientes.', answer:'Se los', hint:'les + los → se + los → Se los envío.' },
-    { type:'transform', before:'Le mando las fotos a mi amigo.', after:'___ ___ mando a mi amigo.', answer:'Se las', hint:'les + las → se + las → Se las mando.' },
-    { type:'transform', before:'Le regalo un café a mi jefa.', after:'___ ___ regalo a mi jefa.', answer:'Se lo', hint:'le + lo → se lo → Se lo regalo.' },
-    { type:'transform', before:'Les presto dinero a mis hermanos.', after:'___ ___ presto a mis hermanos.', answer:'Se lo', hint:'les + lo → se lo → Se lo presto.' },
-    { type:'transform', before:'Le devuelvo el libro a Juan.', after:'___ ___ devuelvo a Juan.', answer:'Se lo', hint:'le + lo → se lo → Se lo devuelvo.' },
-    { type:'transform', before:'Le compro las flores a mi madre.', after:'___ ___ compro a mi madre.', answer:'Se las', hint:'le + las → se las → Se las compro.' },
-    { type:'transform', before:'Le voy a dar el informe al gerente.', after:'Voy a dár___', answer:'sêlo', hint:'le + lo → se lo → comprimido al infinitivo → dárselo (악센트 변화)' },
-    { type:'transform', before:'Les mando los contratos a los clientes.', after:'___ ___ mando a los clientes.', answer:'Se los', hint:'les + los → se los → Se los mando.' },
+    { type:'choice', sentence:'Le compro un libro a María. → ___ ___ compro a María.', choices:['Se lo','Se la','Me lo','Te lo'], answer:'Se lo', hint:'le + lo → se + lo → Se lo' },
+    { type:'choice', sentence:'Le doy la carta a mi jefe. → ___ ___ doy a mi jefe.', choices:['Se la','Se lo','Me la','Te la'], answer:'Se la', hint:'le + la → se + la → Se la' },
+    { type:'choice', sentence:'Les envío los documentos a mis clientes. → ___ ___ envío a mis clientes.', choices:['Se los','Se las','Me los','Te los'], answer:'Se los', hint:'les + los → se + los → Se los' },
+    { type:'choice', sentence:'Le mando las fotos a mi amigo. → ___ ___ mando a mi amigo.', choices:['Se las','Se los','Me las','Te las'], answer:'Se las', hint:'le + las → se + las → Se las' },
+    { type:'choice', sentence:'Le regalo un café a mi jefa. → ___ ___ regalo a mi jefa.', choices:['Se lo','Se la','Me lo','Les lo'], answer:'Se lo', hint:'le + lo → se lo' },
+    { type:'choice', sentence:'Les presto dinero a mis hermanos. → ___ ___ presto a mis hermanos.', choices:['Se lo','Les lo','Me lo','Te lo'], answer:'Se lo', hint:'les + lo → se lo' },
+    { type:'choice', sentence:'Le devuelvo el libro a Juan. → ___ ___ devuelvo a Juan.', choices:['Se lo','Le lo','Me lo','Te lo'], answer:'Se lo', hint:'le + lo → se lo' },
+    { type:'choice', sentence:'Le compro las flores a mi madre. → ___ ___ compro a mi madre.', choices:['Se las','Se los','Me las','Le las'], answer:'Se las', hint:'le + las → se las' },
+    { type:'choice', sentence:'Le voy a dar el informe al gerente. → Voy a dár___', choices:['sêlo','sela','melo','telo'], answer:'sêlo', hint:'le + lo → se lo → dárselo (악센트)' },
+    { type:'choice', sentence:'Les mando los contratos a los clientes. → ___ ___ mando a los clientes.', choices:['Se los','Se las','Me los','Les los'], answer:'Se los', hint:'les + los → se los' },
   ],
   // 6단계: 재귀동사 — 재귀대명사 선택
   [
-    { type:'fill', sentence:'Luis ___ levanta muy tarde. [루이스는 매우 늦게 일어난다.]', blank_hint:'재귀대명사', answer:'se', hint:'3인칭 단수 재귀대명사 = se' },
-    { type:'fill', sentence:'Yo ___ ducho antes de dormir. [나는 자기 전에 샤워한다.]', blank_hint:'재귀대명사', answer:'me', hint:'1인칭 단수 재귀대명사 = me' },
-    { type:'fill', sentence:'¡___ vemos mañana! [우리 내일 봐!]', blank_hint:'재귀대명사', answer:'Nos', hint:'1인칭 복수 상호 재귀 = nos (문두 대문자)' },
-    { type:'fill', sentence:'Siempre ___ miras en el espejo. [너는 항상 거울을 본다.]', blank_hint:'재귀대명사', answer:'te', hint:'2인칭 단수 재귀대명사 = te' },
-    { type:'fill', sentence:'Las chicas ___ pintan las uñas. [그 여자들은 매니큐어를 바른다.]', blank_hint:'재귀대명사', answer:'se', hint:'3인칭 복수 재귀대명사 = se' },
-    { type:'fill', sentence:'___ pongo las gafas de sol. [나는 선글라스를 낀다.]', blank_hint:'재귀대명사', answer:'Me', hint:'1인칭 단수 재귀대명사 = me (문두 대문자)' },
-    { type:'fill', sentence:'Juan y María ___ quieren mucho. [후안과 마리아는 서로 정말 사랑한다.]', blank_hint:'재귀대명사', answer:'se', hint:'3인칭 복수 상호 재귀 = se' },
-    { type:'fill', sentence:'Quiero lavar___ las manos. [나는 손을 씻고 싶다.]', blank_hint:'재귀대명사', answer:'me', hint:'원형동사 뒤에 붙이기 / 1인칭 = me → lavarme' },
-    { type:'fill', sentence:'¡Lévanta___! [일어나!] (tú)', blank_hint:'재귀대명사', answer:'te', hint:'긍정명령 뒤에 붙이기 / 2인칭 = te → Levántate' },
-    { type:'fill', sentence:'¡No ___ levantes! [일어나지 마!]', blank_hint:'재귀대명사', answer:'te', hint:'부정명령 앞 / 2인칭 = te' },
+    { type:'choice', sentence:'Luis ___ levanta muy tarde. [루이스는 매우 늦게 일어난다.]', choices:['te','os','nos','se'], answer:'se', hint:'3인칭 단수 재귀대명사 = se' },
+    { type:'choice', sentence:'Yo ___ ducho antes de dormir. [나는 자기 전에 샤워한다.]', choices:['te','me','os','se'], answer:'me', hint:'1인칭 단수 재귀대명사 = me' },
+    { type:'choice', sentence:'¡___ vemos mañana! [우리 내일 봐!]', choices:['Os','Se','Nos','Te'], answer:'Nos', hint:'1인칭 복수 상호 재귀 = nos (문두 대문자)' },
+    { type:'choice', sentence:'Siempre ___ miras en el espejo. [너는 항상 거울을 본다.]', choices:['os','me','nos','te'], answer:'te', hint:'2인칭 단수 재귀대명사 = te' },
+    { type:'choice', sentence:'Las chicas ___ pintan las uñas. [그 여자들은 매니큐어를 바른다.]', choices:['me','os','nos','se'], answer:'se', hint:'3인칭 복수 재귀대명사 = se' },
+    { type:'choice', sentence:'___ pongo las gafas de sol. [나는 선글라스를 낀다.]', choices:['Te','Os','Me','Se'], answer:'Me', hint:'1인칭 단수 재귀대명사 = me (문두 대문자)' },
+    { type:'choice', sentence:'Juan y María ___ quieren mucho. [후안과 마리아는 서로 정말 사랑한다.]', choices:['me','se','te','nos'], answer:'se', hint:'3인칭 복수 상호 재귀 = se' },
+    { type:'choice', sentence:'Quiero lavar___ las manos. [나는 손을 씻고 싶다.]', choices:['os','me','le','te'], answer:'me', hint:'원형동사 뒤에 붙이기 / 1인칭 = me → lavarme' },
+    { type:'choice', sentence:'¡Lévanta___! [일어나!] (tú)', choices:['os','les','nos','te'], answer:'te', hint:'긍정명령 뒤에 붙이기 / 2인칭 = te → Levántate' },
+    { type:'choice', sentence:'¡No ___ levantes! [일어나지 마!]', choices:['le','me','te','os'], answer:'te', hint:'부정명령 앞 / 2인칭 = te' },
   ],
   // 7단계: 재귀 vs 타동사 구분
   [
@@ -9753,6 +10527,87 @@ const exerciseSets = [
     { type:'choice', sentence:'다음 중 재귀동사 구조의 문장은?', choices:['Mi amigo me llama.','El novio de Sara la quiere.','Nos ponemos la chaqueta.','Yo lo busco.'], answer:'Nos ponemos la chaqueta.', hint:'ponerse = 재귀동사 / 주어(nosotros)=목적어(nos) → 재귀' },
     { type:'choice', sentence:'¡Son las ocho! Tengo que ___. → "일어나야 한다"의 올바른 형태는?', choices:['levantarme','levantarte','levantar me','me levantarme'], answer:'levantarme', hint:'원형동사 뒤에 재귀대명사 붙이기 / 주어=yo → me → levantarme' },
     { type:'choice', sentence:'Mi padre y yo ___ hablamos mucho. → 올바른 표현인가?', choices:['옳다 — 상호 재귀','틀리다 — nos 불필요','틀리다 — se로 바꿔야','옳다 — 강조 재귀'], answer:'옳다 — 상호 재귀', hint:'mi padre y yo = nosotros → 상호 재귀 nos hablamos (서로 이야기한다) → 정상' },
+  ],
+
+  // 8단계: gustar 활용
+  [
+    { type:'choice', sentence:'___ gusta el café. [나는 커피를 좋아한다.]', choices:['Te','Me','Le','Les'], answer:'Me', hint:'나에게 → 간접 목적격 me (문두 대문자 Me)' },
+    { type:'choice', sentence:'___ gusta la playa. [너는 해변을 좋아한다.]', choices:['Nos','Le','Les','Te'], answer:'Te', hint:'너에게 → te (문두 대문자 Te)' },
+    { type:'choice', sentence:'___ gusta España. [그는 스페인을 좋아한다.]', choices:['Le','Me','Nos','Les'], answer:'Le', hint:'그에게 → 3인칭 간접 le (문두 Le)' },
+    { type:'choice', sentence:'Me ___ los chocolates. [나는 초콜릿들을 좋아한다.]', choices:['quedan','gustan','toca','faltan'], answer:'gustan', hint:'주어 los chocolates = 복수 → gustan' },
+    { type:'choice', sentence:'Me ___ bailar. [나는 춤추는 것을 좋아한다.]', choices:['aburren','interesa','gusta','falta'], answer:'gusta', hint:'주어 bailar = 동사원형 → 항상 gusta (단수)' },
+    { type:'choice', sentence:'___ gusta mucho el café. [나는 커피를 정말 좋아한다.]', choices:['Te','Me','Le','Nos'], answer:'Me', hint:'나에게 → me / mucho는 동사 뒤' },
+    { type:'choice', sentence:'¿Qué ___ gusta? [너는 무엇을 좋아하니?]', choices:['le','nos','te','os'], answer:'te', hint:'2인칭 너 → te' },
+    { type:'choice', sentence:'A María ___ gusta el libro. [마리아는 책을 좋아한다.]', choices:['os','nos','le','me'], answer:'le', hint:'3인칭 a María → le (중복 표기 필수)' },
+    { type:'choice', sentence:'Me gusta cocinar, leer y pintar. → 동사 형태는 gusta? gustan?', choices:['gustan','gusta','aburre','duelen'], answer:'gusta', hint:'동사원형(cocinar 등)이 주어 → 항상 단수 gusta' },
+    { type:'choice', sentence:'"나도 그러해"를 올바르게 표현한 것은?', choices:['Sí. Yo también.','Sí. A mí también.','Sí. Me también.','Sí. Tú también.'], answer:'Sí. A mí también.', hint:'gustar에서 주격 yo 사용 불가 → a mí también' },
+  ],
+  // 9단계: doler 활용
+  [
+    { type:'choice', sentence:'Me ___ la cabeza. [머리가 아파.]', choices:['faltan','toca','importan','duele'], answer:'duele', hint:'la cabeza = 단수 → duele' },
+    { type:'choice', sentence:'Me ___ los pies. [발들이 아파.]', choices:['interesan','importan','duelen','faltan'], answer:'duelen', hint:'los pies = 복수 → duelen' },
+    { type:'choice', sentence:'Me ___ el estómago. [배가 아파.]', choices:['falta','queda','interesa','duele'], answer:'duele', hint:'el estómago = 단수 → duele' },
+    { type:'choice', sentence:'Me ___ las rodillas. [무릎들이 아파.]', choices:['faltan','apetece','duelen','duele'], answer:'duelen', hint:'las rodillas = 복수 → duelen' },
+    { type:'choice', sentence:'¿Qué ___ duele? [너는 어디 아파?]', choices:['te','os','le','les'], answer:'te', hint:'너에게 → te' },
+    { type:'choice', sentence:'___ duele la garganta. [나는 목이 아파.]', choices:['Nos','Te','Os','Me'], answer:'Me', hint:'나에게 → me (문두 Me)' },
+    { type:'choice', sentence:'Me duele la cabeza. = Tengo ___ de cabeza.', choices:['dolor','duele','doler','duelen'], answer:'dolor', hint:'Tengo dolor de + 신체부위 = Me duele + 신체부위' },
+    { type:'choice', sentence:'¿Qué te duele? → "나는 눈들이 아파"의 올바른 표현은?', choices:['Me duele los ojos.','Me duelen los ojos.','Te duelen los ojos.','Me duele el ojo.'], answer:'Me duelen los ojos.', hint:'los ojos = 복수 → duelen / 나에게 → me' },
+    { type:'choice', sentence:'"나 발 아파~!" (두 발 모두) 올바른 표현은?', choices:['Me duele los pies.','Me duele el pie.','Me duelen los pies.','Te duelen los pies.'], answer:'Me duelen los pies.', hint:'두 발 = los pies (복수) → duelen / 나에게 → me' },
+    { type:'choice', sentence:'다음 중 올바른 역구조 문장은?', choices:['Yo gusto el café.','A mí gusta el libro.','Me gusta mucho el libro.','Te gustan bailar.'], answer:'Me gusta mucho el libro.', hint:'간접 목적격 대명사(Me) 필수 / mucho는 동사 뒤 / bailar는 단수 → gusta' },
+  ],
+
+  // 10단계: 역구조 동사 심화 — interesar/importar/apetecer 등
+  [
+    { type:'choice', sentence:'A mí me ___ la historia universal. [나는 세계사에 관심이 있어.]', choices:['interesa','interesan','queda','falta'], answer:'interesa', hint:'interesar / 주어 la historia = 단수 → interesa' },
+    { type:'choice', sentence:'Me ___ mucho los amigos. [나에게는 친구들이 정말 중요해.]', choices:['apetece','gustan','queda','importan'], answer:'importan', hint:'importar / 주어 los amigos = 복수 → importan' },
+    { type:'choice', sentence:'Me ___ una cerveza. [나 맥주 한 잔이 당겨.]', choices:['gusta','apetece','aburre','duele'], answer:'apetece', hint:'apetecer / 주어 una cerveza = 단수 → apetece' },
+    { type:'choice', sentence:'Me ___ las películas de comedia. [나는 코미디 영화가 재밌어.]', choices:['importan','divierten','interesa','faltan'], answer:'divierten', hint:'divertir (e→ie 불규칙) / 주어 las películas = 복수 → divierten' },
+    { type:'choice', sentence:'Me ___ mucho la mentira. [나는 거짓말이 정말 싫어.]', choices:['molesta','faltan','queda','duele'], answer:'molesta', hint:'molestar / 주어 la mentira = 단수 → molesta' },
+    { type:'choice', sentence:'Me ___ tirar la basura hoy. [오늘은 내가 쓰레기를 버릴 순서이다.]', choices:['faltan','importa','toca','aburre'], answer:'toca', hint:'tocar / 주어 tirar(동사원형) = 단수 → toca' },
+    { type:'choice', sentence:'Nos ___ 100 euros. [우리에게 100유로가 부족해.]', choices:['importan','aburren','faltan','gustan'], answer:'faltan', hint:'faltar / 주어 100 euros = 복수 → faltan' },
+    { type:'choice', sentence:'Me ___ una hora. [나에게 한 시간이 남아있다.]', choices:['aburre','queda','quedan','apetece'], answer:'queda', hint:'quedar / 주어 una hora = 단수 → queda' },
+    { type:'choice', sentence:'A mí me ___ las matemáticas. [나는 수학이 지루해.]', choices:['interesa','aburren','gusta','queda'], answer:'aburren', hint:'aburrir / 주어 las matemáticas = 복수 → aburren' },
+    { type:'choice', sentence:'¿Qué te ___? [너 무엇이 당겨?]', choices:['duelen','queda','duele','apetece'], answer:'apetece', hint:'apetecer / 일반 질문 → 단수 apetece' },
+  ],
+  // 11단계: 역구조 동사 종합 — caer/sentar/ir/parecer/quedar/dar/costar
+  [
+    { type:'choice', sentence:'¿Cómo te ___ María? [마리아가 너에게 어때(잘 맞아)?]', choices:['cae','caes','caer','caen'], answer:'cae', hint:'caer 역구조 / 주어 María = 단수 → cae' },
+    { type:'choice', sentence:'Me ___ muy bien María. [나에게 마리아는 아주 잘 맞아.]', choices:['cae','caen','caes','caemos'], answer:'cae', hint:'주어 María = 단수 → cae' },
+    { type:'choice', sentence:'A mí me ___ mal la leche. [나에게 우유가 잘 받지 않는다.]', choices:['sienta','sientan','sentas','sentamos'], answer:'sienta', hint:'sentar (e→ie) / 주어 la leche = 단수 → sienta' },
+    { type:'choice', sentence:'¿Cómo te ___? [어떻게 지내?]', choices:['va','vas','van','vamos'], answer:'va', hint:'irle bien/mal → 역구조 / 주어 없음 → 3인칭 단수 va' },
+    { type:'choice', sentence:'Me ___ muy bien. [나는 아주 잘 지내.]', choices:['va','van','vas','vamos'], answer:'va', hint:'irle / 3인칭 단수 → va' },
+    { type:'choice', sentence:'¿Qué te ___ la película? [그 영화 어때 보여?]', choices:['parece','parecen','pareces','parecemos'], answer:'parece', hint:'parecer / 주어 la película = 단수 → parece' },
+    { type:'choice', sentence:'Me ___ muy grandes las zapatillas. [그 신발들이 나에게 크다.]', choices:['queda','quedan','quedas','quedamos'], answer:'quedan', hint:'quedar / 주어 las zapatillas = 복수 → quedan' },
+    { type:'choice', sentence:'Me ___ miedo los fantasmas. [귀신들이 나에게 무서움을 줘.]', choices:['da','dan','das','damos'], answer:'dan', hint:'dar / 주어 los fantasmas = 복수 → dan' },
+    { type:'choice', sentence:'A mí me ___ mucho trabajo cocinar. [요리는 나에게 많은 힘이 든다.]', choices:['cuesta','cuestan','costas','costamos'], answer:'cuesta', hint:'costar (o→ue) / 주어 cocinar(동사원형) = 단수 → cuesta' },
+    { type:'choice', sentence:'다음 중 틀린 문장을 고르시오.', choices:['Me va muy bien.','A mis padres les parecen muy mala la película.','Me dan sueño los libros.','Me queda una hora.'], answer:'A mis padres les parecen muy mala la película.', hint:'la película = 단수 주어 → parece (단수). parecen → parece 로 수정해야 함' },
+  ],
+
+  // 12단계: 전치사 De/A/En/Con
+  [
+    { type:'choice', sentence:'Soy ___ Corea. [나는 한국 출신이다.]', choices:['de','a','en','con'], answer:'de', hint:'출신·출처 = de' },
+    { type:'choice', sentence:'Voy ___ casa. [나는 집으로 간다.]', choices:['de','a','en','con'], answer:'a', hint:'방향 = a' },
+    { type:'choice', sentence:'Vivo ___ Seúl. [나는 서울에 산다.]', choices:['de','a','en','con'], answer:'en', hint:'장소(~안에서) = en' },
+    { type:'choice', sentence:'café ___ leche [카페 라떼]', choices:['de','a','en','con'], answer:'con', hint:'동반·함께 = con' },
+    { type:'choice', sentence:'anillo ___ oro [금 반지]', choices:['de','a','en','con'], answer:'de', hint:'재료 = de' },
+    { type:'choice', sentence:'Llegó ___ las ocho. [그는 8시에 도착했다.]', choices:['de','a','en','con'], answer:'a', hint:'시간 = a (a las ~시에)' },
+    { type:'choice', sentence:'Hablo ___ español. [스페인어로 말한다.]', choices:['de','a','en','con'], answer:'en', hint:'언어·수단 = en' },
+    { type:'choice', sentence:'Me encontré ___ Juan. [후안과 우연히 만났다.]', choices:['de','a','en','con'], answer:'con', hint:'encontrarse con = ~와 우연히 만나다' },
+    { type:'choice', sentence:'Siempre pienso ___ ti. [항상 너를 생각한다.]', choices:['de','a','en','con'], answer:'en', hint:'pensar en = ~을 생각하다' },
+    { type:'choice', sentence:'Me olvidé ___ cerrar la puerta. [문 잠그는 것을 잊었다.]', choices:['de','a','en','con'], answer:'de', hint:'olvidarse de = ~을 잊다' },
+  ],
+  // 13단계: 전치사 Por/Para + 기타
+  [
+    { type:'choice', sentence:'Quiero un libro ___ leer. [읽기 위한 책을 원한다.]', choices:['por','para','de','en'], answer:'para', hint:'목적 = para (~하기 위해)' },
+    { type:'choice', sentence:'Perdón ___ llegar tarde. [늦게 와서 죄송합니다.]', choices:['por','para','de','a'], answer:'por', hint:'원인·이유 = por (~때문에)' },
+    { type:'choice', sentence:'¡Gracias ___ venir! [와주셔서 감사합니다!]', choices:['por','para','de','a'], answer:'por', hint:'이유 = por' },
+    { type:'choice', sentence:'tarea ___ mañana [내일까지 과제]', choices:['por','para','de','en'], answer:'para', hint:'기한 = para' },
+    { type:'choice', sentence:'hablar ___ teléfono [전화로 말하다]', choices:['por','para','de','con'], answer:'por', hint:'수단 = por' },
+    { type:'choice', sentence:'Trabajo ___ el lunes. [월요일부터 일한다.]', choices:['desde','hasta','hacia','entre'], answer:'desde', hint:'~부터 = desde' },
+    { type:'choice', sentence:'Tengo que volver ___ las ocho. [8시까지 돌아가야 한다.]', choices:['desde','hasta','hacia','entre'], answer:'hasta', hint:'~까지 = hasta' },
+    { type:'choice', sentence:'Voy ___ la plaza. [광장 쪽으로 간다.]', choices:['sobre','sin','hacia','entre'], answer:'hacia', hint:'~쪽으로(방향) = hacia' },
+    { type:'choice', sentence:'Hablamos ___ la salud. [건강에 대해 이야기한다.]', choices:['desde','sobre','entre','hasta'], answer:'sobre', hint:'~에 대해 = sobre' },
+    { type:'choice', sentence:'___ nosotros no hay secretos. [우리 사이엔 비밀이 없다.]', choices:['Sobre','Sin','Hacia','Entre'], answer:'Entre', hint:'~사이에 = entre (문두 대문자)' },
   ],
 
 ];
@@ -9912,7 +10767,7 @@ function checkExercise() {
 
 // grammar 탭 초기화
 function initGrammar() {
-  showGrammarSection('gIntro', document.querySelector('#tab-grammar .pill'));
+  showGrammarTop('obj', document.getElementById('gtab-obj'));
 }
 
 </script>
