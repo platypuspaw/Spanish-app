@@ -2381,18 +2381,28 @@
       <button class="pill" onclick="loadExerciseSet(12,this)" style="font-size:11px">13단계: 전치사 1</button>
       <button class="pill" onclick="loadExerciseSet(13,this)" style="font-size:11px">14단계: 전치사 2</button>
     </div>
+    <!-- 점수 -->
+    <div style="display:flex;gap:16px;align-items:center;margin-bottom:14px;background:var(--surface2);border-radius:12px;padding:10px 14px">
+      <div style="font-size:13px;color:var(--text2)">총 <strong id="ex-progress-text" style="color:var(--text)">0</strong>문제</div>
+      <div style="font-size:13px;color:var(--correct)">✅ <strong id="ex-score-correct">0</strong></div>
+      <div style="font-size:13px;color:var(--wrong)">❌ <strong id="ex-score-wrong">0</strong></div>
+      <div style="font-size:12px;color:var(--accent);margin-left:auto" id="ex-streak"></div>
+    </div>
+    <!-- 문제 카드 -->
     <div id="exercise-container"></div>
-    <div id="exercise-result" style="display:none;margin-top:14px;padding:14px;border-radius:12px;text-align:center"></div>
+    <!-- 다음 문제 버튼 -->
     <div style="display:flex;gap:10px;margin-top:14px">
-      <button id="btn-check-ex" onclick="checkExercise()" class="btn" style="flex:1">정답 확인</button>
-      <button onclick="loadExerciseSet(currentExSet, null)" class="btn" style="flex:1;background:var(--surface2);color:var(--text2)">🔄 새 문제</button>
+      <button id="btn-next-ex" onclick="nextExercise()" class="btn" style="flex:1;display:none">다음 문제 →</button>
+      <button onclick="resetExercise()" class="btn" style="flex:1;background:var(--surface2);color:var(--text2)">🔄 처음부터</button>
     </div>
   </div>
 
+  <!-- 세션 완료 패널 -->
   <div class="panel" id="exercise-score-panel" style="display:none">
     <div class="panel-title">🏆 결과</div>
     <div id="exercise-score-display" style="text-align:center;font-size:28px;font-weight:700;color:var(--accent);margin-bottom:8px"></div>
-    <div id="exercise-score-detail" style="font-size:12px;color:var(--text2);text-align:center"></div>
+    <div id="exercise-score-detail" style="font-size:12px;color:var(--text2);text-align:center;margin-bottom:14px"></div>
+    <button onclick="resetExercise()" class="btn" style="width:100%">🔄 다시 풀기</button>
   </div>
 
 </div>
@@ -10426,16 +10436,16 @@ function showGrammarSection(id, btn) {
 const exerciseSets = [
   // 0단계: 간접 목적격 대명사
   [
-    { type:'choice', sentence:'Mis padres ___ llaman todos los días.', choices:['me','nos','le','te'], answer:'me', hint:'나에게 / 간접 목적격 a mí = me' },
-    { type:'choice', sentence:'___ veo mañana a las dos.', choices:['Me','Les','Le','Te'], answer:'Te', hint:'너를(에게) / 간접 a ti = te (문두라 대문자)' },
-    { type:'choice', sentence:'La señora ___ da un pan.', choices:['les','me','nos','le'], answer:'nos', hint:'우리에게 / a nosotros = nos' },
-    { type:'choice', sentence:'Yo ___ doy dinero a mis hermanos.', choices:['me','les','te','le'], answer:'les', hint:'그들에게 / 3인칭 복수 = les' },
-    { type:'choice', sentence:'El profesor ___ deja mucha tarea.', choices:['nos','me','les','te'], answer:'nos', hint:'우리에게 / nos' },
-    { type:'choice', sentence:'¿___ prestas un bolígrafo, por favor?', choices:['Me','Os','Te','Le'], answer:'Me', hint:'나에게 / me (문두라 대문자)' },
-    { type:'choice', sentence:'Yo ___ envío muchos mensajes a mis padres.', choices:['me','les','te','le'], answer:'les', hint:'그들에게 / 3인칭 복수 = les' },
-    { type:'choice', sentence:'Tengo un amigo y ___ veo cada fin de semana.', choices:['nos','les','os','le'], answer:'le', hint:'그를 / 3인칭 단수 간접 = le' },
-    { type:'choice', sentence:'Mi mamá siempre ___ pregunta cómo estoy.', choices:['me','les','nos','os'], answer:'me', hint:'나에게 / me' },
-    { type:'choice', sentence:'¿Tú ___ dices la verdad a tu jefe?', choices:['te','nos','les','le'], answer:'le', hint:'그에게 / le' },
+    { type:'choice', sentence:'Mis padres ___ llaman todos los días. [부모님은 매일 나에게 전화하신다.]', choices:['me','nos','le','te'], answer:'me', hint:'나에게 / 간접 목적격 a mí = me' },
+    { type:'choice', sentence:'___ veo mañana a las dos. [내일 2시에 너를 볼게.]', choices:['Me','Les','Le','Te'], answer:'Te', hint:'너를(에게) / 간접 a ti = te (문두라 대문자)' },
+    { type:'choice', sentence:'La señora ___ da un pan. [그 여자는 우리에게 빵을 준다.]', choices:['les','me','nos','le'], answer:'nos', hint:'우리에게 / a nosotros = nos' },
+    { type:'choice', sentence:'Yo ___ doy dinero a mis hermanos. [나는 형제들에게 돈을 준다.]', choices:['me','les','te','le'], answer:'les', hint:'그들에게 / 3인칭 복수 = les' },
+    { type:'choice', sentence:'El profesor ___ deja mucha tarea. [선생님은 우리에게 숙제를 많이 내준다.]', choices:['nos','me','les','te'], answer:'nos', hint:'우리에게 / nos' },
+    { type:'choice', sentence:'¿___ prestas un bolígrafo, por favor? [나에게 펜 하나를 빌려줄 수 있니?]', choices:['Me','Os','Te','Le'], answer:'Me', hint:'나에게 / me (문두라 대문자)' },
+    { type:'choice', sentence:'Yo ___ envío muchos mensajes a mis padres. [나는 부모님께 문자를 많이 보낸다.]', choices:['me','les','te','le'], answer:'les', hint:'그들에게 / 3인칭 복수 = les' },
+    { type:'choice', sentence:'Tengo un amigo y ___ veo cada fin de semana. [나는 친구가 있고 매주 그를 본다.]', choices:['nos','les','os','le'], answer:'le', hint:'그를 / 3인칭 단수 간접 = le' },
+    { type:'choice', sentence:'Mi mamá siempre ___ pregunta cómo estoy. [엄마는 항상 나에게 어떻게 지내는지 물어본다.]', choices:['me','les','nos','os'], answer:'me', hint:'나에게 / me' },
+    { type:'choice', sentence:'¿Tú ___ dices la verdad a tu jefe? [너는 상사에게 사실을 말하니?]', choices:['te','nos','les','le'], answer:'le', hint:'그에게 / le' },
   ],
   // 1단계: 직접 목적격 대명사
   [
@@ -10443,11 +10453,11 @@ const exerciseSets = [
     { type:'choice', sentence:'Yo ___ quiero. [나는 그녀를 사랑한다.]', choices:['me','te','los','la'], answer:'la', hint:'사람 여성 직접 목적어 = la' },
     { type:'choice', sentence:'Yo ___ invito a mi fiesta. [너를 초대한다.]', choices:['las','la','me','te'], answer:'te', hint:'2인칭 직접 목적 = te' },
     { type:'choice', sentence:'Yo ___ veo. [나는 그들을 본다.]', choices:['la','me','las','los'], answer:'los', hint:'3인칭 남성 복수 직접 = los' },
-    { type:'choice', sentence:'Mis amigos quieren venir. ¿Puedo invitar___?', choices:['los','les','las','lo'], answer:'los', hint:'원형동사 뒤에 붙이기 / 복수 = los' },
+    { type:'choice', sentence:'Mis amigos quieren venir. ¿Puedo invitar___? [내 친구들이 오고 싶어한다. 내가 그들을 초대해도 될까?]', choices:['los','les','las','lo'], answer:'los', hint:'원형동사 뒤에 붙이기 / 복수 = los' },
     { type:'choice', sentence:'¿___ veo mañana? [나는 너를 내일 볼게.]', choices:['Me','Te','Las','La'], answer:'Te', hint:'2인칭 직접 = te (문두 대문자)' },
     { type:'choice', sentence:'Yo ___ busco. [나는 그를 찾는다.]', choices:['los','te','me','lo'], answer:'lo', hint:'남성 단수 직접 = lo' },
-    { type:'choice', sentence:'¿Tienes mi libro? No, no ___ tengo.', choices:['los','lo','las','me'], answer:'lo', hint:'사물 남성 단수 직접 = lo' },
-    { type:'choice', sentence:'¿Visitas mucho a tu abuela? Sí, ___ visito mucho.', choices:['lo','la','me','los'], answer:'la', hint:'여성 단수 직접 = la' },
+    { type:'choice', sentence:'¿Tienes mi libro? No, no ___ tengo. [내 책 있어? 아니, 그것 없어.]', choices:['los','lo','las','me'], answer:'lo', hint:'사물 남성 단수 직접 = lo' },
+    { type:'choice', sentence:'¿Visitas mucho a tu abuela? Sí, ___ visito mucho. [할머니를 자주 방문하니? 응, 자주 방문해.]', choices:['lo','la','me','los'], answer:'la', hint:'여성 단수 직접 = la' },
     { type:'choice', sentence:'Perdóna___. [나를 용서해줘.]', choices:['los','me','lo','las'], answer:'me', hint:'긍정명령 뒤에 붙이기 / 나를 = me' },
   ],
   // 2단계: le vs lo/la
@@ -10456,8 +10466,8 @@ const exerciseSets = [
     { type:'choice', sentence:'Tú ___ dices la verdad. [너는 그에게 사실을 말한다.]', choices:['lo','la','le','les'], answer:'le', hint:'"그에게" = 간접 목적어 → le' },
     { type:'choice', sentence:'Tú ___ buscas. [너는 그를 찾는다.]', choices:['le','lo','la','les'], answer:'lo', hint:'"그를" = 직접 → lo' },
     { type:'choice', sentence:'Tú ___ das tu número. [너는 그에게 네 번호를 준다.]', choices:['lo','le','la','los'], answer:'le', hint:'"그에게" = 간접 → le' },
-    { type:'choice', sentence:'¿Conoces a Antonio? Sí, ___ conozco.', choices:['le / lo','la','les','los'], answer:'le / lo', hint:'남성 사람 직접 목적 → lo (표준) / le (스페인식 Leísmo)' },
-    { type:'choice', sentence:'¿Conoces a Juana? Sí, ___ conozco.', choices:['lo','le','la','las'], answer:'la', hint:'여성 사람 직접 목적 → la (le 불가)' },
+    { type:'choice', sentence:'¿Conoces a Antonio? Sí, ___ conozco. [안토니오 알아? 응, 나는 그를 알아.]', choices:['le / lo','la','les','los'], answer:'le / lo', hint:'남성 사람 직접 목적 → lo (표준) / le (스페인식 Leísmo)' },
+    { type:'choice', sentence:'¿Conoces a Juana? Sí, ___ conozco. [후아나 알아? 응, 나는 그녀를 알아.]', choices:['lo','le','la','las'], answer:'la', hint:'여성 사람 직접 목적 → la (le 불가)' },
     { type:'choice', sentence:'Yo ___ invito. [나는 그를 초대한다.]', choices:['le','lo','la','les'], answer:'lo', hint:'"그를" = 직접 → lo' },
     { type:'choice', sentence:'Yo ___ presto dinero. [나는 그에게 돈을 빌려준다.]', choices:['lo','la','le','les'], answer:'le', hint:'"그에게" = 간접 → le' },
     { type:'choice', sentence:'Yo ___ compro un libro. [나는 그에게 책 한 권을 사준다.]', choices:['lo','la','le','les'], answer:'le', hint:'"그에게" = 간접 → le' },
@@ -10465,42 +10475,42 @@ const exerciseSets = [
   ],
   // 3단계: 간접+직접 동시 사용
   [
-    { type:'choice', sentence:'Yo compro un café para ti. → Yo ___ ___ compro.', choices:['se los','se lo','te lo','nos lo'], answer:'te lo', hint:'간접 te + 직접 lo → te lo' },
-    { type:'choice', sentence:'Mi novia me envía el mensaje. → Mi novia ___ ___ envía.', choices:['me lo','se lo','se la','te la'], answer:'me lo', hint:'간접 me + 직접 lo → me lo' },
-    { type:'choice', sentence:'Mi papá le regala un libro a tu mamá. → Mi papá ___ ___ regala.', choices:['se lo','se los','te lo','se la'], answer:'se lo', hint:'le + lo → se로 변형! → se lo' },
-    { type:'choice', sentence:'Mi papá le regala una flor a tu mamá. → Mi papá ___ ___ regala.', choices:['te lo','se la','nos lo','me lo'], answer:'se la', hint:'le + la → se로 변형! → se la' },
-    { type:'choice', sentence:'Mi tía les regala los chocolates a los niños. → Mi tía ___ ___ regala.', choices:['me la','te la','nos lo','se los'], answer:'se los', hint:'les + los → se로 변형! → se los' },
-    { type:'choice', sentence:'¿Quién te da dinero? Mis padres ___ ___ dan.', choices:['me lo','se lo','se la','te la'], answer:'me lo', hint:'간접 me + 직접 lo → me lo' },
-    { type:'choice', sentence:'¿Quién le da la comida a tu perro? Yo ___ ___ doy.', choices:['te lo','se la','nos lo','me lo'], answer:'se la', hint:'le + la → se la' },
-    { type:'choice', sentence:'José tiene mi libro. Quiero que ___ ___ devuelva.', choices:['me lo','se lo','se la','te la'], answer:'me lo', hint:'간접 me + 직접 lo → me lo' },
-    { type:'choice', sentence:'Hoy lo voy a ver. ___ ___ digo yo.', choices:['Me la','Se la','Te la','Se lo'], answer:'Se lo', hint:'le + lo → se lo (문두 대문자)' },
-    { type:'choice', sentence:'¿Puedo comprar eso para ti? ¿Me ___ ___ permites?', choices:['se los','se lo','te lo','nos lo'], answer:'te lo', hint:'간접 te + 직접 lo → te lo' },
+    { type:'choice', sentence:'Yo compro un café para ti. → Yo ___ ___ compro. [나는 너에게 커피를 산다. → 나는 너에게 그것을 산다.]', choices:['se los','se lo','te lo','nos lo'], answer:'te lo', hint:'간접 te + 직접 lo → te lo' },
+    { type:'choice', sentence:'Mi novia me envía el mensaje. → Mi novia ___ ___ envía. [여자친구가 나에게 메시지를 보낸다. → 나에게 그것을 보낸다.]', choices:['me lo','se lo','se la','te la'], answer:'me lo', hint:'간접 me + 직접 lo → me lo' },
+    { type:'choice', sentence:'Mi papá le regala un libro a tu mamá. → Mi papá ___ ___ regala. [아빠가 네 엄마에게 책을 선물한다. → 그녀에게 그것을 선물한다.]', choices:['se lo','se los','te lo','se la'], answer:'se lo', hint:'le + lo → se로 변형! → se lo' },
+    { type:'choice', sentence:'Mi papá le regala una flor a tu mamá. → Mi papá ___ ___ regala. [아빠가 네 엄마에게 꽃을 선물한다. → 그녀에게 그것을 선물한다.]', choices:['te lo','se la','nos lo','me lo'], answer:'se la', hint:'le + la → se로 변형! → se la' },
+    { type:'choice', sentence:'Mi tía les regala los chocolates a los niños. → Mi tía ___ ___ regala. [이모가 아이들에게 초콜릿을 선물한다. → 그들에게 그것들을 선물한다.]', choices:['me la','te la','nos lo','se los'], answer:'se los', hint:'les + los → se로 변형! → se los' },
+    { type:'choice', sentence:'¿Quién te da dinero? Mis padres ___ ___ dan. [누가 너에게 돈을 줘? 부모님이 나에게 그것을 주셔.]', choices:['me lo','se lo','se la','te la'], answer:'me lo', hint:'간접 me + 직접 lo → me lo' },
+    { type:'choice', sentence:'¿Quién le da la comida a tu perro? Yo ___ ___ doy. [누가 강아지에게 밥을 줘? 내가 그에게 그것을 줘.]', choices:['te lo','se la','nos lo','me lo'], answer:'se la', hint:'le + la → se la' },
+    { type:'choice', sentence:'José tiene mi libro. Quiero que ___ ___ devuelva. [호세가 내 책을 갖고 있다. 나에게 그것을 돌려줬으면 한다.]', choices:['me lo','se lo','se la','te la'], answer:'me lo', hint:'간접 me + 직접 lo → me lo' },
+    { type:'choice', sentence:'Hoy lo voy a ver. ___ ___ digo yo. [오늘 그를 볼 거야. 내가 그에게 그것을 말해줄게.]', choices:['Me la','Se la','Te la','Se lo'], answer:'Se lo', hint:'le + lo → se lo (문두 대문자)' },
+    { type:'choice', sentence:'¿Puedo comprar eso para ti? ¿Me ___ ___ permites? [그걸 너를 위해 사도 될까? 나에게 그것을 사도록 허락해줄래?]', choices:['se los','se lo','te lo','nos lo'], answer:'te lo', hint:'간접 te + 직접 lo → te lo' },
   ],
   // 4단계: 위치 규칙 (변형/원형/분사/명령)
   [
-    { type:'choice', sentence:'[원형동사] Vas a comprar___ un café. (나에게) → 괄호 안을 채워 올바른 형태를 고르시오.', choices:['comprarme','comprarle','comprarla','comprarte'], answer:'comprarme', hint:'원형동사 뒤에 붙이기 / 나에게 = me → comprarme' },
-    { type:'choice', sentence:'[변형동사] ___ compras un café. (나에게)', choices:['Me','Le','La','Te'], answer:'Me', hint:'변형동사 앞 / 나에게 = me → Me (문두 대문자)' },
-    { type:'choice', sentence:'[긍정명령] ¡Cómpra___! (나에게)', choices:['me','le','lo','te'], answer:'me', hint:'긍정명령 뒤에 붙이기 → Cómprame' },
-    { type:'choice', sentence:'[부정명령] ¡No ___ compres! (나에게)', choices:['me','les','lo','te'], answer:'me', hint:'부정명령 앞 → No me compres' },
-    { type:'choice', sentence:'[현재분사] Estás comprando___ un café. (나에게)', choices:['me','le','lo','te'], answer:'me', hint:'현재분사 뒤에 붙이기 → comprándom' },
+    { type:'choice', sentence:'[원형동사] Vas a comprar___ un café. (나에게) [너는 나에게 커피를 살 것이다.]', choices:['comprarme','comprarle','comprarla','comprarte'], answer:'comprarme', hint:'원형동사 뒤에 붙이기 / 나에게 = me → comprarme' },
+    { type:'choice', sentence:'[변형동사] ___ compras un café. (나에게) [너는 나에게 커피를 산다.]', choices:['Me','Le','La','Te'], answer:'Me', hint:'변형동사 앞 / 나에게 = me → Me (문두 대문자)' },
+    { type:'choice', sentence:'[긍정명령] ¡Cómpra___! (나에게) [나에게 사줘!]', choices:['me','le','lo','te'], answer:'me', hint:'긍정명령 뒤에 붙이기 → Cómprame' },
+    { type:'choice', sentence:'[부정명령] ¡No ___ compres! (나에게) [나에게 사주지 마!]', choices:['me','les','lo','te'], answer:'me', hint:'부정명령 앞 → No me compres' },
+    { type:'choice', sentence:'[현재분사] Estás comprando___ un café. (나에게) [너는 나에게 커피를 사는 중이다.]', choices:['me','le','lo','te'], answer:'me', hint:'현재분사 뒤에 붙이기 → comprándom' },
     { type:'choice', sentence:'두 대명사 함께 — 원형동사 Vas a comprar___ a Juan. (그에게 / 그것을 커피를) → 올바른 형태를 고르시오.', choices:['sela','selA','selo','selo'], answer:'selo', hint:'le + lo → se + lo → selo → comprárselo (악센트 추가)' },
-    { type:'choice', sentence:'¡Cómpra___! (나에게 그것을)', choices:['melo','teselo','mela','noslo'], answer:'melo', hint:'긍정명령 뒤 / me + lo → melo → Cómpramelo (악센트)' },
-    { type:'choice', sentence:'Voy a dár___. [나에게 그것을 줄 것이다.] → 괄호를 채우시오.', choices:['telo','melo','sela','nosto'], answer:'melo', hint:'원형동사 뒤 / me + lo → melo → dármelo' },
+    { type:'choice', sentence:'¡Cómpra___! (나에게 그것을) [나에게 그것을 사줘!]', choices:['melo','teselo','mela','noslo'], answer:'melo', hint:'긍정명령 뒤 / me + lo → melo → Cómpramelo (악센트)' },
+    { type:'choice', sentence:'Voy a dár___. [나에게 그것을 줄 것이다.]', choices:['telo','melo','sela','nosto'], answer:'melo', hint:'원형동사 뒤 / me + lo → melo → dármelo' },
     { type:'choice', sentence:'D___. [나에게 그것을 말해라!] (긍정명령 di)', choices:['imelo','melo','meselo','selome'], answer:'imelo', hint:'di + me + lo → dímelo (악센트: i → í)' },
     { type:'choice', sentence:'[두 대명사 분리] 다음 중 틀린 문장을 고르시오.', choices:['Te lo voy a dar.','Voy a dártelo.','Te voy a darlo.','Me lo estás comprando.'], answer:'Te voy a darlo.', hint:'두 대명사를 분리하여 위치하는 것은 불가! te...lo 분리 → 오류' },
   ],
   // 5단계: le/les → se 변환
   [
-    { type:'choice', sentence:'Le compro un libro a María. → ___ ___ compro a María.', choices:['Se lo','Se la','Me lo','Te lo'], answer:'Se lo', hint:'le + lo → se + lo → Se lo' },
-    { type:'choice', sentence:'Le doy la carta a mi jefe. → ___ ___ doy a mi jefe.', choices:['Se la','Se lo','Me la','Te la'], answer:'Se la', hint:'le + la → se + la → Se la' },
-    { type:'choice', sentence:'Les envío los documentos a mis clientes. → ___ ___ envío a mis clientes.', choices:['Se los','Se las','Me los','Te los'], answer:'Se los', hint:'les + los → se + los → Se los' },
-    { type:'choice', sentence:'Le mando las fotos a mi amigo. → ___ ___ mando a mi amigo.', choices:['Se las','Se los','Me las','Te las'], answer:'Se las', hint:'le + las → se + las → Se las' },
-    { type:'choice', sentence:'Le regalo un café a mi jefa. → ___ ___ regalo a mi jefa.', choices:['Se lo','Se la','Me lo','Les lo'], answer:'Se lo', hint:'le + lo → se lo' },
-    { type:'choice', sentence:'Les presto dinero a mis hermanos. → ___ ___ presto a mis hermanos.', choices:['Se lo','Les lo','Me lo','Te lo'], answer:'Se lo', hint:'les + lo → se lo' },
-    { type:'choice', sentence:'Le devuelvo el libro a Juan. → ___ ___ devuelvo a Juan.', choices:['Se lo','Le lo','Me lo','Te lo'], answer:'Se lo', hint:'le + lo → se lo' },
-    { type:'choice', sentence:'Le compro las flores a mi madre. → ___ ___ compro a mi madre.', choices:['Se las','Se los','Me las','Le las'], answer:'Se las', hint:'le + las → se las' },
-    { type:'choice', sentence:'Le voy a dar el informe al gerente. → Voy a dár___', choices:['sêlo','sela','melo','telo'], answer:'sêlo', hint:'le + lo → se lo → dárselo (악센트)' },
-    { type:'choice', sentence:'Les mando los contratos a los clientes. → ___ ___ mando a los clientes.', choices:['Se los','Se las','Me los','Les los'], answer:'Se los', hint:'les + los → se los' },
+    { type:'choice', sentence:'Le compro un libro a María. → ___ ___ compro a María. [마리아에게 책을 사준다. → 그녀에게 그것을 사준다.]', choices:['Se lo','Se la','Me lo','Te lo'], answer:'Se lo', hint:'le + lo → se + lo → Se lo' },
+    { type:'choice', sentence:'Le doy la carta a mi jefe. → ___ ___ doy a mi jefe. [상사에게 편지를 준다. → 그에게 그것을 준다.]', choices:['Se la','Se lo','Me la','Te la'], answer:'Se la', hint:'le + la → se + la → Se la' },
+    { type:'choice', sentence:'Les envío los documentos a mis clientes. → ___ ___ envío a mis clientes. [고객들에게 서류를 보낸다. → 그들에게 그것들을 보낸다.]', choices:['Se los','Se las','Me los','Te los'], answer:'Se los', hint:'les + los → se + los → Se los' },
+    { type:'choice', sentence:'Le mando las fotos a mi amigo. → ___ ___ mando a mi amigo. [친구에게 사진들을 보낸다. → 그에게 그것들을 보낸다.]', choices:['Se las','Se los','Me las','Te las'], answer:'Se las', hint:'le + las → se + las → Se las' },
+    { type:'choice', sentence:'Le regalo un café a mi jefa. → ___ ___ regalo a mi jefa. [여상사에게 커피를 선물한다. → 그녀에게 그것을 선물한다.]', choices:['Se lo','Se la','Me lo','Les lo'], answer:'Se lo', hint:'le + lo → se lo' },
+    { type:'choice', sentence:'Les presto dinero a mis hermanos. → ___ ___ presto a mis hermanos. [형제들에게 돈을 빌려준다. → 그들에게 그것을 빌려준다.]', choices:['Se lo','Les lo','Me lo','Te lo'], answer:'Se lo', hint:'les + lo → se lo' },
+    { type:'choice', sentence:'Le devuelvo el libro a Juan. → ___ ___ devuelvo a Juan. [후안에게 책을 돌려준다. → 그에게 그것을 돌려준다.]', choices:['Se lo','Le lo','Me lo','Te lo'], answer:'Se lo', hint:'le + lo → se lo' },
+    { type:'choice', sentence:'Le compro las flores a mi madre. → ___ ___ compro a mi madre. [엄마에게 꽃을 사준다. → 그녀에게 그것들을 사준다.]', choices:['Se las','Se los','Me las','Le las'], answer:'Se las', hint:'le + las → se las' },
+    { type:'choice', sentence:'Le voy a dar el informe al gerente. → Voy a dár___ [매니저에게 보고서를 줄 것이다.]', choices:['sêlo','sela','melo','telo'], answer:'sêlo', hint:'le + lo → se lo → dárselo (악센트)' },
+    { type:'choice', sentence:'Les mando los contratos a los clientes. → ___ ___ mando a los clientes. [고객들에게 계약서를 보낸다. → 그들에게 그것들을 보낸다.]', choices:['Se los','Se las','Me los','Les los'], answer:'Se los', hint:'les + los → se los' },
   ],
   // 6단계: 재귀동사 — 재귀대명사 선택
   [
@@ -10522,9 +10532,9 @@ const exerciseSets = [
     { type:'choice', sentence:'Yo ___ levanto a las 7. → 올바른 재귀대명사는?', choices:['me','te','se','nos'], answer:'me', hint:'주어 Yo → 재귀대명사 me' },
     { type:'choice', sentence:'Ella ___ ducha por la mañana. → 올바른 재귀대명사는?', choices:['me','te','se','nos'], answer:'se', hint:'주어 ella → 재귀대명사 se' },
     { type:'choice', sentence:'Nosotros ___ acostamos a las 11. → 올바른 재귀대명사는?', choices:['me','te','se','nos'], answer:'nos', hint:'주어 nosotros → 재귀대명사 nos' },
-    { type:'choice', sentence:'dormir vs dormirse 다음 중 "잠이 들다"의 뜻은?', choices:['Duermo 8 horas.','Me duermo a las 10.','Él duerme bien.','¿Duermes poco?'], answer:'Me duermo a las 10.', hint:'dormirse = 잠들다 / 재귀형은 "잠에 빠져드는" 강조 의미' },
-    { type:'choice', sentence:'ir vs irse "나는 학교로 떠난다."의 올바른 표현은?', choices:['Voy a la escuela.','Me voy a la escuela.','Te vas a la escuela.','Se va a la escuela.'], answer:'Me voy a la escuela.', hint:'irse = 가버리다, 떠나다 / 1인칭 → me voy' },
-    { type:'choice', sentence:'다음 중 재귀동사 구조의 문장은?', choices:['Mi amigo me llama.','El novio de Sara la quiere.','Nos ponemos la chaqueta.','Yo lo busco.'], answer:'Nos ponemos la chaqueta.', hint:'ponerse = 재귀동사 / 주어(nosotros)=목적어(nos) → 재귀' },
+    { type:'choice', sentence:'dormir vs dormirse — 다음 중 "잠이 들다"의 뜻은?', choices:['Duermo 8 horas.','Me duermo a las 10.','Él duerme bien.','¿Duermes poco?'], answer:'Me duermo a las 10.', hint:'dormirse = 잠들다 / 재귀형은 "잠에 빠져드는" 강조 의미' },
+    { type:'choice', sentence:'ir vs irse — "나는 학교로 떠난다."의 올바른 표현은?', choices:['Voy a la escuela.','Me voy a la escuela.','Te vas a la escuela.','Se va a la escuela.'], answer:'Me voy a la escuela.', hint:'irse = 가버리다, 떠나다 / 1인칭 → me voy' },
+    { type:'choice', sentence:'다음 중 재귀동사 구조의 문장은? [주어=목적어인 것 고르기]', choices:['Mi amigo me llama.','El novio de Sara la quiere.','Nos ponemos la chaqueta.','Yo lo busco.'], answer:'Nos ponemos la chaqueta.', hint:'ponerse = 재귀동사 / 주어(nosotros)=목적어(nos) → 재귀' },
     { type:'choice', sentence:'¡Son las ocho! Tengo que ___. → "일어나야 한다"의 올바른 형태는?', choices:['levantarme','levantarte','levantar me','me levantarme'], answer:'levantarme', hint:'원형동사 뒤에 재귀대명사 붙이기 / 주어=yo → me → levantarme' },
     { type:'choice', sentence:'Mi padre y yo ___ hablamos mucho. → 올바른 표현인가?', choices:['옳다 — 상호 재귀','틀리다 — nos 불필요','틀리다 — se로 바꿔야','옳다 — 강조 재귀'], answer:'옳다 — 상호 재귀', hint:'mi padre y yo = nosotros → 상호 재귀 nos hablamos (서로 이야기한다) → 정상' },
   ],
@@ -10540,7 +10550,7 @@ const exerciseSets = [
     { type:'choice', sentence:'¿Qué ___ gusta? [너는 무엇을 좋아하니?]', choices:['le','nos','te','os'], answer:'te', hint:'2인칭 너 → te' },
     { type:'choice', sentence:'A María ___ gusta el libro. [마리아는 책을 좋아한다.]', choices:['os','nos','le','me'], answer:'le', hint:'3인칭 a María → le (중복 표기 필수)' },
     { type:'choice', sentence:'Me gusta cocinar, leer y pintar. → 동사 형태는 gusta? gustan?', choices:['gustan','gusta','aburre','duelen'], answer:'gusta', hint:'동사원형(cocinar 등)이 주어 → 항상 단수 gusta' },
-    { type:'choice', sentence:'"나도 그러해"를 올바르게 표현한 것은?', choices:['Sí. Yo también.','Sí. A mí también.','Sí. Me también.','Sí. Tú también.'], answer:'Sí. A mí también.', hint:'gustar에서 주격 yo 사용 불가 → a mí también' },
+    { type:'choice', sentence:'"나도 그러해"를 올바르게 표현한 것은? (gustar 구조)', choices:['Sí. Yo también.','Sí. A mí también.','Sí. Me también.','Sí. Tú también.'], answer:'Sí. A mí también.', hint:'gustar에서 주격 yo 사용 불가 → a mí también' },
   ],
   // 9단계: doler 활용
   [
@@ -10550,10 +10560,10 @@ const exerciseSets = [
     { type:'choice', sentence:'Me ___ las rodillas. [무릎들이 아파.]', choices:['faltan','apetece','duelen','duele'], answer:'duelen', hint:'las rodillas = 복수 → duelen' },
     { type:'choice', sentence:'¿Qué ___ duele? [너는 어디 아파?]', choices:['te','os','le','les'], answer:'te', hint:'너에게 → te' },
     { type:'choice', sentence:'___ duele la garganta. [나는 목이 아파.]', choices:['Nos','Te','Os','Me'], answer:'Me', hint:'나에게 → me (문두 Me)' },
-    { type:'choice', sentence:'Me duele la cabeza. = Tengo ___ de cabeza.', choices:['dolor','duele','doler','duelen'], answer:'dolor', hint:'Tengo dolor de + 신체부위 = Me duele + 신체부위' },
+    { type:'choice', sentence:'Me duele la cabeza. = Tengo ___ de cabeza. [나는 머리가 아파. = 나는 두통이 있어.]', choices:['dolor','duele','doler','duelen'], answer:'dolor', hint:'Tengo dolor de + 신체부위 = Me duele + 신체부위' },
     { type:'choice', sentence:'¿Qué te duele? → "나는 눈들이 아파"의 올바른 표현은?', choices:['Me duele los ojos.','Me duelen los ojos.','Te duelen los ojos.','Me duele el ojo.'], answer:'Me duelen los ojos.', hint:'los ojos = 복수 → duelen / 나에게 → me' },
-    { type:'choice', sentence:'"나 발 아파~!" (두 발 모두) 올바른 표현은?', choices:['Me duele los pies.','Me duele el pie.','Me duelen los pies.','Te duelen los pies.'], answer:'Me duelen los pies.', hint:'두 발 = los pies (복수) → duelen / 나에게 → me' },
-    { type:'choice', sentence:'다음 중 올바른 역구조 문장은?', choices:['Yo gusto el café.','A mí gusta el libro.','Me gusta mucho el libro.','Te gustan bailar.'], answer:'Me gusta mucho el libro.', hint:'간접 목적격 대명사(Me) 필수 / mucho는 동사 뒤 / bailar는 단수 → gusta' },
+    { type:'choice', sentence:'"나 발 아파~!" (두 발 모두) — 올바른 표현은?', choices:['Me duele los pies.','Me duele el pie.','Me duelen los pies.','Te duelen los pies.'], answer:'Me duelen los pies.', hint:'두 발 = los pies (복수) → duelen / 나에게 → me' },
+    { type:'choice', sentence:'다음 중 올바른 역구조 문장은? [gustar 규칙 적용]', choices:['Yo gusto el café.','A mí gusta el libro.','Me gusta mucho el libro.','Te gustan bailar.'], answer:'Me gusta mucho el libro.', hint:'간접 목적격 대명사(Me) 필수 / mucho는 동사 뒤 / bailar는 단수 → gusta' },
   ],
 
   // 10단계: 역구조 동사 심화 — interesar/importar/apetecer 등
@@ -10580,7 +10590,7 @@ const exerciseSets = [
     { type:'choice', sentence:'Me ___ muy grandes las zapatillas. [그 신발들이 나에게 크다.]', choices:['queda','quedan','quedas','quedamos'], answer:'quedan', hint:'quedar / 주어 las zapatillas = 복수 → quedan' },
     { type:'choice', sentence:'Me ___ miedo los fantasmas. [귀신들이 나에게 무서움을 줘.]', choices:['da','dan','das','damos'], answer:'dan', hint:'dar / 주어 los fantasmas = 복수 → dan' },
     { type:'choice', sentence:'A mí me ___ mucho trabajo cocinar. [요리는 나에게 많은 힘이 든다.]', choices:['cuesta','cuestan','costas','costamos'], answer:'cuesta', hint:'costar (o→ue) / 주어 cocinar(동사원형) = 단수 → cuesta' },
-    { type:'choice', sentence:'다음 중 틀린 문장을 고르시오.', choices:['Me va muy bien.','A mis padres les parecen muy mala la película.','Me dan sueño los libros.','Me queda una hora.'], answer:'A mis padres les parecen muy mala la película.', hint:'la película = 단수 주어 → parece (단수). parecen → parece 로 수정해야 함' },
+    { type:'choice', sentence:'다음 중 틀린 문장을 고르시오. [수일치 오류 찾기]', choices:['Me va muy bien.','A mis padres les parecen muy mala la película.','Me dan sueño los libros.','Me queda una hora.'], answer:'A mis padres les parecen muy mala la película.', hint:'la película = 단수 주어 → parece (단수). parecen → parece 로 수정해야 함' },
   ],
 
   // 12단계: 전치사 De/A/En/Con
@@ -10616,6 +10626,19 @@ let currentExSet = 0;
 let currentExercises = [];
 let currentAnswers = [];
 
+
+
+// ── 연습문제 즉각 피드백 + 무한 출제 ──
+let exPool = [];          // 현재 단계 전체 문제 풀
+let exQueue = [];         // 남은 문제 큐
+let exCurrentQ = null;    // 현재 문제
+let exCorrect = 0;
+let exWrong = 0;
+let exTotal = 0;
+let exStreak = 0;
+let exSessionCount = 0;
+let exAnswered = false;
+
 function loadExerciseSet(setIdx, btn) {
   currentExSet = setIdx || 0;
   if (btn) {
@@ -10626,144 +10649,154 @@ function loadExerciseSet(setIdx, btn) {
     });
     btn.classList.add('active');
   }
+  resetExercise();
+}
 
-  const pool = exerciseSets[currentExSet];
-  // 최대 8문제 무작위 선택
-  const shuffled = [...pool].sort(() => Math.random() - 0.5);
-  currentExercises = shuffled.slice(0, Math.min(8, shuffled.length));
-  currentAnswers = [];
-
-  document.getElementById('exercise-result').style.display = 'none';
+function resetExercise() {
+  exPool = [...exerciseSets[currentExSet]];
+  // 풀 부족하면 반복
+  while (exPool.length < 20) exPool = [...exPool, ...exerciseSets[currentExSet]];
+  exQueue = [...exPool].sort(() => Math.random() - 0.5);
+  exCorrect = 0; exWrong = 0; exTotal = 0; exStreak = 0; exSessionCount = 0;
+  exAnswered = false;
   document.getElementById('exercise-score-panel').style.display = 'none';
+  document.getElementById('ex-score-correct').textContent = '0';
+  document.getElementById('ex-score-wrong').textContent = '0';
+  document.getElementById('ex-streak').textContent = '';
+  updateProgress();
+  showNextQuestion();
+}
 
+function updateProgress() {
+  const txt = document.getElementById('ex-progress-text');
+  if (txt) txt.textContent = exSessionCount;
+}
+
+function showNextQuestion() {
+  if (exQueue.length === 0) {
+    exQueue = [...exPool].sort(() => Math.random() - 0.5);
+  }
+  exCurrentQ = exQueue.shift();
+  exAnswered = false;
+
+  document.getElementById('btn-next-ex').style.display = 'none';
   const container = document.getElementById('exercise-container');
   container.innerHTML = '';
 
-  currentExercises.forEach((q, i) => {
-    const div = document.createElement('div');
-    div.style.cssText = 'background:var(--surface2);border-radius:12px;padding:14px;margin-bottom:12px;border:1px solid var(--border)';
+  const q = exCurrentQ;
+  const div = document.createElement('div');
+  div.style.cssText = 'background:var(--surface2);border-radius:14px;padding:16px;border:2px solid var(--border);transition:border-color .2s';
+  div.id = 'current-q-card';
 
-    let innerHTML = `<div style="font-size:11px;color:var(--text3);margin-bottom:6px;letter-spacing:1px">Q${i+1}. ${q.type === 'transform' ? '변환' : q.type === 'choice' ? '선택' : '빈칸 채우기'}</div>`;
-
-    if (q.type === 'fill') {
-      const parts = q.sentence.split('___');
-      innerHTML += `<div style="font-size:14px;line-height:1.9;margin-bottom:10px">`;
-      parts.forEach((part, pi) => {
-        innerHTML += `<span>${part}</span>`;
-        if (pi < parts.length - 1) {
-          innerHTML += `<input id="ex-${i}-0" type="text" autocomplete="off" autocorrect="off" spellcheck="false"
-            style="display:inline-block;width:70px;background:#1a1830;border:1px solid var(--border);border-radius:6px;
-            color:var(--text);font-size:13px;padding:3px 8px;text-align:center;margin:0 2px;outline:none"
-            placeholder="${q.blank_hint||'__'}">`;
-        }
-      });
-      innerHTML += `</div>`;
-
-    } else if (q.type === 'choice') {
-      innerHTML += `<div style="font-size:14px;line-height:1.7;margin-bottom:10px;white-space:pre-line">${q.sentence}</div>`;
-      innerHTML += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="choices-${i}">`;
-      q.choices.forEach((c, ci) => {
-        innerHTML += `<button onclick="selectChoice(${i},${ci},'${c}')"
-          id="choice-${i}-${ci}"
-          style="background:#1a1830;border:1px solid var(--border);border-radius:10px;padding:10px;
-          color:var(--text);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s">
-          ${c}
-        </button>`;
-      });
-      innerHTML += `</div>`;
-
-    } else if (q.type === 'transform') {
-      innerHTML += `<div style="font-size:13px;color:var(--text2);margin-bottom:8px">${q.before}</div>`;
-      const parts = q.after.split('___');
-      innerHTML += `<div style="font-size:14px;line-height:1.9;margin-bottom:6px">`;
-      parts.forEach((part, pi) => {
-        innerHTML += `<span>${part}</span>`;
-        if (pi < parts.length - 1) {
-          innerHTML += `<input id="ex-${i}-0" type="text" autocomplete="off" autocorrect="off" spellcheck="false"
-            style="display:inline-block;width:70px;background:#1a1830;border:1px solid var(--border);border-radius:6px;
-            color:var(--text);font-size:13px;padding:3px 8px;text-align:center;margin:0 2px;outline:none"
-            placeholder="___">`;
-        }
-      });
-      innerHTML += `</div>`;
-    }
-
-    innerHTML += `<div id="hint-${i}" style="display:none;font-size:11px;color:var(--accent);margin-top:6px;padding:6px 8px;background:#f0b42910;border-radius:6px">💡 ${q.hint}</div>`;
-    div.innerHTML = innerHTML;
-    container.appendChild(div);
+  let innerHTML = `<div style="font-size:11px;color:var(--text3);margin-bottom:8px;letter-spacing:1px">Q${exSessionCount + 1}</div>`;
+  innerHTML += `<div style="font-size:14px;line-height:1.8;margin-bottom:14px;color:var(--text);white-space:pre-line">${q.sentence}</div>`;
+  innerHTML += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="choices-0">`;
+  q.choices.forEach((c, ci) => {
+    innerHTML += `<button onclick="selectChoiceImmediate(${ci})"
+      id="choice-0-${ci}"
+      data-val="${c.replace(/"/g,'&quot;')}"
+      style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:12px 8px;
+      color:var(--text);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;min-height:48px">
+      ${c}
+    </button>`;
   });
+  innerHTML += `</div>`;
+  innerHTML += `<div id="ex-feedback" style="display:none;margin-top:12px;padding:10px 12px;border-radius:10px;font-size:12px"></div>`;
+  div.innerHTML = innerHTML;
+  container.appendChild(div);
 }
 
-const choiceSelections = {};
+function selectChoiceImmediate(choiceIdx) {
+  if (exAnswered) return;
+  exAnswered = true;
 
-function selectChoice(qIdx, choiceIdx, val) {
-  choiceSelections[qIdx] = val;
-  const btns = document.querySelectorAll(`#choices-${qIdx} button`);
+  const q = exCurrentQ;
+  const btn = document.getElementById(`choice-0-${choiceIdx}`);
+  const val = btn ? btn.getAttribute('data-val') : '';
+  const expected = q.answer.toLowerCase().trim();
+  const actual = val.toLowerCase().trim();
+  const isOk = actual === expected || actual === expected.replace(/[^\w\s]/g,'');
+
+  const btns = document.querySelectorAll('#choices-0 button');
   btns.forEach((b, i) => {
-    b.style.background = i === choiceIdx ? 'var(--accent)' : '#1a1830';
-    b.style.color = i === choiceIdx ? '#000' : 'var(--text)';
-    b.style.borderColor = i === choiceIdx ? 'var(--accent)' : 'var(--border)';
+    b.style.cursor = 'default';
+    const bVal = b.textContent.trim().toLowerCase();
+    const bExpected = q.answer.toLowerCase().trim();
+    if (bVal === bExpected || bVal === bExpected.replace(/[^\w\s]/g,'')) {
+      b.style.background = 'var(--correct)';
+      b.style.borderColor = 'var(--correct)';
+      b.style.color = '#000';
+    } else if (i === choiceIdx && !isOk) {
+      b.style.background = 'var(--wrong)';
+      b.style.borderColor = 'var(--wrong)';
+      b.style.color = '#fff';
+    } else {
+      b.style.opacity = '0.4';
+    }
   });
+
+  const card = document.getElementById('current-q-card');
+  const feedback = document.getElementById('ex-feedback');
+  if (isOk) {
+    exCorrect++;
+    exStreak++;
+    card.style.borderColor = 'var(--correct)';
+    feedback.style.display = '';
+    feedback.style.background = '#4ade8018';
+    feedback.style.color = 'var(--correct)';
+    const streakMsg = exStreak >= 5 ? ` 🔥 ${exStreak}연속 정답!` : exStreak >= 3 ? ` ⚡ ${exStreak}연속!` : '';
+    feedback.innerHTML = `✅ 정답!${streakMsg}<br><span style="color:var(--text2);font-size:11px">💡 ${q.hint}</span>`;
+    document.getElementById('ex-score-correct').textContent = exCorrect;
+  } else {
+    exWrong++;
+    exStreak = 0;
+    card.style.borderColor = 'var(--wrong)';
+    feedback.style.display = '';
+    feedback.style.background = '#f8717118';
+    feedback.style.color = 'var(--wrong)';
+    feedback.innerHTML = `❌ 오답 — 정답: <strong style="color:var(--correct)">${q.answer}</strong><br><span style="color:var(--text2);font-size:11px">💡 ${q.hint}</span>`;
+    document.getElementById('ex-score-wrong').textContent = exWrong;
+  }
+
+  if (exStreak >= 3) {
+    document.getElementById('ex-streak').textContent = `🔥 ${exStreak}연속`;
+  } else {
+    document.getElementById('ex-streak').textContent = '';
+  }
+
+  exSessionCount++;
+  updateProgress();
+
+  document.getElementById('btn-next-ex').style.display = '';
+  document.getElementById('btn-next-ex').textContent = '다음 문제 →';
 }
 
-function checkExercise() {
-  let correct = 0;
-  let total = currentExercises.length;
+function nextExercise() {
+  showNextQuestion();
+  const container = document.getElementById('exercise-container');
+  if (container) container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
 
-  currentExercises.forEach((q, i) => {
-    let userAnswer = '';
-    const hintEl = document.getElementById(`hint-${i}`);
-
-    if (q.type === 'fill' || q.type === 'transform') {
-      const inp = document.getElementById(`ex-${i}-0`);
-      userAnswer = inp ? inp.value.trim() : '';
-    } else if (q.type === 'choice') {
-      userAnswer = choiceSelections[i] || '';
-    }
-
-    const expected = q.answer.toLowerCase().trim();
-    const actual = userAnswer.toLowerCase().trim();
-    const isOk = actual === expected || actual === expected.replace(/[^\w\s]/g,'');
-
-    // 입력창 색상
-    if (q.type !== 'choice') {
-      const inp = document.getElementById(`ex-${i}-0`);
-      if (inp) {
-        inp.style.borderColor = isOk ? 'var(--correct)' : 'var(--wrong)';
-        inp.style.color = isOk ? 'var(--correct)' : 'var(--wrong)';
-        if (!isOk) inp.setAttribute('placeholder', q.answer);
-      }
-    } else {
-      // 선택지 색상
-      const btns = document.querySelectorAll(`#choices-${i} button`);
-      btns.forEach(b => {
-        if (b.textContent.trim() === q.answer) {
-          b.style.background = 'var(--correct)';
-          b.style.color = '#000';
-          b.style.borderColor = 'var(--correct)';
-        } else if (b.style.background === 'var(--accent)' || b.style.background.includes('f0b429')) {
-          b.style.background = 'var(--wrong)';
-          b.style.color = '#fff';
-          b.style.borderColor = 'var(--wrong)';
-        }
-      });
-    }
-
-    if (isOk) correct++;
-    // 힌트 표시
-    if (hintEl) hintEl.style.display = '';
-  });
-
-  // 점수 표시
+function showSessionResult() {
+  document.getElementById('exercise-container').innerHTML = '';
+  document.getElementById('btn-next-ex').style.display = 'none';
+  const total = exCorrect + exWrong;
+  const pct = total > 0 ? Math.round(exCorrect / total * 100) : 0;
   const scorePanel = document.getElementById('exercise-score-panel');
   const scoreDisplay = document.getElementById('exercise-score-display');
   const scoreDetail = document.getElementById('exercise-score-detail');
-  const pct = Math.round(correct / total * 100);
-  scoreDisplay.textContent = `${correct} / ${total}점 (${pct}%)`;
-  scoreDetail.textContent = pct >= 80 ? '🎉 훌륭해요! 다음 단계에 도전해보세요!' : pct >= 50 ? '👍 절반 이상 맞았어요. 조금만 더 연습해봐요!' : '💪 힌트를 참고해서 다시 도전해보세요!';
+  scoreDisplay.textContent = `${exCorrect} / ${total} (${pct}%)`;
+  scoreDetail.innerHTML = pct >= 90 ? '🎉 완벽해요! 다음 단계에 도전해보세요!'
+    : pct >= 70 ? '👍 잘 하고 있어요! 조금만 더 연습해요.'
+    : '💪 다시 풀어보면 훨씬 나아질 거예요!';
   scorePanel.style.display = '';
   scorePanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
+
+// 구버전 호환용 (더 이상 사용 안 함)
+function checkExercise() { showSessionResult(); }
+const choiceSelections = {};
+function selectChoice() {}
 
 // grammar 탭 초기화
 function initGrammar() {
