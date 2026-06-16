@@ -435,6 +435,7 @@
   <button class="tab" onclick="showTab('wordlist',this)">📖 단어장</button>
   <button class="tab" onclick="showTab('sentences',this)">💬 문장</button>
   <button class="tab" onclick="showTab('patterns',this)">📐 B1표현</button>
+  <button class="tab" onclick="showTab('vocabbook',this)">📚 시원스쿨</button>
   <button class="tab" onclick="showTab('progress',this)">📊 진도</button>
   <button class="tab" onclick="showTab('grammar',this)">🧩 문법</button>
 </nav>
@@ -2410,6 +2411,45 @@
 </div><!-- /tab-grammar -->
 
 
+<!-- ══════ VOCAB BOOK TAB ══════ -->
+<div id="tab-vocabbook" class="screen">
+
+  <!-- 챕터 선택 -->
+  <div style="display:flex;gap:8px;flex-wrap:wrap;padding:4px 0 12px" id="vb-cap-nav">
+    <button class="pill active" id="vbcap-1" onclick="selectVBCap(1,this)" style="font-size:12px">Cap.1 신체</button>
+    <button class="pill" id="vbcap-2" onclick="selectVBCap(2,this)" style="font-size:12px">Cap.2 개인</button>
+    <button class="pill" id="vbcap-3" onclick="selectVBCap(3,this)" style="font-size:12px">Cap.3 의복</button>
+    <button class="pill" id="vbcap-4" onclick="selectVBCap(4,this)" style="font-size:12px">Cap.4 음식</button>
+    <button class="pill" id="vbcap-5" onclick="selectVBCap(5,this)" style="font-size:12px">Cap.5 교육</button>
+  </div>
+
+  <!-- 유니다드 선택 (챕터별로 달라짐) -->
+  <div style="display:flex;gap:6px;flex-wrap:wrap;padding:0 0 12px;border-bottom:1px solid var(--border);margin-bottom:12px" id="vb-unit-nav">
+    <!-- JS로 렌더링 -->
+  </div>
+
+  <!-- 진행 표시 -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+    <div style="font-size:12px;color:var(--text3)" id="vb-counter">1 / 1</div>
+    <div style="display:flex;gap:8px">
+      <button onclick="vbPrev()" class="card-btn">← 이전</button>
+      <button onclick="vbNext()" class="card-btn">다음 →</button>
+    </div>
+  </div>
+
+  <!-- 단어 카드 -->
+  <div class="panel" id="vb-card" style="min-height:260px">
+    <!-- JS로 렌더링 -->
+  </div>
+
+  <!-- 하단 네비 (스와이프 힌트) -->
+  <div style="text-align:center;font-size:11px;color:var(--text3);margin-top:12px">
+    ← 이전 / 다음 → 버튼으로 책 넘기듯 반복해서 봐요
+  </div>
+
+</div>
+
+
 </main>
 
 <!-- 동사변화 탭 하단 고정 돌아가기 버튼 -->
@@ -2438,6 +2478,389 @@
 // ══════════════════════════════════════════════════
 const pronouns   = ['yo','tú','él/ella','nosotros','vosotros','ellos'];
 const pronounsKo = ['나(yo)','너(tú)','그/그녀(él/ella)','우리(nosotros)','너희(vosotros)','그들(ellos)'];
+
+// ══════════════════════════════════════════════
+// 시원스쿨 GO! 독학 스페인어 단어장 Capítulo 1~5
+// ══════════════════════════════════════════════
+const vocabBook = [
+
+  // ────────────────────────────────────────
+  // Capítulo 1 | Cuerpo 신체
+  // ────────────────────────────────────────
+  {
+    cap: 1, capTitle: 'Cuerpo 신체',
+    unit: 1, unitTitle: '우리 몸',
+    words: [
+      { es: 'pelo', pos: 'n.m.', ko: '머리카락, 털', ex: 'Quiero cortarme el pelo.', exKo: '나 머리카락 자르고 싶어.', tip: 'pelo가 머리숱 전체를 지칭할 때는 집합명사여서 복수로 쓰이지 않는다.' },
+      { es: 'oreja', pos: 'n.f.', ko: '귀, 외이', ex: 'Ana siempre tiene una sonrisa de oreja a oreja.', exKo: '아나는 항상 환한 미소를 띠고 있다.', tip: 'una sonrisa de oreja a oreja = 귀에서 귀까지 걸리는 미소, 즉 환한 미소.' },
+      { es: 'ojo', pos: 'n.m.', ko: '눈', ex: 'Mi novia tiene los ojos muy grandes.', exKo: '내 여자친구는 큰 눈을 가지고 있다.' },
+      { es: 'nariz', pos: 'n.f.', ko: '코', ex: 'Tengo la nariz tapada por un resfriado.', exKo: '나는 감기 때문에 코가 막혔다.' },
+      { es: 'boca', pos: 'n.f.', ko: '입', ex: 'No hables con la boca llena.', exKo: '입에 음식이 찬 상태로 말하지 마.' },
+      { es: 'mano', pos: 'n.f.', ko: '손', ex: 'Este collar está hecho a mano.', exKo: '이 목걸이는 수작업으로 만들어졌다.' },
+      { es: 'cara', pos: 'n.f.', ko: '얼굴, 뻔뻔함', ex: '¡Qué cara tiene tu jefe!', exKo: '너의 상사는 참 뻔뻔하구나!' },
+      { es: 'cabeza', pos: 'n.f.', ko: '머리', ex: 'Me duele mucho la cabeza.', exKo: '나 머리가 많이 아파.' },
+      { es: 'ceja', pos: 'n.f.', ko: '눈썹', ex: 'José tiene las cejas muy pobladas.', exKo: '호세는 숱이 많은 눈썹을 가지고 있다.', tip: 'ceja는 주로 복수로 쓰인다.' },
+      { es: 'oído', pos: 'n.m.', ko: '귀, 내이', ex: 'Miguel toca el piano de oído.', exKo: '미겔은 귀동냥으로 피아노를 연주한다.' },
+      { es: 'labio', pos: 'n.m.', ko: '입술', ex: 'Tengo los labios secos en invierno.', exKo: '나는 겨울에 입술이 메마른다.', tip: 'labio는 주로 복수로 쓰인다.' },
+      { es: 'diente', pos: 'n.m.', ko: '치아', ex: 'Ya me lavo los dientes, mamá.', exKo: '이제 이 닦을게요, 엄마.', tip: 'diente는 주로 복수로 쓰인다.' },
+      { es: 'muela', pos: 'n.f.', ko: '어금니', ex: 'Tengo que sacarme la muela del juicio.', exKo: '나 사랑니 빼야 해.' },
+      { es: 'lengua', pos: 'n.f.', ko: '혀', ex: 'Mamá, Luis me ha sacado la lengua.', exKo: '엄마, 루이스가 나에게 메롱 했어!' },
+      { es: 'cuello', pos: 'n.m.', ko: '목', ex: 'Siento algo en el cuello.', exKo: '목에 무언가가 있는 것 같아.', tip: 'cuello는 목의 겉면을 뜻하며, 목구멍 내부는 garganta.' },
+      { es: 'garganta', pos: 'n.f.', ko: '목, 목구멍', ex: 'Me duele la garganta.', exKo: '나 목이 아파.' },
+      { es: 'corazón', pos: 'n.m.', ko: '심장, 하트', ex: 'No me gustan las revistas del corazón.', exKo: '나는 가십성 잡지들을 좋아하지 않아.' },
+      { es: 'brazo', pos: 'n.m.', ko: '팔', ex: 'Tengo los brazos fofos, así que voy a hacer ejercicio.', exKo: '나 팔뚝이 좀 물컹해서 운동할 거야.' },
+      { es: 'codo', pos: 'n.m.', ko: '팔꿈치', ex: 'Ana me dio con el codo.', exKo: '아나는 나를 팔꿈치로 톡 쳤다.' },
+      { es: 'muñeca', pos: 'n.f.', ko: '손목', ex: 'Me duele la muñeca al coger el ratón.', exKo: '나는 마우스를 잡을 때 손목이 아파.' },
+      { es: 'dedo', pos: 'n.m.', ko: '손가락', ex: 'Tienes los dedos finos.', exKo: '너는 손가락이 가늘구나.' },
+      { es: 'estómago', pos: 'n.m.', ko: '배, 위', ex: 'Me duele el estómago desde ayer.', exKo: '어제부터 나는 배가 아프다.' },
+      { es: 'espalda', pos: 'n.f.', ko: '등', ex: 'Siento algo en la espalda.', exKo: '등에 뭔가가 있는 것 같아.' },
+      { es: 'cintura', pos: 'n.f.', ko: '허리', ex: 'Mi hermana mayor tiene una cintura de avispa.', exKo: '나의 언니는 개미허리를 가지고 있다.' },
+      { es: 'culo', pos: 'n.m.', ko: '엉덩이', ex: 'Me duele el culo de tanto estar sentado.', exKo: '나는 너무 오래 앉아 있어서 엉덩이가 아파.' },
+      { es: 'pierna', pos: 'n.f.', ko: '다리', ex: 'Tengo una cicatriz en la pierna derecha.', exKo: '나는 오른쪽 다리에 상처 하나가 있다.' },
+      { es: 'rodilla', pos: 'n.f.', ko: '무릎', ex: 'Siempre me duele la rodilla derecha después de jugar al fútbol.', exKo: '축구를 하고 나서 나는 항상 오른쪽 무릎이 아프다.' },
+      { es: 'pie', pos: 'n.m.', ko: '발', ex: 'Esa historia no tiene ni pies ni cabeza.', exKo: '그 이야기는 앞뒤가 맞지 않다.' },
+      { es: 'cuerpo', pos: 'n.m.', ko: '몸, 시체', ex: 'La Policía dijo que el cuerpo estaba debajo del puente.', exKo: '경찰은 그 시체가 다리 밑에 있었다고 말했다.' },
+      { es: 'frente', pos: 'n.f.', ko: '이마', ex: 'Me ha salido un grano en la frente.', exKo: '나 이마에 여드름 하나가 났어.' },
+      { es: 'pestaña', pos: 'n.f.', ko: '속눈썹', ex: 'Mi sobrina tiene las pestañas muy largas.', exKo: '나의 조카는 매우 긴 속눈썹을 가지고 있다.', tip: 'pestaña는 보통 복수로 쓰인다.' },
+      { es: 'mejilla', pos: 'n.f.', ko: '볼', ex: 'Los españoles se dan un beso en cada mejilla para saludarse y despedirse.', exKo: '스페인 사람들은 만남과 헤어짐의 인사를 하기 위해서 각각의 볼에 한 번씩 뽀뽀를 한다.' },
+      { es: 'piel', pos: 'n.f.', ko: '피부', ex: 'Yuna Kim tiene la piel de porcelana.', exKo: '김연아는 도자기 피부를 가지고 있다.' },
+      { es: 'hombro', pos: 'n.m.', ko: '어깨', ex: 'Alejandro tiene los hombros anchos.', exKo: '알레한드로는 넓은 어깨를 가지고 있다.', tip: 'hombro는 보통 복수로 쓰인다.' },
+      { es: 'pecho', pos: 'n.m.', ko: '가슴', ex: 'Siento un dolor agudo en el pecho.', exKo: '나는 가슴에 콕콕 찌르는 듯한 통증을 느껴.' },
+      { es: 'pulmón', pos: 'n.m.', ko: '폐', ex: 'Raúl tuvo un problema grave en el pulmón.', exKo: '라울은 폐에 심각한 문제를 가지고 있었다.' },
+      { es: 'barriga', pos: 'n.f.', ko: '배', ex: 'Mi padre tiene mucha barriga.', exKo: '나의 아버지는 배가 많이 나왔다.' },
+      { es: 'vientre', pos: 'n.m.', ko: '배, 복부', ex: '¿Sabes bailar la danza del vientre?', exKo: '너는 밸리 댄스를 출 줄 아니?' },
+      { es: 'ombligo', pos: 'n.m.', ko: '배꼽', ex: 'Quiero hacerme un piercing en el ombligo.', exKo: '나는 배꼽에 피어싱 하나를 하고 싶다.' },
+      { es: 'nalga', pos: 'n.f.', ko: '엉덩이', ex: 'Tengo un lunar en la nalga derecha.', exKo: '나는 오른쪽 엉덩이에 반점 하나를 가지고 있다.', tip: 'nalga는 복수로 써야 양쪽 엉덩이를 가리킨다.' },
+      { es: 'palma', pos: 'n.f.', ko: '손바닥', ex: 'Ana sabe leer la palma de la mano.', exKo: '아나는 손금을 읽을 줄 안다.' },
+      { es: 'uña', pos: 'n.f.', ko: '손톱', ex: 'No te muerdas las uñas.', exKo: '손톱 물어뜯지 마.' },
+      { es: 'tobillo', pos: 'n.m.', ko: '발목', ex: 'Me he hecho daño en el tobillo derecho.', exKo: '나는 오른쪽 발목을 다쳤다.' },
+      { es: 'talón', pos: 'n.m.', ko: '발뒤꿈치', ex: 'El talón de Aquiles de Ana es el chocolate.', exKo: '아나의 약점은 초콜릿이다.' },
+      { es: 'hueso', pos: 'n.m.', ko: '뼈', ex: 'Me rompí un hueso al caer de un árbol.', exKo: '나는 나무에서 떨어졌을 때 뼈 하나가 부러졌다.' },
+      { es: 'músculo', pos: 'n.m.', ko: '근육', ex: 'No tengo músculos.', exKo: '나는 근육이 없다.' },
+    ]
+  },
+
+  {
+    cap: 1, capTitle: 'Cuerpo 신체',
+    unit: 2, unitTitle: '신체 특징',
+    words: [
+      { es: 'ser alto/a', pos: '동사표현', ko: '키가 크다', ex: 'Mi hermana menor es más alta que yo.', exKo: '나의 여동생은 나보다 키가 더 크다.', tip: 'ser de estatura media 보통 키이다도 알아 두자.' },
+      { es: 'estar calvo/a', pos: '동사표현', ko: '머리가 벗겨진', ex: 'José está calvo.', exKo: '호세는 머리가 벗겨진 상태다.' },
+      { es: 'tener barba', pos: '동사표현', ko: '턱수염을 가지고 있다', ex: 'No tengo mucha barba, ¿no?', exKo: '나 턱수염 많이 안 자라지 않았어?' },
+      { es: 'tener el pelo negro', pos: '동사표현', ko: '검은 머리를 가지고 있다', ex: 'Tengo el pelo negro y quiero teñirme de castaño.', exKo: '나는 검은 머리를 가지고 있는데 밤색으로 염색하고 싶어.' },
+      { es: 'tener los ojos claros', pos: '동사표현', ko: '밝은 색의 눈을 가지고 있다', ex: 'Quiero tener los ojos claros y por eso llevo lentillas.', exKo: '나는 밝은 색 눈을 갖고 싶어 그래서 렌즈를 착용하고 다녀.' },
+      { es: 'tener los ojos marrones', pos: '동사표현', ko: '갈색 눈을 가지고 있다', ex: 'Mi madre tiene los ojos marrones.', exKo: '나의 어머니는 갈색 눈을 가지고 있다.' },
+      { es: 'tener los ojos grandes', pos: '동사표현', ko: '큰 눈을 가지고 있다', ex: 'La actriz tiene los ojos grandes.', exKo: '그 배우는 큰 눈을 가지고 있다.' },
+      { es: 'tener el pelo rizado', pos: '동사표현', ko: '곱슬머리를 가지고 있다', ex: 'Mi sobrina tiene el pelo muy rizado.', exKo: '나의 조카는 매우 곱슬거리는 머리를 가졌다.' },
+      { es: 'tener el pelo ondulado', pos: '동사표현', ko: '웨이브 진 머리를 가지고 있다', ex: 'Mi sobrina tiene el pelo ondulado.', exKo: '나의 조카는 웨이브 진 머리를 가지고 있다.' },
+      { es: 'tener canas', pos: '동사표현', ko: '흰머리를 가지고 있다', ex: 'Mi padre ya tiene canas.', exKo: '나의 아버지는 벌써 흰머리를 가지고 있다.', tip: 'cana는 보통 복수로 쓰인다.' },
+      { es: 'ser moreno de piel', pos: '동사표현', ko: '피부가 원래 가무잡잡하다', ex: 'José es moreno de piel, pero tiene los ojos claros.', exKo: '호세는 피부는 가무잡잡한데, 밝은 색의 눈을 가지고 있다.' },
+      { es: 'tener los ojos rasgados', pos: '동사표현', ko: '가는 눈을 가지고 있다', ex: 'El actor tiene los ojos rasgados.', exKo: '그 배우는 가는 눈을 가지고 있다.' },
+      { es: 'tener la piel suave', pos: '동사표현', ko: '부드러운 피부를 가지고 있다', ex: 'Tengo la piel suave.', exKo: '나는 부드러운 피부를 가지고 있다.' },
+      { es: 'tener la piel seca', pos: '동사표현', ko: '건성의 피부를 가지고 있다', ex: 'Tengo la piel seca.', exKo: '나는 건성의 피부를 가지고 있어.' },
+      { es: 'tener buen tipo', pos: '동사표현', ko: '좋은 몸매를 가지고 있다', ex: 'Ana hace mucho ejercicio y por eso tiene buen tipo.', exKo: '아나는 운동을 많이 한다 그래서 몸매가 좋다.' },
+      { es: 'tener buena presencia', pos: '동사표현', ko: '단정한 용모를 가지고 있다', ex: 'Es importante tener buena presencia en una entrevista de trabajo.', exKo: '일자리 면접에서 좋은 용모를 갖추는 것이 중요하다.' },
+      { es: 'parecerse a alguien', pos: '동사표현', ko: '~을(를) 닮다', ex: 'No me parezco nada a mi madre.', exKo: '나는 나의 어머니를 하나도 닮지 않았다.' },
+    ]
+  },
+
+  {
+    cap: 1, capTitle: 'Cuerpo 신체',
+    unit: 3, unitTitle: '신체 활동',
+    words: [
+      { es: 'vivir', pos: 'v.', ko: '살다', ex: 'Me gustaría vivir en el extranjero en un futuro cercano.', exKo: '나는 가까운 미래에 외국에서 살아 보고 싶다.' },
+      { es: 'ver', pos: 'v.', ko: '보다', ex: '¿Has visto a Gema últimamente?', exKo: '너 최근에 헤마 본 적 있어?' },
+      { es: 'oír', pos: 'v.', ko: '들다', ex: '¿Me oyes?', exKo: '내 말 들려?' },
+      { es: 'escuchar', pos: 'v.', ko: '듣다 (집중해서)', ex: 'Dime, yo te escucho.', exKo: '말해, 나는 네가 하는 말 들을게.' },
+      { es: 'mirar', pos: 'v.', ko: '처다보다, 바라보다', ex: 'Mírame a los ojos.', exKo: '내 눈을 처다봐.' },
+      { es: 'tocar', pos: 'v.', ko: '만지다', ex: 'No me toques.', exKo: '나 건드리지 마.' },
+      { es: 'dormir', pos: 'v.', ko: '자다', ex: '¿Dormiste algo anoche?', exKo: '너 어젯밤에 좀 잤어?' },
+      { es: 'acostarse', pos: 'v.', ko: '잠자리에 들다', ex: 'Me acuesto sobre las 11.', exKo: '나는 11시경에 잠자리에 든다.' },
+      { es: 'despertarse', pos: 'v.', ko: '잠에서 깨다', ex: 'Gema se despierta fácilmente con cualquier ruido.', exKo: '헤마는 어떤 소음에도 쉽게 잠이 깬다.' },
+      { es: 'levantarse', pos: 'v.', ko: '일어나다', ex: 'Ana siempre se levanta a las 5 de la madrugada.', exKo: '아나는 항상 새벽 5시에 일어난다.' },
+      { es: 'afeitarse', pos: 'v.', ko: '면도하다', ex: 'No me gusta afeitarme todos los días. Es muy pesado.', exKo: '나는 매일 면도하는 것을 좋아하지 않는다. 그것은 참 귀찮다.' },
+      { es: 'peinarse', pos: 'v.', ko: '머리를 빗다, 헤어 스타일링을 하다', ex: 'Yo no sé peinarme.', exKo: '나는 헤어 스타일링을 할 줄 몰라.' },
+      { es: 'sentarse', pos: 'v.', ko: '앉다', ex: '¿Nos sentamos aquí?', exKo: '우리 여기 앉을까?' },
+      { es: 'caminar', pos: 'v.', ko: '걷다', ex: 'Le gusta caminar sin rumbo.', exKo: '그는 정처 없이 걷기를 좋아한다.' },
+      { es: 'andar', pos: 'v.', ko: '걷다, ~한 상태로 지내다', ex: 'Estos últimos días ando mal de dinero.', exKo: '요 근래 나는 자금 상태가 좋지 않다.' },
+      { es: 'pasear', pos: 'v.', ko: '산책하다', ex: 'Quiero pasear un rato. ¿Te vienes conmigo?', exKo: '나 잠시 산책하고 싶어. 너 나랑 같이 갈래?' },
+      { es: 'correr', pos: 'v.', ko: '뛰다', ex: 'Me gusta correr por el paseo marítimo.', exKo: '나는 해변 산책로를 따라서 뛰는 것을 좋아한다.' },
+      { es: 'hacer deporte', pos: '동사표현', ko: '운동을 하다', ex: '¿Cuántas veces a la semana haces deporte?', exKo: '너는 일주일에 몇 번이나 운동을 하니?' },
+      { es: 'ducharse', pos: 'v.', ko: '샤워하다', ex: 'Me ducho con agua fría en verano.', exKo: '나는 여름에 찬물로 샤워한다.' },
+      { es: 'subir', pos: 'v.', ko: '올라가다, ~을(를) 올리다', ex: 'Voy a subir las maletas.', exKo: '나 캐리어들을 올려다 놓을게.' },
+      { es: 'bajar', pos: 'v.', ko: '~을(를) 내리다, 내려다 놓다', ex: 'Voy a bajar la basura.', exKo: '나 쓰레기 내려다 놓을게.' },
+      { es: 'nacer', pos: 'v.', ko: '태어나다', ex: 'Mi sobrino nació el 3 de enero.', exKo: '나의 조카는 1월 3일에 태어났다.' },
+      { es: 'crecer', pos: 'v.', ko: '자라다, 성장하다', ex: '¡Cómo ha crecido mi pequeño!', exKo: '우리 작은 아들이 얼마나 많이 자랐는지!' },
+      { es: 'oler', pos: 'v.', ko: '냄새가 나다, 냄새를 맡다', ex: 'Hueles muy bien. ¿Te has echado perfume o algo?', exKo: '너 좋은 향기가 난다. 향수나 뭐 그런 거 뿌렸어?' },
+      { es: 'sonarse', pos: 'v.', ko: '코를 풀다', ex: '¿Es de mala educación sonarse en público?', exKo: '다른 사람들 앞에서 코를 푸는 게 예의에 어긋나나요?' },
+      { es: 'respirar', pos: 'v.', ko: '숨을 쉬다', ex: 'Mi jefe no me deja ni respirar.', exKo: '내 상사는 내가 숨조차 쉬게 두지 않는다.' },
+    ]
+  },
+
+  // ────────────────────────────────────────
+  // Capítulo 2 | Individuo 개인
+  // ────────────────────────────────────────
+  {
+    cap: 2, capTitle: 'Individuo 개인',
+    unit: 1, unitTitle: '성격',
+    words: [
+      { es: 'ser simpático/a', pos: '동사표현', ko: '친절하다, 상냥하다', ex: 'Mi profesor es muy simpático con todos.', exKo: '나의 선생님은 모두에게 매우 친절하다.' },
+      { es: 'ser antipático/a', pos: '동사표현', ko: '불친절하다, 불쾌하다', ex: 'No me gusta ese chico porque es muy antipático.', exKo: '나는 그 남자아이를 좋아하지 않는다 왜냐하면 매우 불친절하기 때문이다.' },
+      { es: 'ser amable', pos: '동사표현', ko: '친절하다', ex: '¿Sería tan amable de abrirme la puerta?', exKo: '문을 열어주실 만큼 친절하신가요?' },
+      { es: 'ser tímido/a', pos: '동사표현', ko: '수줍음을 타다, 내성적이다', ex: 'Soy muy tímida y me cuesta hablar en público.', exKo: '나는 매우 내성적이어서 사람들 앞에서 말하는 것이 힘들다.' },
+      { es: 'ser extrovertido/a', pos: '동사표현', ko: '외향적이다', ex: 'Mi hermano es muy extrovertido y tiene muchos amigos.', exKo: '나의 남동생은 매우 외향적이어서 친구들이 많다.' },
+      { es: 'ser generoso/a', pos: '동사표현', ko: '관대하다, 후하다', ex: 'Mi abuela siempre es muy generosa con nosotros.', exKo: '나의 할머니는 항상 우리에게 매우 후하시다.' },
+      { es: 'ser tacaño/a', pos: '동사표현', ko: '인색하다', ex: 'No seas tan tacaño y invítame a comer.', exKo: '그렇게 인색하게 굴지 말고 나에게 밥 한 번 사줘.' },
+      { es: 'ser honesto/a', pos: '동사표현', ko: '정직하다', ex: 'Siempre sé honesto con tus amigos.', exKo: '항상 네 친구들에게 정직해라.' },
+      { es: 'ser mentiroso/a', pos: '동사표현', ko: '거짓말쟁이다', ex: 'No te creo, eres muy mentiroso.', exKo: '나는 네 말을 믿지 않아, 너는 거짓말쟁이야.' },
+      { es: 'ser trabajador/a', pos: '동사표현', ko: '근면하다, 부지런하다', ex: 'Eres muy trabajador y por eso tienes éxito.', exKo: '너는 매우 근면하고 그래서 성공한 거야.' },
+      { es: 'ser vago/a', pos: '동사표현', ko: '게으르다', ex: 'No seas tan vago y ayúdame a limpiar.', exKo: '그렇게 게으르게 굴지 말고 나 청소하는 것 좀 도와줘.' },
+      { es: 'ser responsable', pos: '동사표현', ko: '책임감이 있다', ex: 'Es importante ser responsable en el trabajo.', exKo: '직장에서 책임감이 있는 것이 중요하다.' },
+      { es: 'ser inteligente', pos: '동사표현', ko: '지능이 높다, 영리하다', ex: 'Mi hijo es muy inteligente para su edad.', exKo: '나의 아들은 그의 나이에 비해 매우 영리하다.' },
+      { es: 'ser creativo/a', pos: '동사표현', ko: '창의적이다', ex: 'Los artistas suelen ser muy creativos.', exKo: '예술가들은 보통 매우 창의적이다.' },
+      { es: 'ser curioso/a', pos: '동사표현', ko: '호기심이 많다', ex: 'Los niños son muy curiosos por naturaleza.', exKo: '아이들은 본성적으로 매우 호기심이 많다.' },
+      { es: 'ser terco/a', pos: '동사표현', ko: '고집이 세다', ex: 'Es muy terco y nunca cambia de opinión.', exKo: '그는 매우 고집이 세서 절대 의견을 바꾸지 않는다.' },
+      { es: 'ser optimista', pos: '동사표현', ko: '낙관적이다', ex: 'Intenta ser más optimista ante los problemas.', exKo: '문제들에 대해 더 낙관적이 되려고 노력해봐.' },
+    ]
+  },
+
+  {
+    cap: 2, capTitle: 'Individuo 개인',
+    unit: 2, unitTitle: '기분',
+    words: [
+      { es: 'gustar', pos: 'v.', ko: '좋아하다', ex: 'Me gusta el cine español.', exKo: '나는 스페인 영화들을 좋아한다.' },
+      { es: 'encantar', pos: 'v.', ko: '매우 좋아하다', ex: 'Me encanta tomar el sol.', exKo: '나는 일광욕하는 것을 매우 좋아한다.', tip: 'encantar는 gustar처럼 쓰이는 역구조 동사이며 최상급의 의미를 가진다.' },
+      { es: 'odiar', pos: 'v.', ko: '미워하다', ex: 'Creo que el profesor de inglés me odia.', exKo: '나는 영어 선생님이 나를 싫어한다고 생각해.' },
+      { es: 'triste', pos: 'adj.', ko: '슬픈', ex: 'Estoy triste porque mi mejor amiga se fue a su país.', exKo: '나는 슬프다 왜냐하면 나의 가장 친한 친구가 그녀의 나라로 떠났기 때문이다.' },
+      { es: 'llorar', pos: 'v.', ko: '울다', ex: 'A veces lloro de alegría.', exKo: '가끔 나는 기뻐서 운다.' },
+      { es: 'gritar', pos: 'v.', ko: '소리치다', ex: 'Ana me gritó en plena calle.', exKo: '아나는 나에게 길 한복판에서 소리를 질렀다.' },
+      { es: 'reír', pos: 'v.', ko: '웃다', ex: 'Me hizo reír con sus chistes.', exKo: '그는 자신의 농담으로 나를 웃겼다.' },
+      { es: 'estar contento/a', pos: '동사표현', ko: '만족하다, 기쁘다', ex: 'Estoy muy contenta con mi nuevo trabajo.', exKo: '나는 나의 새 직장에 매우 만족한다.' },
+      { es: 'estar enfadado/a', pos: '동사표현', ko: '화가 나 있다', ex: 'Mi madre está enfadada conmigo.', exKo: '나의 어머니는 나에게 화가 나 있다.' },
+      { es: 'estar nervioso/a', pos: '동사표현', ko: '긴장해 있다', ex: 'Estoy muy nervioso antes de los exámenes.', exKo: '나는 시험 전에 매우 긴장한다.' },
+      { es: 'estar aburrido/a', pos: '동사표현', ko: '지루해하다', ex: 'Estoy aburrido, no hay nada que hacer.', exKo: '나는 지루하다, 할 것이 아무것도 없어.' },
+      { es: 'estar asustado/a', pos: '동사표현', ko: '겁먹어 있다', ex: 'El niño estaba muy asustado con la oscuridad.', exKo: '그 아이는 어둠 때문에 매우 겁을 먹어 있었다.' },
+      { es: 'estar cansado/a', pos: '동사표현', ko: '피곤해 있다', ex: 'Estoy muy cansada después del trabajo.', exKo: '나는 일 후에 매우 피곤하다.' },
+      { es: 'sentirse bien/mal', pos: '동사표현', ko: '기분이 좋다/나쁘다', ex: '¿Cómo te sientes hoy?', exKo: '오늘 기분이 어때?' },
+      { es: 'ponerse de mal humor', pos: '동사표현', ko: '기분이 나빠지다', ex: 'Se pone de mal humor cuando tiene hambre.', exKo: '그는 배가 고플 때 기분이 나빠진다.' },
+      { es: 'tener ganas de', pos: '동사표현', ko: '~하고 싶다, ~할 마음이 있다', ex: 'No tengo ganas de salir esta noche.', exKo: '오늘 밤 나갈 마음이 없어.' },
+    ]
+  },
+
+  {
+    cap: 2, capTitle: 'Individuo 개인',
+    unit: 3, unitTitle: '감각·상태',
+    words: [
+      { es: 'tener hambre', pos: '동사표현', ko: '배고프다', ex: 'Tengo mucha hambre, ¿comemos ya?', exKo: '나 많이 배고파, 이제 먹을까?' },
+      { es: 'tener sed', pos: '동사표현', ko: '목마르다', ex: 'Tengo mucha sed, dame agua por favor.', exKo: '나 목이 많이 마른다, 물 좀 줘.' },
+      { es: 'tener sueño', pos: '동사표현', ko: '졸리다', ex: 'Tengo mucho sueño, no dormí nada anoche.', exKo: '나 엄청 졸려, 어제 밤에 하나도 못잤어.' },
+      { es: 'tener frío', pos: '동사표현', ko: '춥다', ex: 'Tengo frío, ¿puedes cerrar la ventana?', exKo: '나 추워, 창문 좀 닫아줄 수 있어?' },
+      { es: 'tener calor', pos: '동사표현', ko: '덥다', ex: 'Tengo mucho calor, voy a abrir la ventana.', exKo: '나 너무 더워, 창문 열 거야.' },
+      { es: 'tener dolor de cabeza', pos: '동사표현', ko: '두통이 있다', ex: 'Tengo dolor de cabeza, necesito una aspirina.', exKo: '두통이 있어, 아스피린 한 알이 필요해.' },
+      { es: 'tener fiebre', pos: '동사표현', ko: '열이 있다', ex: 'Mi hijo tiene fiebre desde ayer.', exKo: '나의 아들은 어제부터 열이 있다.' },
+      { es: 'estar resfriado/a', pos: '동사표현', ko: '감기에 걸려 있다', ex: 'Estoy resfriada y me duele la garganta.', exKo: '나는 감기에 걸려있고 목이 아프다.' },
+      { es: 'estar enfermo/a', pos: '동사표현', ko: '아프다, 병이 나 있다', ex: 'No puedo salir porque estoy enferma.', exKo: '나는 아프기 때문에 나갈 수 없다.' },
+      { es: 'estar sano/a', pos: '동사표현', ko: '건강하다', ex: 'Hay que comer bien para estar sano.', exKo: '건강하기 위해서는 잘 먹어야 한다.' },
+      { es: 'estar en forma', pos: '동사표현', ko: '몸 상태가 좋다', ex: 'Hago deporte para estar en forma.', exKo: '나는 몸 상태를 좋게 유지하기 위해 운동을 한다.' },
+      { es: 'doler', pos: 'v.', ko: '아프다 (역구조)', ex: 'Me duele mucho la cabeza.', exKo: '나 머리가 많이 아파.' },
+      { es: 'sentir', pos: 'v.', ko: '느끼다', ex: 'Siento algo raro en el estómago.', exKo: '위장에 뭔가 이상한 것을 느껴.' },
+      { es: 'notar', pos: 'v.', ko: '알아채다, 느끼다', ex: 'Noto que algo ha cambiado.', exKo: '무언가 바뀐 것을 알아챘어.' },
+    ]
+  },
+
+  // ────────────────────────────────────────
+  // Capítulo 3 | Ropa y complementos 의복
+  // ────────────────────────────────────────
+  {
+    cap: 3, capTitle: 'Ropa y complementos 의복',
+    unit: 1, unitTitle: '의류',
+    words: [
+      { es: 'camisa', pos: 'n.f.', ko: '셔츠', ex: '¿De qué talla es esta camisa?', exKo: '이 셔츠는 몇 사이즈예요?' },
+      { es: 'camiseta', pos: 'n.f.', ko: '티셔츠', ex: 'Me he comprado una camiseta de manga corta.', exKo: '나는 반팔 티셔츠 하나를 사버렸다.' },
+      { es: 'pantalón', pos: 'n.m.', ko: '바지', ex: 'Estos pantalones son de mi padre.', exKo: '이 바지는 나의 아버지 것이다.', tip: '스페인어에서 pantalón은 단수도 복수도 쓸 수 있다.' },
+      { es: 'falda', pos: 'n.f.', ko: '치마', ex: 'Me gusta llevar falda en verano.', exKo: '나는 여름에 치마를 입는 것을 좋아한다.' },
+      { es: 'vestido', pos: 'n.m.', ko: '원피스, 드레스', ex: 'Voy a ponerme el vestido rojo para la fiesta.', exKo: '나는 파티를 위해 빨간 원피스를 입을 거야.' },
+      { es: 'chaqueta', pos: 'n.f.', ko: '재킷', ex: 'Nos ponemos la chaqueta porque hace mucho frío.', exKo: '날이 너무 춥기 때문에 우리는 재킷을 입는다.' },
+      { es: 'abrigo', pos: 'n.m.', ko: '코트, 외투', ex: 'Me pongo el abrigo cuando sale a la calle.', exKo: '나는 거리에 나갈 때 코트를 입는다.' },
+      { es: 'jersey', pos: 'n.m.', ko: '스웨터', ex: 'Este jersey es muy suave.', exKo: '이 스웨터는 매우 부드럽다.' },
+      { es: 'vaquero', pos: 'n.m.', ko: '청바지', ex: 'Me encantan los vaqueros ajustados.', exKo: '나는 딱 붙는 청바지를 매우 좋아한다.' },
+      { es: 'traje', pos: 'n.m.', ko: '정장, 수트', ex: 'Mi padre siempre lleva traje al trabajo.', exKo: '나의 아버지는 항상 직장에 정장을 입고 간다.' },
+      { es: 'ropa interior', pos: 'n.f.', ko: '속옷', ex: 'No olvides cambiar la ropa interior cada día.', exKo: '매일 속옷을 갈아입는 것을 잊지 마.' },
+      { es: 'calcetín', pos: 'n.m.', ko: '양말', ex: '¿Dónde están mis calcetines?', exKo: '내 양말이 어디 있어?' },
+      { es: 'zapato', pos: 'n.m.', ko: '신발', ex: 'Estos zapatos me aprietan mucho.', exKo: '이 신발이 나를 많이 조인다.', tip: 'zapato는 주로 복수로 쓰인다.' },
+      { es: 'zapatilla', pos: 'n.f.', ko: '운동화, 슬리퍼', ex: 'Me gustan mucho estas zapatillas.', exKo: '나는 이 운동화들이 매우 좋다.' },
+      { es: 'bota', pos: 'n.f.', ko: '부츠', ex: 'Me he comprado unas botas de cuero.', exKo: '나는 가죽 부츠 한 켤레를 사버렸다.' },
+      { es: 'tacón', pos: 'n.m.', ko: '하이힐', ex: 'No me gustan los zapatos de tacón.', exKo: '나는 하이힐이 좋지 않아.' },
+    ]
+  },
+
+  {
+    cap: 3, capTitle: 'Ropa y complementos 의복',
+    unit: 2, unitTitle: '소지품·악세서리',
+    words: [
+      { es: 'bolso', pos: 'n.m.', ko: '가방, 핸드백', ex: 'Me han robado el bolso en el metro.', exKo: '나는 지하철에서 핸드백을 도난당했다.' },
+      { es: 'mochila', pos: 'n.f.', ko: '백팩', ex: 'Llevo la mochila al colegio.', exKo: '나는 학교에 백팩을 메고 간다.' },
+      { es: 'cartera', pos: 'n.f.', ko: '지갑', ex: 'Se me ha olvidado la cartera en casa.', exKo: '지갑을 집에 두고 왔어.' },
+      { es: 'gafas', pos: 'n.f.', ko: '안경', ex: 'Sin gafas no veo nada.', exKo: '안경 없이는 아무것도 안 보여.' },
+      { es: 'sombrero', pos: 'n.m.', ko: '모자 (챙 있는)', ex: 'Me pongo el sombrero cuando hace sol.', exKo: '나는 해가 날 때 모자를 쓴다.' },
+      { es: 'gorra', pos: 'n.f.', ko: '야구 모자', ex: 'Lleva siempre una gorra roja.', exKo: '그는 항상 빨간 야구 모자를 쓰고 다닌다.' },
+      { es: 'bufanda', pos: 'n.f.', ko: '목도리', ex: 'Me pongo la bufanda porque hace frío.', exKo: '나는 춥기 때문에 목도리를 한다.' },
+      { es: 'guante', pos: 'n.m.', ko: '장갑', ex: 'Se me ha perdido un guante.', exKo: '장갑 한 짝을 잃어버렸어.', tip: 'guante는 주로 복수로 쓰인다.' },
+      { es: 'cinturón', pos: 'n.m.', ko: '벨트', ex: 'Se me ha roto el cinturón.', exKo: '벨트가 끊어졌어.' },
+      { es: 'anillo', pos: 'n.m.', ko: '반지', ex: 'Me ha regalado un anillo de oro.', exKo: '그는 나에게 금 반지를 선물했다.' },
+      { es: 'collar', pos: 'n.m.', ko: '목걸이', ex: 'Lleva un collar de perlas.', exKo: '그녀는 진주 목걸이를 하고 있다.' },
+      { es: 'pendiente', pos: 'n.m.', ko: '귀고리', ex: 'Los pendientes de Zara son muy bonitos.', exKo: '자라의 귀고리들이 매우 예쁘다.', tip: 'pendiente는 주로 복수로 쓰인다.' },
+      { es: 'pulsera', pos: 'n.f.', ko: '팔찌', ex: 'En verano me gusta llevar pulseras de cuero.', exKo: '여름에 나는 가죽 팔찌를 차고 다니는 것을 좋아한다.' },
+      { es: 'paraguas', pos: 'n.m.', ko: '우산', ex: 'No he cogido el paraguas y se ha puesto a llover.', exKo: '우산을 안 가져왔는데 비가 내리기 시작했어.' },
+    ]
+  },
+
+  {
+    cap: 3, capTitle: 'Ropa y complementos 의복',
+    unit: 3, unitTitle: '의복 관련 동사',
+    words: [
+      { es: 'llevar', pos: 'v.', ko: '(옷, 모자 등을) 입고 있다, 착용하고 다니다', ex: 'Hoy llevo un vestido azul.', exKo: '오늘 나는 파란 원피스를 입고 있다.' },
+      { es: 'ponerse', pos: 'v.', ko: '(옷을) 입다', ex: '¿Qué te pones para la fiesta?', exKo: '파티에 뭐 입을 거야?' },
+      { es: 'quitarse', pos: 'v.', ko: '(옷을) 벗다', ex: 'Quítate los zapatos antes de entrar.', exKo: '들어오기 전에 신발을 벗어라.' },
+      { es: 'cambiarse de ropa', pos: '동사표현', ko: '옷을 갈아입다', ex: 'Voy a cambiarme de ropa antes de salir.', exKo: '나가기 전에 옷을 갈아입을 거야.' },
+      { es: 'quedar bien/mal', pos: '동사표현', ko: '(옷이) 잘 어울리다/안 어울리다', ex: 'Te queda muy bien ese color.', exKo: '그 색이 너에게 매우 잘 어울린다.' },
+      { es: 'estar de moda', pos: '동사표현', ko: '유행이다', ex: 'Los vaqueros rotos están de moda.', exKo: '찢어진 청바지가 유행이다.' },
+      { es: 'pasarse de moda', pos: '동사표현', ko: '유행이 지나다', ex: 'Ese estilo ya se ha pasado de moda.', exKo: '그 스타일은 이미 유행이 지났다.' },
+      { es: 'tener buen gusto', pos: '동사표현', ko: '취향이 좋다, 센스가 있다', ex: 'Tu novia tiene muy buen gusto para la moda.', exKo: '너의 여자친구는 패션에 있어 취향이 매우 좋다.' },
+      { es: 'ir de compras', pos: '동사표현', ko: '쇼핑하러 가다', ex: 'Esta tarde voy de compras, ¿quieres venir?', exKo: '나 오늘 오후에 쇼핑하러 가는데, 같이 갈래?' },
+      { es: 'probarse', pos: 'v.', ko: '(옷을) 입어보다', ex: '¿Me puedo probar este vestido?', exKo: '이 원피스 입어봐도 될까요?' },
+    ]
+  },
+
+  // ────────────────────────────────────────
+  // Capítulo 4 | Comida 음식
+  // ────────────────────────────────────────
+  {
+    cap: 4, capTitle: 'Comida 음식',
+    unit: 1, unitTitle: '음료',
+    words: [
+      { es: 'agua', pos: 'n.f.', ko: '물', ex: 'Agua sin gas, por favor.', exKo: '탄산 없는 물 주세요.' },
+      { es: 'café', pos: 'n.m.', ko: '커피', ex: 'Me gusta tomar café por la mañana.', exKo: '나는 아침에 커피를 마시는 것을 좋아한다.' },
+      { es: 'té', pos: 'n.m.', ko: '차', ex: '¿Qué tipo de té te gusta?', exKo: '어떤 종류의 차를 좋아하니?' },
+      { es: 'leche', pos: 'n.f.', ko: '우유', ex: 'Me gusta tomar un vaso de leche antes de acostarme.', exKo: '나는 자기 전에 우유 한 잔을 마시는 것을 좋아한다.' },
+      { es: 'café con leche', pos: 'n.m.', ko: '카페라떼', ex: 'Yo siempre tomo un café con leche por la mañana.', exKo: '나는 항상 아침에 카페라떼를 마신다.' },
+      { es: 'cerveza', pos: 'n.f.', ko: '맥주', ex: 'Me gusta tomar cerveza cuando salgo.', exKo: '나는 외출할 때 맥주를 마시는 것을 좋아한다.' },
+      { es: 'vino blanco', pos: 'n.m.', ko: '화이트 와인', ex: 'Prefiero el vino blanco al tinto.', exKo: '나는 레드 와인보다 화이트 와인을 선호한다.' },
+      { es: 'vino tinto', pos: 'n.m.', ko: '레드 와인', ex: 'Este vino tinto es de la Rioja.', exKo: '이 레드 와인은 라 리오하 지방 것이다.' },
+      { es: 'zumo de naranja', pos: 'n.m.', ko: '오렌지 주스', ex: 'Quiero un zumo de naranja.', exKo: '오렌지 주스를 원한다.' },
+      { es: 'bebida sin alcohol', pos: 'n.f.', ko: '무알코올 음료', ex: '¿Tenéis alguna bebida sin alcohol?', exKo: '무알코올 음료가 있나요?' },
+      { es: 'cava', pos: 'n.m.', ko: '카바(스페인 스파클링 와인)', ex: 'Vamos a comprar una botella de cava para celebrar la Nochevieja.', exKo: '우리는 새해 전날을 축하하기 위해 카바 한 병을 살 거야.' },
+      { es: 'beber', pos: 'v.', ko: '마시다', ex: 'Yo no bebo.', exKo: '나는 술을 마시지 않는다.' },
+      { es: 'tomar', pos: 'v.', ko: '마시다, 먹다, 잡다', ex: '¿Qué vas a tomar?', exKo: '뭐 드실 건가요?' },
+    ]
+  },
+
+  {
+    cap: 4, capTitle: 'Comida 음식',
+    unit: 2, unitTitle: '식재료',
+    words: [
+      { es: 'carne', pos: 'n.f.', ko: '고기', ex: 'Me gusta todo tipo de carne.', exKo: '나는 모든 종류의 고기를 좋아한다.' },
+      { es: 'pescado', pos: 'n.m.', ko: '생선', ex: 'El pescado no engorda.', exKo: '생선은 살이 찌지 않는다.' },
+      { es: 'fruta', pos: 'n.f.', ko: '과일', ex: '¿Cuál es tu fruta favorita?', exKo: '네가 가장 좋아하는 과일은 무엇이니?' },
+      { es: 'verdura', pos: 'n.f.', ko: '채소', ex: 'A mi hijo no le gustan nada las verduras.', exKo: '나의 아들은 채소를 하나도 좋아하지 않는다.' },
+      { es: 'mantequilla', pos: 'n.f.', ko: '버터', ex: 'No queda mantequilla.', exKo: '버터가 남아 있지 않아.' },
+      { es: 'mayonesa', pos: 'n.f.', ko: '마요네즈', ex: '¿Compramos un bote de mayonesa?', exKo: '우리 마요네즈 한 병 살까?' },
+      { es: 'salsa', pos: 'n.f.', ko: '소스', ex: '¿Qué salsa lleva este plato?', exKo: '이 요리에는 어떤 소스가 들어 있나요?' },
+      { es: 'lata', pos: 'n.f.', ko: '캔, 통조림', ex: 'Vamos a comprar tres latas de atún.', exKo: '참치 세 캔 사자.' },
+      { es: 'bacalao', pos: 'n.m.', ko: '대구(생선)', ex: 'El bacalao es bajo en calorías.', exKo: '대구는 칼로리가 낮다.' },
+      { es: 'salmón', pos: 'n.m.', ko: '연어', ex: 'El salmón es mi pescado favorito.', exKo: '연어는 내가 가장 좋아하는 생선이다.' },
+      { es: 'producto natural', pos: 'n.m.', ko: '자연 친화 제품', ex: 'En este supermercado podemos comprar productos naturales.', exKo: '이 슈퍼에서 우리는 자연 친화 제품들을 구매할 수 있다.' },
+      { es: 'comida pesada', pos: 'n.f.', ko: '소화가 어려운 음식, 과한 식사', ex: 'Después de una comida pesada es bueno tomar un té.', exKo: '과한 식사 후에는 차를 한 잔 마시는 것이 좋다.' },
+      { es: 'comida ligera', pos: 'n.f.', ko: '소화가 쉬운 음식, 가벼운 식사', ex: 'Cuando uno está malo, es mejor tomar una comida ligera.', exKo: '누군가 아플 때, 가벼운 식사를 하는 것이 더 좋다.' },
+      { es: 'ayunar', pos: 'v.', ko: '금식하다', ex: 'Como hoy he comido demasiado, mañana ayunaré.', exKo: '오늘 너무 많이 먹었으니까, 내일 금식할 거야.' },
+    ]
+  },
+
+  {
+    cap: 4, capTitle: 'Comida 음식',
+    unit: 3, unitTitle: '요리·식사',
+    words: [
+      { es: 'cocinar', pos: 'v.', ko: '요리하다', ex: '¿Sabes cocinar comida coreana?', exKo: '한국 음식 요리할 줄 알아?' },
+      { es: 'receta', pos: 'n.f.', ko: '레시피, 조리법', ex: 'Me has dado la receta de este plato.', exKo: '너는 나에게 이 요리의 레시피를 알려줬어.' },
+      { es: 'ingrediente', pos: 'n.m.', ko: '재료', ex: '¿Qué ingredientes lleva esta receta?', exKo: '이 레시피에는 어떤 재료들이 들어가나요?' },
+      { es: 'freír', pos: 'v.', ko: '튀기다', ex: '¿Cómo se fríen las patatas?', exKo: '감자를 어떻게 튀기나요?' },
+      { es: 'hervir', pos: 'v.', ko: '끓이다', ex: 'Hay que hervir el agua antes de beber.', exKo: '마시기 전에 물을 끓여야 한다.' },
+      { es: 'asar', pos: 'v.', ko: '굽다', ex: 'Vamos a asar la carne a la barbacoa.', exKo: '우리 바비큐로 고기를 구울 거야.' },
+      { es: 'mezclar', pos: 'v.', ko: '섞다', ex: 'Hay que mezclar bien los ingredientes.', exKo: '재료들을 잘 섞어야 한다.' },
+      { es: 'probar', pos: 'v.', ko: '맛보다, 시험하다', ex: '¿Puedo probar un poco?', exKo: '조금 맛봐도 될까요?' },
+      { es: 'desayuno', pos: 'n.m.', ko: '아침 식사', ex: '¿Qué tomas para el desayuno?', exKo: '아침 식사로 뭐 먹어?' },
+      { es: 'almuerzo', pos: 'n.m.', ko: '점심 식사', ex: '¿Dónde vas a comer el almuerzo?', exKo: '점심 식사 어디서 먹을 거야?' },
+      { es: 'cena', pos: 'n.f.', ko: '저녁 식사', ex: '¿Qué quieres para la cena?', exKo: '저녁으로 뭐 먹고 싶어?' },
+      { es: 'restaurante', pos: 'n.m.', ko: '식당, 레스토랑', ex: '¿Reservamos mesa en el restaurante?', exKo: '식당에 자리를 예약할까?' },
+      { es: 'menú del día', pos: 'n.m.', ko: '오늘의 메뉴 (정식)', ex: '¿Qué tiene el menú del día?', exKo: '오늘의 메뉴에는 무엇이 있나요?' },
+      { es: 'pedir', pos: 'v.', ko: '주문하다, 부탁하다', ex: '¿Habéis pedido ya?', exKo: '주문하셨나요?' },
+    ]
+  },
+
+  // ────────────────────────────────────────
+  // Capítulo 5 | Educación y trabajo 교육과 직업
+  // ────────────────────────────────────────
+  {
+    cap: 5, capTitle: 'Educación y trabajo 교육과 직업',
+    unit: 1, unitTitle: '교육 기관',
+    words: [
+      { es: 'instituto', pos: 'n.m.', ko: '고등학교, 협회, 학원', ex: 'Mi instituto está en otro barrio.', exKo: '나의 고등학교는 다른 동네에 있다.' },
+      { es: 'universidad', pos: 'n.f.', ko: '대학교', ex: 'Mis hijos estudian en la universidad.', exKo: '나의 아이들은 대학교에서 공부한다.' },
+      { es: 'biblioteca', pos: 'n.f.', ko: '도서관', ex: 'En mi ciudad hay dos bibliotecas.', exKo: '나의 도시에는 두 개의 도서관이 있다.' },
+      { es: 'aula', pos: 'n.f.', ko: '교실', ex: '¿Dónde está el aula 12?', exKo: '12번 교실이 어디에 있나요?' },
+      { es: 'asignatura', pos: 'n.f.', ko: '과목', ex: '¿Cuál es tu asignatura favorita?', exKo: '네가 가장 좋아하는 과목은 무엇이니?' },
+      { es: 'matemáticas', pos: 'n.f.', ko: '수학', ex: 'Las matemáticas son difíciles para mí.', exKo: '수학은 나에게 어렵다.', tip: 'matemáticas는 복수로만 쓰인다.' },
+      { es: 'idioma', pos: 'n.m.', ko: '언어', ex: 'Quiero aprender varios idiomas.', exKo: '나는 여러 언어를 배우고 싶다.' },
+      { es: 'deberes', pos: 'n.m.', ko: '숙제', ex: 'Tengo muchos deberes hoy.', exKo: '나는 오늘 숙제가 많다.', tip: 'deberes는 복수로만 쓰인다.' },
+      { es: 'examen', pos: 'n.m.', ko: '시험', ex: 'Mañana tengo un examen de español.', exKo: '내일 스페인어 시험이 있어.' },
+      { es: 'nota', pos: 'n.f.', ko: '성적, 점수', ex: 'He sacado muy buenas notas este trimestre.', exKo: '이번 학기에 성적이 매우 좋게 나왔어.' },
+      { es: 'aprobar', pos: 'v.', ko: '합격하다, 통과하다', ex: 'He aprobado todos los exámenes.', exKo: '나는 모든 시험에 합격했다.' },
+      { es: 'suspender', pos: 'v.', ko: '불합격하다, 떨어지다', ex: 'He suspendido el examen de conducir.', exKo: '나는 운전 면허 시험에서 떨어졌다.' },
+      { es: 'estudiar', pos: 'v.', ko: '공부하다', ex: 'Estudio español una hora al día.', exKo: '나는 하루에 한 시간 스페인어를 공부한다.' },
+    ]
+  },
+
+  {
+    cap: 5, capTitle: 'Educación y trabajo 교육과 직업',
+    unit: 2, unitTitle: '직장',
+    words: [
+      { es: 'empresa', pos: 'n.f.', ko: '회사', ex: 'Mi empresa está lejos de mi casa.', exKo: '내 회사는 나의 집으로부터 멀리 있다.' },
+      { es: 'jefe', pos: 'n.m.', ko: '상사', ex: 'Mi jefe está molesto por algo.', exKo: '나의 상사는 무언가 때문에 짜증 난 상태이다.', tip: '상사여자는 jefa라고 한다.' },
+      { es: 'ordenador', pos: 'n.m.', ko: '컴퓨터', ex: 'Tu ordenador es más antiguo que el mío.', exKo: '너의 컴퓨터는 나의 것보다 더 오래됐다.', tip: '중남미에서는 ordenador 대신 computadora를 선호한다.' },
+      { es: 'reunión', pos: 'n.f.', ko: '회의', ex: 'Tengo una reunión a las 10.', exKo: '10시에 회의가 있어.' },
+      { es: 'informe', pos: 'n.m.', ko: '보고서', ex: 'Tengo que entregar el informe mañana.', exKo: '내일 보고서를 제출해야 해.' },
+      { es: 'contrato', pos: 'n.m.', ko: '계약서, 계약', ex: 'Me han ofrecido un contrato de trabajo.', exKo: '나에게 고용 계약서를 제안해 줬다.' },
+      { es: 'sueldo', pos: 'n.m.', ko: '월급', ex: 'No estoy satisfecha con mi sueldo.', exKo: '나는 나의 월급에 만족하지 않는다.' },
+      { es: 'trabajar', pos: 'v.', ko: '일하다', ex: 'Trabajo de lunes a viernes.', exKo: '나는 월요일부터 금요일까지 일한다.' },
+      { es: 'solicitar un trabajo', pos: '동사표현', ko: '일자리를 지원하다', ex: 'He solicitado varios trabajos esta semana.', exKo: '나는 이번 주에 여러 일자리에 지원했다.' },
+      { es: 'hacer una entrevista', pos: '동사표현', ko: '면접을 보다', ex: 'Mañana tengo que hacer una entrevista de trabajo.', exKo: '내일 취업 면접을 봐야 해.' },
+      { es: 'despedir', pos: 'v.', ko: '해고하다', ex: 'Han despedido a tres personas de mi departamento.', exKo: '우리 부서에서 세 명이 해고됐어.' },
+      { es: 'dimitir', pos: 'v.', ko: '사직하다', ex: 'Ha dimitido el director de la empresa.', exKo: '회사 이사가 사직했다.' },
+      { es: 'ascender', pos: 'v.', ko: '승진하다', ex: 'Me han ascendido a jefa de departamento.', exKo: '나는 부서장으로 승진했다.' },
+    ]
+  },
+
+  {
+    cap: 5, capTitle: 'Educación y trabajo 교육과 직업',
+    unit: 3, unitTitle: '직업',
+    words: [
+      { es: 'médico/a', pos: 'n.m.f.', ko: '의사', ex: 'Mi hermano quiere ser médico.', exKo: '나의 남동생은 의사가 되고 싶어한다.' },
+      { es: 'enfermero/a', pos: 'n.m.f.', ko: '간호사', ex: 'Las enfermeras trabajan mucho.', exKo: '간호사들은 일을 많이 한다.' },
+      { es: 'profesor/a', pos: 'n.m.f.', ko: '선생님, 교수', ex: 'Mi profesora de español es muy simpática.', exKo: '나의 스페인어 선생님은 매우 친절하다.' },
+      { es: 'abogado/a', pos: 'n.m.f.', ko: '변호사', ex: 'Necesito hablar con un abogado.', exKo: '변호사와 이야기해야 해.' },
+      { es: 'ingeniero/a', pos: 'n.m.f.', ko: '엔지니어', ex: 'Mi padre es ingeniero de caminos.', exKo: '나의 아버지는 토목 엔지니어이다.' },
+      { es: 'arquitecto/a', pos: 'n.m.f.', ko: '건축가', ex: 'El arquitecto ha diseñado un edificio moderno.', exKo: '그 건축가는 현대적인 건물을 설계했다.' },
+      { es: 'periodista', pos: 'n.m.f.', ko: '기자', ex: 'Quiero ser periodista para viajar por el mundo.', exKo: '나는 세계를 여행하기 위해 기자가 되고 싶다.' },
+      { es: 'cocinero/a', pos: 'n.m.f.', ko: '요리사', ex: 'El cocinero ha preparado un plato delicioso.', exKo: '요리사가 맛있는 요리를 준비했다.' },
+      { es: 'camarero/a', pos: 'n.m.f.', ko: '웨이터, 웨이트리스', ex: 'El camarero nos ha traído la carta.', exKo: '웨이터가 우리에게 메뉴판을 가져다 줬다.' },
+      { es: 'policía', pos: 'n.m.f.', ko: '경찰관', ex: 'Mi vecino es policía.', exKo: '나의 이웃은 경찰관이다.' },
+      { es: 'bombero/a', pos: 'n.m.f.', ko: '소방관', ex: 'Los bomberos han apagado el incendio.', exKo: '소방관들이 화재를 진압했다.' },
+      { es: 'electricista', pos: 'n.m.f.', ko: '전기 기사', ex: 'Necesito llamar a un electricista.', exKo: '전기 기사를 불러야 해.' },
+      { es: 'trabajador/a social', pos: 'n.m.f.', ko: '사회복지사', ex: 'Mi hermana es trabajadora social.', exKo: '나의 여동생은 사회복지사이다.' },
+    ]
+  },
+
+];
 
 // pron = 한국어 발음 표기
 // conjPron = 변화형 한국어 발음 [present, preterite, progressive, subjunctive, imperative]
@@ -7482,6 +7905,7 @@ function showTab(name, btn) {
   if (name === 'cards')       renderCard();
   if (name === 'listening')   initListening();
   if (name === 'grammar')     initGrammar();
+  if (name === 'vocabbook')   initVocabBook();
 }
 
 // ══════════════════════════════════════════════════
@@ -10801,6 +11225,107 @@ function selectChoice() {}
 // grammar 탭 초기화
 function initGrammar() {
   showGrammarTop('obj', document.getElementById('gtab-obj'));
+}
+
+// ══════════════════════════════════════════════
+// 단어장 탭 (VOCAB BOOK)
+// ══════════════════════════════════════════════
+
+let vbCurrentCap = 1;
+let vbCurrentUnit = 1;
+let vbCurrentIdx = 0;
+let vbCurrentWords = [];
+
+function selectVBCap(cap, btn) {
+  vbCurrentCap = cap;
+  vbCurrentIdx = 0;
+  const units = vocabBook.filter(u => u.cap === cap);
+  vbCurrentUnit = units.length > 0 ? units[0].unit : 1;
+  document.querySelectorAll('#vb-cap-nav .pill').forEach(p => p.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderVBUnitNav();
+  renderVBCard();
+}
+
+function selectVBUnit(unit, btn) {
+  vbCurrentUnit = unit;
+  vbCurrentIdx = 0;
+  document.querySelectorAll('#vb-unit-nav .pill').forEach(p => p.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderVBCard();
+}
+
+function renderVBUnitNav() {
+  const nav = document.getElementById('vb-unit-nav');
+  if (!nav) return;
+  const units = vocabBook.filter(u => u.cap === vbCurrentCap);
+  nav.innerHTML = units.map((u, i) =>
+    `<button class="pill ${i === 0 ? 'active' : ''}" onclick="selectVBUnit(${u.unit}, this)" style="font-size:11px;padding:4px 12px">U${u.unit} ${u.unitTitle}</button>`
+  ).join('');
+}
+
+function renderVBCard() {
+  const section = vocabBook.find(u => u.cap === vbCurrentCap && u.unit === vbCurrentUnit);
+  if (!section) return;
+  vbCurrentWords = section.words;
+  const w = vbCurrentWords[vbCurrentIdx];
+  if (!w) return;
+
+  const counter = document.getElementById('vb-counter');
+  if (counter) counter.textContent = `${vbCurrentIdx + 1} / ${vbCurrentWords.length}`;
+
+  const card = document.getElementById('vb-card');
+  if (!card) return;
+
+  const posColor = w.pos.startsWith('v') ? 'var(--correct)' :
+                   w.pos.startsWith('n.m') ? '#5c9eff' :
+                   w.pos.startsWith('n.f') ? '#f06292' :
+                   w.pos.startsWith('adj') ? '#f0b429' :
+                   w.pos.includes('동사표현') ? '#ab6bf2' : 'var(--text3)';
+
+  card.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
+      <div>
+        <div style="font-size:28px;font-weight:700;color:var(--text);letter-spacing:-0.5px">${w.es}</div>
+        <div style="font-size:11px;font-weight:600;margin-top:4px;padding:2px 8px;border-radius:100px;display:inline-block;background:${posColor}22;color:${posColor}">${w.pos}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:20px;font-weight:700;color:var(--accent)">${w.ko}</div>
+      </div>
+    </div>
+    <div style="background:var(--surface2);border-radius:12px;padding:14px;margin-bottom:${w.tip ? '10px' : '0'}">
+      <div style="font-size:14px;font-weight:500;color:var(--text);line-height:1.7;margin-bottom:6px">${w.ex}</div>
+      <div style="font-size:12px;color:var(--text3)">${w.exKo}</div>
+    </div>
+    ${w.tip ? `<div style="background:#f0b42915;border:1px solid #f0b42933;border-radius:10px;padding:10px 12px;font-size:11px;color:var(--text2)">💡 ${w.tip}</div>` : ''}
+    <div style="display:flex;justify-content:center;gap:6px;margin-top:16px">
+      ${vbCurrentWords.map((_, i) =>
+        `<div style="width:${i === vbCurrentIdx ? '20px' : '6px'};height:6px;border-radius:100px;background:${i === vbCurrentIdx ? 'var(--accent)' : 'var(--border)'};transition:all .2s"></div>`
+      ).join('')}
+    </div>
+  `;
+}
+
+function vbNext() {
+  if (vbCurrentIdx < vbCurrentWords.length - 1) {
+    vbCurrentIdx++;
+  } else {
+    vbCurrentIdx = 0;
+  }
+  renderVBCard();
+}
+
+function vbPrev() {
+  if (vbCurrentIdx > 0) {
+    vbCurrentIdx--;
+  } else {
+    vbCurrentIdx = vbCurrentWords.length - 1;
+  }
+  renderVBCard();
+}
+
+function initVocabBook() {
+  selectVBCap(1, document.getElementById('vbcap-1'));
 }
 
 </script>
