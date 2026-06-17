@@ -2421,6 +2421,8 @@
     <button class="pill" id="vbcap-3" onclick="selectVBCap(3,this)" style="font-size:12px">Cap.3 의복</button>
     <button class="pill" id="vbcap-4" onclick="selectVBCap(4,this)" style="font-size:12px">Cap.4 음식</button>
     <button class="pill" id="vbcap-5" onclick="selectVBCap(5,this)" style="font-size:12px">Cap.5 교육</button>
+    <button class="pill" id="vbcap-6" onclick="selectVBCap(6,this)" style="font-size:12px">Cap.6 교육</button>
+    <button class="pill" id="vbcap-7" onclick="selectVBCap(7,this)" style="font-size:12px">Cap.7 일</button>
   </div>
 
   <!-- 유니다드 선택 (챕터별로 달라짐) -->
@@ -2857,6 +2859,207 @@ const vocabBook = [
       { es: 'bombero/a', pos: 'n.m.f.', ko: '소방관', ex: 'Los bomberos han apagado el incendio.', exKo: '소방관들이 화재를 진압했다.' },
       { es: 'electricista', pos: 'n.m.f.', ko: '전기 기사', ex: 'Necesito llamar a un electricista.', exKo: '전기 기사를 불러야 해.' },
       { es: 'trabajador/a social', pos: 'n.m.f.', ko: '사회복지사', ex: 'Mi hermana es trabajadora social.', exKo: '나의 여동생은 사회복지사이다.' },
+    ]
+  },
+
+  // ────────────────────────────────────────
+  // Capítulo 6 | Educación 교육
+  // ────────────────────────────────────────
+  {
+    cap: 6, capTitle: 'Educación 교육',
+    unit: 1, unitTitle: '교육 기관',
+    words: [
+      { es: 'colegio', pos: 'n.m.', ko: '초등학교 또는 중학교, 학교', ex: 'Mi hijo todavía no va al colegio.', exKo: '나의 아들은 아직 학교를 가지 않는다.', tip: 'colegio는 초등학교나 중학교 모두를 지칭할 수 있다.' },
+      { es: 'escuela de idiomas', pos: 'n.f.', ko: '외국어 학원', ex: 'Nuestra escuela de idiomas cuenta con profesores nativos.', exKo: '우리 외국어 학원은 원어민 선생님들을 갖고 있습니다.' },
+      { es: 'biblioteca municipal', pos: 'n.f.', ko: '시립 도서관', ex: '¿Dónde está la biblioteca municipal?', exKo: '시립 도서관이 어디에 있나요?' },
+      { es: 'biblioteca pública', pos: 'n.f.', ko: '공립 도서관', ex: 'Es una biblioteca pública, así que se puede entrar.', exKo: '(여기는) 공립 도서관이야, 그래서 (누구나) 들어갈 수 있어.' },
+      { es: 'guardería', pos: 'n.f.', ko: '유치원', ex: 'Mis sobrinos van a la guardería cada día.', exKo: '나의 조카들은 매일 유치원에 간다.' },
+      { es: 'campus', pos: 'n.m.', ko: '캠퍼스', ex: 'El campus de mi universidad es bastante grande.', exKo: '나의 대학교 캠퍼스는 제법 크다.' },
+      { es: 'facultad', pos: 'n.f.', ko: '학부 건물', ex: 'Voy a la facultad esta tarde.', exKo: '나는 오늘 오후 학교에 간다.', tip: 'ir a la facultad는 주로 본인이 공부하는 학부 건물에 수업을 들으러 갈 때 쓴다.' },
+      { es: 'secretaría', pos: 'n.f.', ko: '교무처, 사무국', ex: 'Tengo que ir a la secretaría a solicitar el carné de estudiante.', exKo: '나는 학생증을 신청하기 위해 학부처에 가야 해.' },
+    ]
+  },
+
+  {
+    cap: 6, capTitle: 'Educación 교육',
+    unit: 2, unitTitle: '학교 생활 및 학습',
+    words: [
+      { es: 'estudiante', pos: 'n.m.f.', ko: '학생', ex: 'Hay diez estudiantes en cada clase.', exKo: '각 수업에는 10명의 학생들이 있다.', tip: '제자, 학생이라는 의미를 갖는 alumno/a도 알아 두자.' },
+      { es: 'profesor', pos: 'n.m.', ko: '선생님', ex: 'Mi profesor preferido es el de Inglés.', exKo: '내가 가장 좋아하는 선생님은 영어 과목 선생님이다.', tip: '선생님(여자)는 profesora라고 하며, profesor(a)는 대학 교수만 지칭하는 것이 아님에 유의하자.' },
+      { es: 'director', pos: 'n.m.', ko: '(학원 등의) 원장, 교장 선생님', ex: 'El director se llama Juan.', exKo: '교장 선생님의 성함은 후안이다.', tip: '학원 등의 원장, 교장 선생님(여자)은 directora라고 한다.' },
+      { es: 'aprender', pos: 'v.', ko: '배우다', ex: 'Luis aprende coreano desde hace 3 años.', exKo: '루이스는 3년 전부터 한국어를 배운다.' },
+      { es: 'horario', pos: 'n.m.', ko: '시간표', ex: '¿Ya tienes el horario?', exKo: '너는 벌써 시간표를 가지고 있어?' },
+      { es: 'clase', pos: 'n.f.', ko: '수업, 교실', ex: 'Voy a clase de lunes a jueves.', exKo: '나는 월요일부터 목요일까지 수업에 간다.' },
+      { es: 'curso', pos: 'n.m.', ko: '강좌, 코스', ex: 'Quiero hacer un curso de inglés.', exKo: '나는 영어 강좌를 하나 듣고 싶다.', tip: 'hacer un curso는 직역하면 강좌를 하다이지만 강좌를 듣다로 자연스럽게 해석한다.' },
+      { es: 'clase de Matemáticas', pos: 'n.f.', ko: '수학 수업', ex: 'Mañana tenemos clase de Matemáticas.', exKo: '내일 우리는 수학 수업이 있어.', tip: '수학은 matemáticas의 복수로 쓰인다.' },
+      { es: 'compañero de clase', pos: 'n.m.', ko: '반 친구', ex: 'Enrique es mi compañero de clase.', exKo: '엔리케는 나의 반 친구이다.', tip: '반 친구(여자)는 compañera de clase라고 한다.' },
+      { es: 'dar clases', pos: '동사표현', ko: '수업을 하다', ex: 'Doy clases de español en una academia.', exKo: '나는 어느 학원에서 스페인어 수업을 한다.' },
+      { es: 'pagar la matrícula', pos: '동사표현', ko: '등록비를 내다', ex: '¿Se puede pagar la matrícula en dos plazos?', exKo: '등록금을 두 번으로 나눠서 지불할 수 있나요?' },
+      { es: 'matricularse', pos: 'v.', ko: '등록하다', ex: 'Me voy a matricular en un curso de alemán.', exKo: '나는 어느 한 독일어 강좌에 등록할 것이다.' },
+      { es: 'pedir una beca', pos: '동사표현', ko: '장학금을 신청하다', ex: '¿Por qué no pides una beca?', exKo: '너 장학금을 신청하는 게 어때?' },
+      { es: 'enseñar', pos: 'v.', ko: '가르치다', ex: 'Mi tío enseña inglés en una academia.', exKo: '나의 삼촌은 어느 한 학원에서 영어를 가르친다.' },
+      { es: 'pensar', pos: 'v.', ko: '생각하다', ex: 'Estoy pensando en hacer un intercambio de idiomas.', exKo: '나는 언어 교환을 할 생각을 하고 있다.' },
+      { es: 'olvidar', pos: 'v.', ko: '잊다', ex: 'He olvidado su nombre. ¿Cómo se llamaba?', exKo: '나 그의 이름을 잊었어. 그 사람 이름이 뭐였지?' },
+      { es: 'recordar', pos: 'v.', ko: '기억하다, ~를 상기시키다', ex: 'No recuerdo lo que aprendí ayer.', exKo: '나는 어제 배운 것이 기억이 안 난다.' },
+      { es: 'saber de memoria', pos: '동사표현', ko: '외워서 알다, 암기하다', ex: 'Tienes que saber de memoria estas fórmulas.', exKo: '너는 이 공식들을 암기해야 한다.' },
+    ]
+  },
+
+  {
+    cap: 6, capTitle: 'Educación 교육',
+    unit: 3, unitTitle: '수업 용어',
+    words: [
+      { es: 'página', pos: 'n.f.', ko: '페이지', ex: 'Vamos a leer la página 20.', exKo: '20페이지를 읽읍시다.' },
+      { es: 'actividad', pos: 'n.f.', ko: '활동', ex: 'Yo participo en muchas actividades en la escuela.', exKo: '나는 학교에서 많은 활동들에 참여한다.' },
+      { es: 'unidad', pos: 'n.f.', ko: '단원', ex: 'Este libro tiene veinte unidades.', exKo: '이 책은 20단원을 가지고 있다.' },
+      { es: 'ejercicio', pos: 'n.m.', ko: '연습 문제', ex: 'Estos ejercicios son para el martes.', exKo: '이 연습 문제들은 화요일까지이다.' },
+      { es: 'pregunta', pos: 'n.f.', ko: '질문', ex: '¿Alguna pregunta?', exKo: '질문 있나요?' },
+      { es: 'lección', pos: 'n.f.', ko: '과, 교훈, 가르침', ex: 'La lección de hoy es no mentir a nadie.', exKo: '오늘의 가르침은 누구에게도 거짓말하지 않기이다.' },
+      { es: 'hablar', pos: 'v.', ko: '말하다', ex: 'Quiero hablar español con fluidez.', exKo: '나는 스페인어를 유창하게 말하고 싶어.' },
+      { es: 'leer', pos: 'v.', ko: '읽다, 독서하다', ex: '¿Cuántos libros lees al año?', exKo: '1년에 너는 몇 권의 책을 읽니?' },
+      { es: 'escribir', pos: 'v.', ko: '쓰다', ex: 'Rafa escribe novelas policíacas.', exKo: '라파는 탐정 소설을 쓴다.' },
+      { es: 'comprender', pos: 'v.', ko: '이해하다', ex: '¿Comprendéis el vídeo?', exKo: '너희들은 영상이 이해가 가니?', tip: 'video는 스페인식 표기이고 vídeo는 중남미식 표기이다.' },
+      { es: 'saber', pos: 'v.', ko: '알다', ex: '¿Sabes hablar español?', exKo: '너 스페인어를 말할 줄 아니?' },
+      { es: 'hacer los deberes', pos: '동사표현', ko: '숙제를 하다', ex: 'Tengo que hacer los deberes antes del fin de semana.', exKo: '나는 주말 전에 숙제를 해야 한다.' },
+      { es: 'trabajar en parejas', pos: '동사표현', ko: '짝을 지어 학습하다', ex: 'Hoy vamos a trabajar en parejas.', exKo: '오늘 우리는 짝을 지어 학습할 것입니다.' },
+      { es: 'trabajar en grupos', pos: '동사표현', ko: '그룹으로 학습하다', ex: 'Podéis trabajar en grupos para preparar la presentación.', exKo: '너희들은 발표 준비를 위하여 그룹으로 작업할 수 있다.' },
+      { es: 'preguntar', pos: 'v.', ko: '질문하다', ex: '¿Te puedo preguntar algo?', exKo: '너에게 내가 무언가를 물어도 되니?' },
+      { es: 'contestar', pos: 'v.', ko: '답하다', ex: 'No necesitas contestar a todas las preguntas.', exKo: '너는 모든 질문에 답할 필요가 없다.' },
+      { es: 'hacer una redacción', pos: '동사표현', ko: '작문을 하다', ex: 'Tenéis que hacer una redacción sobre este tema.', exKo: '너희들은 이 주제에 관해 작문을 해야 한다.' },
+      { es: 'memorizar', pos: 'v.', ko: '외우다, 암기하다', ex: 'Tenéis que memorizar las siguientes palabras para mañana.', exKo: '너희들은 내일까지 다음의 단어들을 외워야 한다.' },
+      { es: 'repasar', pos: 'v.', ko: '복습하다', ex: 'Es importante repasar cada día lo que aprendemos.', exKo: '우리가 배우는 것을 매일 복습하는 것이 중요하다.' },
+      { es: 'tomar notas', pos: '동사표현', ko: '메모하다, 필기하다', ex: 'Me gusta tomar notas cuando estoy en una conferencia.', exKo: '나는 컨퍼런스에 있을 때 메모하는 것을 좋아한다.' },
+      { es: 'hacer un resumen', pos: '동사표현', ko: '요약하다, 요약본을 만들다', ex: 'Primero, voy a hacer un resumen.', exKo: '먼저, 내가 요약을 할게.' },
+      { es: 'levantar la mano', pos: '동사표현', ko: '손을 들다', ex: 'Si tenéis alguna duda, podéis levantar la mano en cualquier momento.', exKo: '만약 의문이 있으면, 너희들은 언제든지 손을 들어도 돼.' },
+    ]
+  },
+
+  {
+    cap: 6, capTitle: 'Educación 교육',
+    unit: 4, unitTitle: '시험과 성적',
+    words: [
+      { es: 'diploma', pos: 'n.m.', ko: '수료증, 자격증', ex: 'Después del curso, vas a recibir un diploma.', exKo: '그 강좌 후에, 너는 수료증 하나를 받을 거야.' },
+      { es: 'certificado', pos: 'n.m.', ko: '수료증, 증명서, 자격증', ex: 'Necesito un certificado de inglés para solicitar el puesto.', exKo: '나는 그 일자리를 신청하기 위해 영어 자격증이 하나 필요하다.' },
+      { es: 'examen parcial', pos: 'n.m.', ko: '중간시험', ex: 'Ya han salido los resultados del examen parcial.', exKo: '벌써 중간시험의 결과들이 나왔다.' },
+      { es: 'examen oral', pos: 'n.m.', ko: '회화 시험', ex: 'Tengo un examen oral este sábado.', exKo: '나는 이번 주 토요일에 회화 시험이 하나 있어.' },
+      { es: 'examen escrito', pos: 'n.m.', ko: '필기 시험', ex: 'El examen escrito tiene una duración de cincuenta minutos.', exKo: '필기 시험은 50분의 지속 시간을 갖습니다.' },
+      { es: 'matrícula de honor', pos: 'n.f.', ko: '10점 만점', ex: 'He conseguido matrícula de honor en dos asignaturas.', exKo: '나는 두 과목에서 10점 만점을 획득했다.' },
+      { es: 'hacer una prueba de nivel', pos: '동사표현', ko: '레벨 테스트를 하다', ex: 'Todos los alumnos necesitan hacer una prueba de nivel antes de empezar el curso.', exKo: '모든 학생들은 그 코스를 시작하기 전에 레벨 테스트를 해야 한다.' },
+      { es: 'estar de exámenes', pos: '동사표현', ko: '시험 기간 중이다', ex: 'Estoy de exámenes, así que no puedo salir.', exKo: '나 시험 기간 중이야, 그래서 놀러 나갈 수 없어.' },
+      { es: 'corregir un examen', pos: '동사표현', ko: '채점하다', ex: 'El profesor ya ha corregido todos los exámenes.', exKo: '선생님은 모든 시험지를 채점하셨다.' },
+      { es: 'tener un 0~10', pos: '동사표현', ko: '~점을 받다', ex: 'Tengo un cinco en Matemáticas.', exKo: '나는 수학에서 5점을 받았다.', tip: '스페인의 초·중·고·대학교에서는 0점부터 10점까지의 점수가 존재하며, 학교 점수를 의미할 때는 0부터 10까지의 숫자 앞에 un을 꼭 붙인다.' },
+      { es: 'sacar buenas notas', pos: '동사표현', ko: '좋은 점수를 받다', ex: 'Mi hermano menor siempre saca buenas notas.', exKo: '나의 남동생은 항상 좋은 점수를 받는다.' },
+      { es: 'repetir el curso', pos: '동사표현', ko: '학년 과정을 재수강하다', ex: 'Tengo que repetir el curso porque tengo tres suspensos.', exKo: '나는 3개의 낙제 과목들이 있어서 (한) 학년 과정을 재수강해야 한다.' },
+    ]
+  },
+
+  {
+    cap: 6, capTitle: 'Educación 교육',
+    unit: 5, unitTitle: '학업과 학위',
+    words: [
+      { es: 'Medicina', pos: 'n.f.', ko: '의학', ex: 'Estudio Medicina.', exKo: '나는 의학을 공부한다.', tip: '대학교 전공명은 대문자로 시작한다.' },
+      { es: 'Derecho', pos: 'n.m.', ko: '법학', ex: 'Estoy en segundo curso de Derecho.', exKo: '나는 법학 2학년 과정에 있어.', tip: '서수는 명사 앞에서 명사를 꾸며 준다.' },
+      { es: 'bachillerato', pos: 'n.m.', ko: '고등학교 과정', ex: 'Estoy en primer curso de bachillerato.', exKo: '나는 고등학교 1학년 과정에 있다.' },
+      { es: 'carrera', pos: 'n.f.', ko: '대학 전공 (커리어)', ex: 'Derecho es una carrera difícil de terminar.', exKo: '법학은 끝내기 어려운 전공이다.' },
+      { es: 'máster', pos: 'n.m.', ko: '석사 과정', ex: 'Me gustaría hacer un máster en el extranjero.', exKo: '나는 외국에서 석사 과정을 하고 싶다.' },
+      { es: 'doctorado', pos: 'n.m.', ko: '박사 과정', ex: 'Me gustaría hacer el doctorado en un país hispanohablante.', exKo: '나는 스페인어 나라에서 박사 과정을 하고 싶다.', tip: '박사 학위를 가진 사람은 doctor, doctora라고 한다.' },
+      { es: 'graduarse', pos: 'v.', ko: '졸업하다', ex: 'Me gradué en Medicina.', exKo: '나는 의학과를 졸업했다.' },
+      { es: 'terminar el bachillerato', pos: '동사표현', ko: '고등학교 과정을 마치다, 고등학교를 졸업하다', ex: 'Terminé el bachillerato en 1998.', exKo: '나는 고등학교를 1998년에 졸업했다.' },
+      { es: 'terminar los estudios universitarios', pos: '동사표현', ko: '대학교 학업을 마치다', ex: 'Mi padre consiguió un trabajo justo después de terminar los estudios universitarios.', exKo: '나의 아버지는 대학교 학업을 마치자마자 직장을 구하셨다.' },
+      { es: 'licenciado', pos: 'n.m.', ko: '학사 학위를 가진 사람', ex: 'Soy licenciado en Filología Inglesa.', exKo: '나는 영문학에 학사 학위를 가진 사람이다.', tip: 'licenciado의 여성형은 licenciada이다.' },
+      { es: 'empezar un máster', pos: '동사표현', ko: '석사 과정을 시작하다', ex: 'Juan empezó un máster en Holanda.', exKo: '후안은 네덜란드에서 석사 과정을 시작했다.' },
+      { es: 'no tener estudios', pos: '동사표현', ko: '정식 교육을 받지 못하다, 학교를 다니지 못하다', ex: 'En la época de mis abuelos era normal no tener estudios.', exKo: '나의 할머니 할아버지가 젊었던 시절에는 학교를 다니지 못하는 것이 일반적이었다.' },
+    ]
+  },
+
+  // ────────────────────────────────────────
+  // Capítulo 7 | Trabajo 일
+  // ────────────────────────────────────────
+  {
+    cap: 7, capTitle: 'Trabajo 일',
+    unit: 1, unitTitle: '직업',
+    words: [
+      { es: 'trabajo', pos: 'n.m.', ko: '일, 업무', ex: 'Esta semana tengo mucho trabajo.', exKo: '이번 주에 나는 업무가 많다.', tip: '업무가 많다라고 할 때 muchos trabajos라고 쓰지 않음에 유의하자.' },
+      { es: 'profesión', pos: 'n.f.', ko: '직업', ex: '¿Cuál es su profesión?', exKo: '당신의 직업은 무엇입니까?' },
+      { es: 'abogado', pos: 'n.m.', ko: '변호사', ex: 'El marido de Ana es abogado.', exKo: '아나의 남편은 변호사이다.', tip: '변호사(여자)는 abogada라고 한다.' },
+      { es: 'médico', pos: 'n.m.', ko: '의사', ex: 'José quiere ser médico.', exKo: '호세는 의사가 되기를 원한다.', tip: '의사(여자)는 médica, doctora라고 한다.' },
+      { es: 'taxista', pos: 'n.m.f.', ko: '택시 기사', ex: 'Mi padre trabaja de taxista.', exKo: '나의 아버지는 택시 기사로 일하신다.' },
+      { es: 'ama de casa', pos: 'n.f.', ko: '주부', ex: 'La madre de Lucas es ama de casa.', exKo: '루카스의 어머니는 주부이다.' },
+      { es: 'ingeniero', pos: 'n.m.', ko: '기술자', ex: 'Se necesita un ingeniero informático.', exKo: '우리는 컴퓨터 기술자가 한 명 필요합니다.', tip: '기술자(여자)는 ingeniera라고 한다.' },
+      { es: 'dedicarse a', pos: '동사표현', ko: '~에 종사하다', ex: '¿A qué se dedica usted?', exKo: '당신은 무엇에 종사하세요?', tip: '예문은 격식을 차려 상대방의 직업을 묻는 표현이다.' },
+      { es: 'negocio', pos: 'n.m.', ko: '사업', ex: 'Llevar un negocio requiere mucha responsabilidad.', exKo: '사업을 이끄는 것은 많은 책임감을 요구한다.' },
+      { es: 'dependiente', pos: 'n.m.', ko: '점원', ex: 'Los dependientes de esa tienda son muy amables.', exKo: '그 가게의 점원들은 매우 친절하다.', tip: '점원(여자)은 dependienta라고도 한다.' },
+      { es: 'funcionario', pos: 'n.m.', ko: '공무원', ex: 'Hoy en día muchos jóvenes quieren ser funcionarios.', exKo: '오늘날 많은 젊은이들이 공무원이 되기를 원한다.', tip: '공무원(여자)은 funcionaria라고 한다.' },
+      { es: 'comercial', pos: 'n.m.f.', ko: '판매원', ex: 'Mi tía trabaja de comercial desde hace tres años.', exKo: '나의 이모는 3년 전부터 판매원으로 일한다.' },
+      { es: 'empresario', pos: 'n.m.', ko: '기업인', ex: 'Luis Serrano es un empresario famoso a nivel internacional.', exKo: '루이스 세라노는 국제적인 규모로 유명한 기업인이다.', tip: '기업인(여자)은 empresaria라고 한다.' },
+      { es: 'trabajar de canguro', pos: '동사표현', ko: '베이비시터로 일하다', ex: 'Trabajé de canguro en Inglaterra hace dos años.', exKo: '나는 2년 전에 영국에서 베이비시터로 일했다.' },
+      { es: 'tener una tienda', pos: '동사표현', ko: '가게를 운영하다', ex: 'Mis padres tienen una tienda de ropa.', exKo: '나의 부모님은 옷 가게를 운영한다.' },
+      { es: 'puesto de trabajo', pos: 'n.m.', ko: '일자리', ex: 'El Gobierno debe crear más puestos de trabajo para los recién graduados.', exKo: '정부는 지금 막 졸업한 사람들을 위해 더 많은 일자리를 창출해야 한다.' },
+      { es: 'oficio', pos: 'n.m.', ko: '직무, 일', ex: 'Para aprender el oficio de relojero se necesita mucho tiempo.', exKo: '시계공의 직무를 배우기 위해서는 많은 시간이 필요 된다.' },
+    ]
+  },
+
+  {
+    cap: 7, capTitle: 'Trabajo 일',
+    unit: 2, unitTitle: '직장',
+    words: [
+      { es: 'Internet', pos: 'n.m.', ko: '인터넷', ex: 'No tenemos Internet en la oficina.', exKo: '사무실에 인터넷이 없다.', tip: 'Internet은 남성 명사지만, 문장 어느 위치에 와도 대문자로 시작하며 관사 없이 사용된다.' },
+      { es: 'fax', pos: 'n.m.', ko: '팩스', ex: 'Puedes mandar el documento por fax.', exKo: '너는 그 문서를 팩스로 보내도 된다.' },
+      { es: 'despacho', pos: 'n.m.', ko: '사무실', ex: 'El jefe no está en su despacho.', exKo: '상사는 자신의 사무실에 없다.' },
+      { es: 'tener una reunión', pos: '동사표현', ko: '회의를 갖다', ex: 'Cada mañana tenemos una reunión.', exKo: '매일 아침 우리는 회의를 갖는다.' },
+      { es: 'fábrica', pos: 'n.f.', ko: '공장', ex: "Mi libro favorito es 'Charlie y la fábrica de chocolate'.", exKo: "내가 가장 좋아하는 책은 '찰리와 초콜릿 공장'이다." },
+      { es: 'multinacional', pos: 'n.f.', ko: '다국적 기업, 대기업', ex: 'Me gustaría trabajar en una multinacional.', exKo: '나는 다국적 기업에서 일하고 싶다.' },
+      { es: 'uniforme', pos: 'n.m.', ko: '유니폼, 교복', ex: 'En mi trabajo tenemos que llevar uniforme.', exKo: '나의 직장에서 우리는 유니폼을 입어야 한다.' },
+      { es: 'fotocopiadora', pos: 'n.f.', ko: '복사기', ex: 'La fotocopiadora ha dejado de funcionar.', exKo: '복사기가 작동하는 것을 멈췄다.' },
+      { es: 'impresora', pos: 'n.f.', ko: '프린트기', ex: '¿Cuánto suele costar una impresora láser?', exKo: '레이저 프린트기 한 대는 보통 얼마가 드나요?' },
+      { es: 'hacer fotocopias', pos: '동사표현', ko: '복사를 하다', ex: 'Necesito hacer diez fotocopias de esta página.', exKo: '나는 이 페이지를 10장 복사할 필요가 있다.' },
+      { es: 'colega', pos: 'n.m.f.', ko: '동료', ex: 'La mayoría de mis colegas son japoneses.', exKo: '내 동료들의 대부분은 일본인이다.' },
+      { es: 'laboratorio', pos: 'n.m.', ko: '연구소', ex: 'He estado todo el día en el laboratorio.', exKo: '나는 하루 종일 연구소에 있었다.' },
+      { es: 'agencia', pos: 'n.f.', ko: '지점, 대리점, 대행업체', ex: 'Encontré esta casa en una agencia inmobiliaria.', exKo: '나는 이 집을 어느 한 부동산에서 발견했다.', tip: 'agencia inmobiliaria는 부동산을 의미한다.' },
+      { es: 'compañía de seguros', pos: 'n.f.', ko: '보험 회사', ex: 'Por fin conseguí un trabajo en una compañía de seguros.', exKo: '마침내 나는 어느 한 보험 회사에서 일자리를 얻었다.' },
+      { es: 'departamento', pos: 'n.m.', ko: '부서', ex: 'El Departamento de Contabilidad está en la última planta.', exKo: '회계 부서는 마지막 층에 있다.', tip: 'Contabilidad 자리에 Recursos Humanos/Administración 등을 넣어서 인사 부서/행정 부서 등을 표현할 수 있다.' },
+      { es: 'presupuesto', pos: 'n.m.', ko: '예산', ex: '¿Cuál es el presupuesto para este proyecto?', exKo: '이 프로젝트를 위한 예산은 어떻게 되나요?' },
+    ]
+  },
+
+  {
+    cap: 7, capTitle: 'Trabajo 일',
+    unit: 3, unitTitle: '실업과 구직',
+    words: [
+      { es: 'tener trabajo', pos: '동사표현', ko: '직장을 가지고 있다', ex: 'Hoy en día tener un trabajo estable es un lujo.', exKo: '오늘날 안정된 직장을 갖는 것은 호화스러운 일이다.' },
+      { es: 'estar en paro', pos: '동사표현', ko: '실업 상태이다', ex: 'Un tío mío está en paro desde el año pasado.', exKo: '나의 삼촌은 한 본은 작년부터 실업 상태이다.' },
+      { es: 'escribir el currículum', pos: '동사표현', ko: '이력서를 작성하다', ex: 'Todavía no he terminado de escribir mi currículum.', exKo: '나는 아직까지 내 이력서를 다 작성하지 못했다.' },
+      { es: 'enviar el currículum', pos: '동사표현', ko: '이력서를 보내다', ex: '¿Ya has enviado tu currículum?', exKo: '벌써 너는 너의 이력서를 보냈니?' },
+      { es: 'tener una entrevista de trabajo', pos: '동사표현', ko: '(일자리) 면접을 가지다', ex: 'Mañana tengo una entrevista de trabajo.', exKo: '나는 내일 (일자리) 면접이 하나 있어.' },
+      { es: 'oferta', pos: 'n.f.', ko: '공급, 제공', ex: 'Este año hay menos ofertas de trabajo que el año pasado.', exKo: '금년에는 작년보다 더 적은 일자리 공급들이 있다.' },
+      { es: 'demanda', pos: 'n.f.', ko: '수요', ex: 'Los coches coreanos tienen mucha demanda en Europa por su precio competitivo.', exKo: '한국의 자동차들은 그것의 경쟁력 있는 가격 때문에 유럽에서 많은 수요를 가지고 있다.' },
+      { es: 'anuncio de trabajo', pos: 'n.m.', ko: '일자리 광고', ex: 'He encontrado un anuncio de trabajo que te vendría bien.', exKo: '나는 너에게 안성맞춤일 것 같은 일자리 광고를 하나 발견했어.' },
+      { es: 'entrevistado', pos: 'n.m.', ko: '면접자', ex: 'El entrevistado debería informarse de la empresa previamente.', exKo: '면접자는 미리 회사에 대한 정보를 얻어야 한다.', tip: '면접자(여자)는 entrevistada라고 한다.' },
+      { es: 'entrevistador', pos: 'n.m.', ko: '면접관', ex: 'El entrevistador suele fijarse en la forma de hablar del aspirante.', exKo: '면접관은 후보자의 말하는 방식에 보통 주목하곤 한다.', tip: '면접관(여자)은 entrevistadora라고 한다.' },
+      { es: 'carta de recomendación', pos: 'n.f.', ko: '추천서', ex: 'La profesora Chantal escribió una carta de recomendación para mí.', exKo: '친탈 교수님이 나를 위해 추천서를 써 주셨다.' },
+      { es: 'curriculum vitae', pos: 'n.m.', ko: '이력서', ex: 'Para conseguir un trabajo es fundamental preparar un buen curriculum vitae.', exKo: '직장을 구하기 위해서는 좋은 이력서를 준비하는 것이 중요하다.' },
+      { es: 'carta de presentación', pos: 'n.f.', ko: '자기 소개서', ex: 'Los interesados pueden mandar una carta de presentación a la siguiente dirección.', exKo: '관심이 있는 사람들은 다음의 주소로 자기 소개서를 보낼 수 있습니다.' },
+      { es: 'buscar trabajo', pos: '동사표현', ko: '일을 구하다', ex: 'Hay jóvenes sobradamente formados que llevan más de un año buscando trabajo.', exKo: '1년 이상 직장을 구하고 있는 아주 넘칠 정도로 좋은 스펙을 가지고 있는 젊은이들이 많다.' },
+      { es: 'tener formación', pos: '동사표현', ko: '학력(이나 스펙)을 가지고 있다', ex: 'Para conseguir un buen trabajo es imprescindible tener una formación adecuada.', exKo: '좋은 직장을 구하기 위해서 적절한 스펙을 갖고 있는 것은 필수불가결하다.' },
+      { es: 'tener experiencia', pos: '동사표현', ko: '경력을 가지고 있다', ex: 'Todos nuestros monitores tienen cinco años de experiencia como mínimo.', exKo: '우리 모든 트레이너들은 최소 5년의 경력을 가지고 있습니다.' },
+      { es: 'firmar un contrato', pos: '동사표현', ko: '계약서에 서명하다', ex: 'Antes de firmar un contrato, uno debería leer detalladamente las condiciones laborales.', exKo: '어떤 계약서에 서명하기 전에, 노동 조건들을 자세하게 알아야 한다.' },
+    ]
+  },
+
+  {
+    cap: 7, capTitle: 'Trabajo 일',
+    unit: 4, unitTitle: '직장에서의 의무와 권리',
+    words: [
+      { es: 'tener vacaciones', pos: '동사표현', ko: '휴가를 가지다', ex: 'Este año ya no tengo más vacaciones.', exKo: '올해에 더 이상 나는 휴가가 없어.', tip: 'vacaciones는 항상 복수로 쓰이는 명사이다.' },
+      { es: 'ganar dinero', pos: '동사표현', ko: '돈을 벌다', ex: 'Necesito ganar dinero para poder viajar este invierno.', exKo: '나는 이번 겨울에 여행을 할 수 있도록 돈을 버는 것이 필요하다.' },
+      { es: 'estar jubilado/a', pos: '동사표현', ko: '퇴직한 상태이다', ex: 'Mis padres están jubilados.', exKo: '내 부모님들은 퇴직한 상태이다.' },
+      { es: 'estabilidad laboral', pos: 'n.f.', ko: '직장의 (노동) 안정성', ex: 'En nuestra empresa la estabilidad laboral está garantizada.', exKo: '우리 회사는 안정성이 보장되어 있다.' },
+      { es: 'sindicato', pos: 'n.m.', ko: '노동조합', ex: 'El sindicato pidió más días de vacaciones a la empresa.', exKo: '노동조합은 회사에 더 많은 날의 휴가를 요구했다.' },
+      { es: 'horario flexible', pos: 'n.m.', ko: '유동적인 스케줄', ex: 'Quiero tener un horario flexible para poder compaginar el trabajo con mis estudios.', exKo: '나는 일과 학업을 병행할 수 있도록 유동적인 스케줄을 갖고 싶다.' },
+      { es: 'incorporación inmediata', pos: 'n.f.', ko: '즉시 투입, 즉시 일 시작', ex: "En el anuncio pone 'incorporación inmediata'.", exKo: '광고에는 즉시 일 시작이라고 쓰여 있다.' },
+      { es: 'formación a cargo de la empresa', pos: 'n.f.', ko: '회사 비용으로 이뤄지는 교육', ex: 'Lo bueno de mi trabajo es que ofrecen formación a cargo de la empresa.', exKo: '내 직장의 좋은 점은 회사 측에서 회사 비용으로 교육을 제공한다는 것이다.' },
+      { es: 'posibilidad de promoción', pos: 'n.f.', ko: '승진의 가능성', ex: 'Existe posibilidad de promoción una vez terminadas las prácticas.', exKo: '일단 인턴십이 마무리되면, 승진의 가능성이 존재한다.' },
+      { es: 'huelga', pos: 'n.f.', ko: '파업', ex: 'Por la huelga de los basureros, las calles están llenas de basura.', exKo: '미화원들의 파업으로 인해, 거리들은 쓰레기로 가득 차 있다.' },
     ]
   },
 
