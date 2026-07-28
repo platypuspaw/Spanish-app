@@ -13,20 +13,39 @@
 
 1. **원본 파일(`index.html`) 직접 수정 금지** — 반드시 복사본에서 작업
 2. **작업 완료 파일은 항상 `index.html` 단일 파일로 출력**
-3. **JS 문법 체크 필수**: 작업 후 반드시 실행
-   ```bash
-   python3 -c "import re; scripts=re.findall(r'<script[^>]*>(.*?)</script>', open('index.html').read(), re.DOTALL); open('/tmp/check.js','w').write('\n'.join(scripts))"
-   node --check /tmp/check.js
-   ```
-4. **단어 중복 검사 필수**: 단어 추가/삭제 후 반드시 실행
-   ```bash
-   python3 -c "
+3. **JS 문법 체크 필수**: 작업 후 반드시 실행 (PowerShell 사용)
+   ```powershell
+   python -c @"
    import re
-   with open('index.html') as f: c = f.read()
+   with open('C:/Users/mino/Desktop/Spanish-app/index.html', encoding='utf-8') as f:
+       content = f.read()
+   scripts = re.findall(r'<script[^>]*>(.*?)</script>', content, re.DOTALL)
+   with open('C:/Users/mino/AppData/Local/Temp/check.js', 'w', encoding='utf-8') as f:
+       f.write('\n'.join(scripts))
+   "@
+   node --check "C:/Users/mino/AppData/Local/Temp/check.js"
+   ```
+4. **단어 중복 검사 필수**: 단어 추가/삭제 후 반드시 실행 (PowerShell 사용)
+   ```powershell
+   # verbs[] / nouns[] 중복 검사 (공백 없는 패턴: { es:'...' )
+   python -c @"
+   import re
+   with open('C:/Users/mino/Desktop/Spanish-app/index.html', encoding='utf-8') as f:
+       c = f.read()
    words = re.findall(r\"{ es:'([^']+)'\", c)
    dups = {w for w in words if words.count(w) > 1}
-   print(f'중복: {len(dups)}개', dups if dups else '')
-   "
+   print(len(dups), list(dups) if dups else 'none')
+   "@
+
+   # vocabBook[] 중복 검사 (공백 있는 패턴: { es: '...' )
+   python -c @"
+   import re
+   with open('C:/Users/mino/Desktop/Spanish-app/index.html', encoding='utf-8') as f:
+       c = f.read()
+   words = re.findall(r\"{ es: '([^']+)'\", c)
+   dups = {w for w in words if words.count(w) > 1}
+   print(len(dups), list(dups) if dups else 'none')
+   "@
    ```
 5. **JS 문자열 내 줄바꿈 금지** — `sentence:'...'` 같은 single-quote 문자열 안에 실제 줄바꿈 절대 금지 (SyntaxError 원인)
 
@@ -188,6 +207,7 @@ index.html
 - `b1Words[]` 배열은 범위에서 **반드시 제외** (verbs와 중복이어도 별도 학습 목적)
 - 같은 배열 내 중복: 첫 번째 등장 유지, 이후 제거
 - 다른 배열 간 중복(verbs vs nouns): 첫 번째 유지
+- **vocabBook 중복 패턴 주의**: `verbs[]`/`nouns[]`는 `{ es:'...'` (공백 없음), `vocabBook[]`는 `{ es: '...'` (공백 있음) — 중복 검사 시 두 패턴 **각각 별도로** 실행해야 함
 
 ### 탭/기능 추가 시
 - 탭 추가: `<nav>`에 버튼 + `<main>`에 `<div id="tab-{name}">` + `showTab()`에 `init{Name}()` 연결
@@ -201,19 +221,56 @@ index.html
 
 ## 자주 쓰는 검증 명령
 
-```bash
+> **Windows 환경 주의사항**
+> - `python3` 아닌 `python` 사용
+> - `/tmp/` 경로 없음 → `C:/Users/mino/AppData/Local/Temp/` 사용
+> - PowerShell에서 `&&` 연산자 사용 불가 → `;` 또는 `if ($?) { ... }` 사용
+> - 복잡한 Python 코드는 PowerShell here-string(`@"..."@`) 으로 전달
+
+```powershell
 # JS 문법 체크
-python3 -c "import re; scripts=re.findall(r'<script[^>]*>(.*?)</script>', open('index.html').read(), re.DOTALL); open('/tmp/check.js','w').write('\n'.join(scripts))"
-node --check /tmp/check.js
+python -c @"
+import re
+with open('C:/Users/mino/Desktop/Spanish-app/index.html', encoding='utf-8') as f:
+    content = f.read()
+scripts = re.findall(r'<script[^>]*>(.*?)</script>', content, re.DOTALL)
+with open('C:/Users/mino/AppData/Local/Temp/check.js', 'w', encoding='utf-8') as f:
+    f.write('\n'.join(scripts))
+"@
+node --check "C:/Users/mino/AppData/Local/Temp/check.js"
 
-# 전체 단어 수 확인
-python3 -c "import re; c=open('index.html').read(); print('verbs:', len(set(re.findall(r\"{ es:'([^']+)'.*?type:'verb'\", c)))), print('nouns:', len(set(re.findall(r\"{ es:'([^']+)'.*?type:'noun'\", c))))"
+# 전체 단어 수 확인 (verbs/nouns)
+python -c @"
+import re
+with open('C:/Users/mino/Desktop/Spanish-app/index.html', encoding='utf-8') as f:
+    c = f.read()
+verbs = re.findall(r\"{ es:'([^']+)'.*?type:'verb'\", c, re.DOTALL)
+nouns = re.findall(r\"{ es:'([^']+)'.*?type:'noun'\", c, re.DOTALL)
+print('verbs:', len(set(verbs)), 'nouns:', len(set(nouns)))
+"@
 
-# 중복 검사
-python3 -c "import re; c=open('index.html').read(); w=re.findall(r\"{ es:'([^']+)'\", c); d={x for x in w if w.count(x)>1}; print(f'중복 {len(d)}개:', d)"
+# 중복 검사 — verbs[]/nouns[] (공백 없는 형식: { es:'...' )
+python -c @"
+import re
+with open('C:/Users/mino/Desktop/Spanish-app/index.html', encoding='utf-8') as f:
+    c = f.read()
+words = re.findall(r\"{ es:'([^']+)'\", c)
+dups = {w for w in words if words.count(w) > 1}
+print(len(dups), list(dups) if dups else 'none')
+"@
+
+# 중복 검사 — vocabBook[] (공백 있는 형식: { es: '...' )
+python -c @"
+import re
+with open('C:/Users/mino/Desktop/Spanish-app/index.html', encoding='utf-8') as f:
+    c = f.read()
+words = re.findall(r\"{ es: '([^']+)'\", c)
+dups = {w for w in words if words.count(w) > 1}
+print(len(dups), list(dups) if dups else 'none')
+"@
 
 # git 배포
-git add .
+git add index.html
 git commit -m "update"
 git push -u origin main
 ```
