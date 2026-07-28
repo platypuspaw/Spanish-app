@@ -2423,6 +2423,11 @@
     <button class="pill" id="vbcap-5" onclick="selectVBCap(5,this)" style="font-size:12px">Cap.5 교육</button>
     <button class="pill" id="vbcap-6" onclick="selectVBCap(6,this)" style="font-size:12px">Cap.6 교육</button>
     <button class="pill" id="vbcap-7" onclick="selectVBCap(7,this)" style="font-size:12px">Cap.7 일</button>
+    <button class="pill" id="vbcap-8" onclick="selectVBCap(8,this)" style="font-size:12px">Cap.8 여가</button>
+    <button class="pill" id="vbcap-9" onclick="selectVBCap(9,this)" style="font-size:12px">Cap.9 매스컴</button>
+    <button class="pill" id="vbcap-10" onclick="selectVBCap(10,this)" style="font-size:12px">Cap.10 주거</button>
+    <button class="pill" id="vbcap-11" onclick="selectVBCap(11,this)" style="font-size:12px">Cap.11 공공서비스</button>
+    <button class="pill" id="vbcap-12" onclick="selectVBCap(12,this)" style="font-size:12px">Cap.12 쇼핑</button>
   </div>
 
   <!-- 유니다드 선택 (챕터별로 달라짐) -->
@@ -3063,6 +3068,871 @@ const vocabBook = [
     ]
   },
 
+  {
+    cap: 7, capTitle: 'Trabajo 일',
+    unit: 5, unitTitle: '필수 동사',
+    words: [
+      { es: 'jubilarse', pos: 'v.', ko: '퇴직하다, 은퇴하다', ex: 'Cuando me jubile, me gustaría montar una pequeña tienda de ropa.', exKo: '내가 퇴직할 때 작은 옷 가게를 차리고 싶다.' },
+    ]
+  },
+
+
+  {
+    cap: 7, capTitle: 'Trabajo 일',
+    unit: 6, unitTitle: '노동 현장 도구',
+    words: [
+      { es: 'escalera', pos: 'n.f.', ko: '사다리', ex: 'Usa la escalera para llegar al estante alto.', exKo: '높은 선반에 닿기 위해 사다리를 사용해라.' },
+      { es: 'ladrillo', pos: 'n.m.', ko: '벽돌', ex: 'Construyeron la fábrica con ladrillos rojos.', exKo: '그들은 빨간 벽돌로 공장을 지었다.' },
+      { es: 'destornillador', pos: 'n.m.', ko: '드라이버', ex: 'Pásame el destornillador, por favor.', exKo: '드라이버 좀 건네줘.' },
+      { es: 'martillo', pos: 'n.m.', ko: '망치', ex: 'Golpeó el clavo con el martillo.', exKo: '그는 망치로 못을 내리쳤다.' },
+      { es: 'clavo', pos: 'n.m.', ko: '못', ex: 'Compramos una caja de clavos en la ferretería.', exKo: '우리는 철물점에서 못 한 상자를 샀다.' },
+      { es: 'hacha', pos: 'n.f.', ko: '도끼', ex: 'Usó un hacha para cortar la madera.', exKo: '그는 나무를 자르기 위해 도끼를 사용했다.' },
+      { es: 'pala', pos: 'n.f.', ko: '삽', ex: 'Necesito una pala para limpiar el patio.', exKo: '나는 마당을 청소하기 위해 삽이 필요하다.' },
+      { es: 'taladro', pos: 'n.m.', ko: '드릴', ex: 'El taladro hace mucho ruido.', exKo: '드릴은 소음이 심하다.' },
+      { es: 'mono', pos: 'n.m.', ko: '(위 아래가 붙은) 작업복', ex: 'Todos los obreros llevan mono en la fábrica.', exKo: '공장의 모든 노동자들은 작업복을 입는다.' },
+      { es: 'gafas de protección', pos: 'n.f.', ko: '보호 안경', ex: 'Debes usar gafas de protección en el taller.', exKo: '작업장에서는 보호 안경을 착용해야 한다.' },
+      { es: 'plano', pos: 'n.m.', ko: '도면', ex: 'El ingeniero revisó el plano de la fábrica.', exKo: '기술자가 공장 도면을 검토했다.' },
+      { es: 'sierra', pos: 'n.f.', ko: '톱', ex: 'Cortó la madera con una sierra eléctrica.', exKo: '그는 전동 톱으로 나무를 잘랐다.' },
+      { es: 'cinta métrica', pos: 'n.f.', ko: '줄자', ex: 'Mide la tela con la cinta métrica.', exKo: '줄자로 원단을 재라.' },
+    ]
+  },
+
+
+  {
+    cap: 7, capTitle: 'Trabajo 일',
+    unit: 7, unitTitle: '직장에서',
+    words: [
+      { es: 'flexibilidad de horario', pos: 'n.f.', ko: '스케줄의 유동성', ex: 'La empresa ofrece flexibilidad de horario a los padres.', exKo: '그 회사는 부모들에게 스케줄의 유동성을 제공한다.' },
+      { es: 'período de prueba', pos: 'n.m.', ko: '수습 기간', ex: 'El período de prueba dura tres meses.', exKo: '수습 기간은 3개월 동안 지속된다.' },
+      { es: 'accidente de trabajo', pos: 'n.m.', ko: '노동 재해', ex: 'Tuvo un accidente de trabajo en la fábrica.', exKo: '그는 공장에서 노동 재해를 당했다.' },
+      { es: 'renovar el contrato', pos: '동사표현', ko: '(기존의) 계약을 연장하다', ex: 'La empresa decidió renovar el contrato de todos los empleados.', exKo: '회사는 모든 직원들의 계약을 연장하기로 결정했다.' },
+      { es: 'baja por maternidad', pos: 'n.f.', ko: '(여성의) 육아 휴직', ex: 'Está de baja por maternidad desde marzo.', exKo: '그녀는 3월부터 육아 휴직 중이다.' },
+      { es: 'baja por paternidad', pos: 'n.f.', ko: '(남성의) 육아 휴직', ex: 'Mi esposo pidió la baja por paternidad.', exKo: '나의 남편은 (남성) 육아 휴직을 신청했다.' },
+      { es: 'jornada completa', pos: 'n.f.', ko: '풀타임 근무', ex: 'Busco un trabajo de jornada completa.', exKo: '나는 풀타임 근무 일자리를 찾고 있다.' },
+      { es: 'media jornada', pos: 'n.f.', ko: '하프 타임 근무', ex: 'Ella prefiere trabajar media jornada.', exKo: '그녀는 하프 타임으로 일하는 것을 선호한다.' },
+      { es: 'jornada continua', pos: 'n.f.', ko: '연속 근무', ex: 'En verano trabajamos en jornada continua.', exKo: '여름에 우리는 연속 근무를 한다.' },
+      { es: 'jornada partida', pos: 'n.f.', ko: '(점심 시간 기준으로) 나눠서 하는 근무', ex: 'Con jornada partida, tenemos dos horas para almorzar.', exKo: '나눠서 하는 근무를 하면, 우리는 점심 식사를 위한 두 시간이 있다.' },
+    ]
+  },
+
+
+  {
+    cap: 7, capTitle: 'Trabajo 일',
+    unit: 8, unitTitle: '근로자 관련 단어',
+    words: [
+      { es: 'ambicioso/a', pos: 'adj.', ko: '야망 있는', ex: 'Es un empleado muy ambicioso.', exKo: '그는 매우 야망 있는 직원이다.' },
+      { es: 'profesional', pos: 'adj.', ko: '전문적인', ex: 'Necesitamos un enfoque más profesional.', exKo: '우리는 더 전문적인 접근이 필요하다.' },
+      { es: 'experto/a', pos: 'n.m.', ko: '전문가', ex: 'Mi jefe es un experto en contabilidad.', exKo: '나의 상사는 회계 전문가이다.' },
+      { es: 'inexperto/a', pos: 'n.m.', ko: '무경험자', ex: 'Aunque es inexperto, aprende muy rápido.', exKo: '그는 무경험자이지만, 아주 빨리 배운다.' },
+      { es: 'profesionalidad', pos: 'n.f.', ko: '전문성', ex: 'Admiro la profesionalidad de mi jefa.', exKo: '나는 내 상사(여성)의 전문성을 존경한다.' },
+      { es: 'cualificado/a', pos: 'adj.', ko: '자격이 있는, 적격의', ex: 'Buscamos personal cualificado para la fábrica.', exKo: '우리는 공장을 위한 자격 있는 인력을 찾고 있다.' },
+      { es: 'competente', pos: 'adj.', ko: '경쟁력이 있는, 능력 있는', ex: 'Es una trabajadora muy competente.', exKo: '그녀는 매우 능력 있는 직원이다.' },
+      { es: 'incompetente', pos: 'adj.', ko: '무능한', ex: 'El nuevo gerente es bastante incompetente.', exKo: '새 매니저는 꽤 무능하다.' },
+    ]
+  },
+
+  {
+    cap: 8, capTitle: 'Ocio 여가',
+    unit: 1, unitTitle: '필수 동사',
+    words: [
+      { es: 'inscribirse', pos: 'v.', ko: '가입하다, 등록하다', ex: 'Para inscribirse en nuestra asociación de trueque deben rellenar el siguiente formulario.', exKo: '우리 물물교환 협회에 가입하기 위해서는 다음의 양식을 채워야 합니다.' },
+      { es: 'coleccionar', pos: 'v.', ko: '~를 수집하다', ex: 'En la época de mis padres mucha gente coleccionaba sellos.', exKo: '나의 부모님이 젊었을 시절에는 많은 사람들이 우표를 수집하곤 했었다.' },
+      { es: 'esquiar', pos: 'v.', ko: '스키 타다', ex: 'Quiero aprender a esquiar.', exKo: '나는 스키 타는 것을 배우고 싶다.' },
+      { es: 'practicar', pos: 'v.', ko: '(스포츠 등을) 하다', ex: '¿Practicas algún deporte con regularidad?', exKo: '너는 규칙적으로 어떤 운동을 하니?' },
+      { es: 'boxear', pos: 'v.', ko: '복싱을 하다', ex: 'Mi hermano boxea desde hace cinco años.', exKo: '나의 형은 5년 전부터 복싱을 한다.' },
+      { es: 'parar', pos: 'v.', ko: '슛을 막다, 멈추다', ex: 'El portero paró todos los tiros del rival.', exKo: '골키퍼는 상대 팀의 모든 슛을 막았다.' },
+      { es: 'vencer', pos: 'v.', ko: '이기다, 무찌르다', ex: 'El equipo local venció al visitante por dos a uno.', exKo: '홈 팀이 방문 팀을 2대1로 이겼다.' },
+      { es: 'eliminar', pos: 'v.', ko: '(상대 팀을) 탈락시키다', ex: 'Nuestro equipo fue eliminado en la primera ronda.', exKo: '우리 팀은 1라운드에서 탈락했다.' },
+      { es: 'regatear', pos: 'v.', ko: '드리블하다', ex: 'El delantero regateó a tres defensas antes de marcar.', exKo: '그 공격수는 골을 넣기 전에 세 명의 수비수를 제쳤다.' },
+      { es: 'chutar', pos: 'v.', ko: '슛을 날리다', ex: 'El jugador chutó el balón con mucha fuerza.', exKo: '그 선수는 매우 강하게 공을 슛했다.' },
+    ]
+  },
+
+
+  {
+    cap: 9, capTitle: 'Medios de comunicación 매스컴',
+    unit: 1, unitTitle: '필수 동사',
+    words: [
+      { es: 'informarse', pos: 'v.', ko: '정보를 접하다', ex: 'Debes informarte del precio medio de los hoteles antes de reservar un alojamiento.', exKo: '너는 숙소를 예약하기 전에 호텔들의 평균 가격에 대한 정보를 얻어야 한다.' },
+      { es: 'atender', pos: 'v.', ko: '(전화 등에) 응답하다, (손님 등을) 응접하다', ex: 'Su trabajo consiste en atender llamadas de clientes.', exKo: '그의 업무는 고객들의 전화를 받는 것이다.' },
+      { es: 'desviar', pos: 'v.', ko: '(전화 등을) 돌리다', ex: '¿Sabes cómo desviar llamadas a otro teléfono?', exKo: '너는 어떻게 다른 전화기로 전화를 돌리는지 아니?' },
+      { es: 'chatear', pos: 'v.', ko: '채팅하다', ex: 'Me gusta chatear en las redes sociales.', exKo: '나는 SNS에서 채팅하는 것을 좋아한다.' },
+      { es: 'copiar', pos: 'v.', ko: '복사하다', ex: 'Voy a copiar este archivo en el escritorio.', exKo: '나는 이 파일을 바탕화면에 복사할 것이다.' },
+      { es: 'pegar', pos: 'v.', ko: '붙이다', ex: 'Pega la imagen en el documento, por favor.', exKo: '이미지를 문서에 붙여 주세요.' },
+      { es: 'reiniciar', pos: 'v.', ko: '재부팅하다', ex: 'Tienes que reiniciar el ordenador para que funcione bien.', exKo: '컴퓨터가 잘 작동하도록 재부팅해야 해.' },
+    ]
+  },
+
+
+  {
+    cap: 10, capTitle: 'Vivienda 주거',
+    unit: 1, unitTitle: '필수 동사',
+    words: [
+      { es: 'trasladarse', pos: 'v.', ko: '이전을 하다', ex: 'Nos trasladamos a la calle Mármoles 13.', exKo: '우리는 마르몰레스 가 13번으로 이전합니다.' },
+      { es: 'barrer', pos: 'v.', ko: '쓸다', ex: 'La cocina está llena de migas, así que vamos a barrerla.', exKo: '부엌은 빵 부스러기들로 가득 차 있다, 그러니 부엌을 쓸자.' },
+      { es: 'planchar', pos: 'v.', ko: '다림질하다', ex: 'Todavía me quedan tres camisas por planchar.', exKo: '나에게 아직 다림질할 셔츠가 3개 남아 있다.' },
+      { es: 'encender', pos: 'v.', ko: '켜다', ex: 'Queda prohibido encender el ordenador, por lo menos, una semana.', exKo: '적어도 일주일 동안은 컴퓨터 켜는 것 금지야.' },
+      { es: 'apagar', pos: 'v.', ko: '끄다', ex: 'No te olvides de apagar la general antes de salir.', exKo: '외출하기 전에 일괄 소등 스위치를 끄는 것을 잊지 마.' },
+      { es: 'enchufar', pos: 'v.', ko: '콘센트에 꽂다', ex: '¿Puedes enchufar la cafetera?', exKo: '너 커피포트를 콘센트에 꽂아 줄 수 있니?' },
+      { es: 'desenchufar', pos: 'v.', ko: '플러그를 빼다', ex: 'Si desenchufas todos los electrodomésticos que no usas, ahorrarás mucho más.', exKo: '네가 만약 사용하지 않는 전자제품의 플러그를 그때그때 빼 놓는다면, 훨씬 더 많이 절약할 거야.' },
+      { es: 'amueblar', pos: 'v.', ko: '가구를 들여놓다', ex: 'Tengo que amueblar la casa porque no hay nada.', exKo: '나는 집에 가구를 들여놔야 해 왜냐하면 아무것도 없거든.' },
+    ]
+  },
+
+
+  {
+    cap: 11, capTitle: 'Servicios públicos 공공서비스',
+    unit: 1, unitTitle: '필수 동사',
+    words: [
+      { es: 'robar', pos: 'v.', ko: '훔치다', ex: 'Creo que me han robado la cartera en el centro comercial.', exKo: '쇼핑몰에서 내 지갑을 도둑맞은 것 같다.' },
+      { es: 'atracar', pos: 'v.', ko: '습격하다', ex: 'Dos hombres atracaron el banco y se llevaron millones de euros.', exKo: '두 명의 남자가 은행을 습격했고 수백만 유로를 가져갔다.' },
+      { es: 'matar', pos: 'v.', ko: '죽이다', ex: 'Matar a un animal puede ser un delito.', exKo: '동물을 죽이는 것은 범죄가 될 수 있다.' },
+      { es: 'presenciar', pos: 'v.', ko: '목격하다', ex: 'Presencié el accidente desde la ventana.', exKo: '나는 창문에서 그 사고를 목격했다.' },
+      { es: 'denunciar', pos: 'v.', ko: '고발하다', ex: 'Voy a denunciar el robo en la comisaría.', exKo: '나는 경찰서에 그 도난 사건을 신고할 것이다.' },
+      { es: 'patrullar', pos: 'v.', ko: '순찰하다', ex: 'Los policías patrullan el barrio por la noche.', exKo: '경찰관들은 밤에 그 동네를 순찰한다.' },
+      { es: 'cachear', pos: 'v.', ko: '몸수색을 하다', ex: 'El agente cacheó al sospechoso antes de detenerlo.', exKo: '경관은 용의자를 체포하기 전에 몸수색을 했다.' },
+      { es: 'atropellar', pos: 'v.', ko: '(탈 것으로 사람이나 동물을) 치다', ex: 'Un coche atropelló a un peatón en el cruce.', exKo: '교차로에서 차 한 대가 보행자를 쳤다.' },
+      { es: 'sangrar', pos: 'v.', ko: '피를 흘리다', ex: 'Le sangraba mucho la nariz después del golpe.', exKo: '맞은 후에 그의 코에서 피가 많이 났다.' },
+      { es: 'quemarse', pos: 'v.', ko: '화상을 입다', ex: 'Me quemé la mano al sacar la olla del fuego.', exKo: '나는 불에서 냄비를 꺼내다가 손에 화상을 입었다.' },
+      { es: 'romperse', pos: 'v.', ko: '(신체 부위가) 부러지다', ex: 'Se rompió la pierna esquiando en las montañas.', exKo: '그는 산에서 스키를 타다가 다리가 부러졌다.' },
+      { es: 'vacunarse', pos: 'v.', ko: '예방접종을 하다', ex: 'Me vacuné contra la gripe la semana pasada.', exKo: '나는 지난주에 독감 예방접종을 했다.' },
+    ]
+  },
+
+
+  {
+    cap: 12, capTitle: 'De compras 쇼핑',
+    unit: 1, unitTitle: '필수 동사',
+    words: [
+      { es: 'diseñar', pos: 'v.', ko: '디자인하다', ex: 'Me gustaría diseñar mi vestido de novia en el futuro.', exKo: '나는 미래의 내 신부 드레스를 디자인하고 싶다.' },
+    ]
+  },
+
+
+  {
+    cap: 12, capTitle: 'De compras 쇼핑',
+    unit: 2, unitTitle: '상점',
+    words: [
+      { es: 'tienda', pos: 'n.f.', ko: '가게', ex: 'Vamos a la tienda de regalos de Jorge.', exKo: '우리 호르헤의 선물 가게에 가자.' },
+      { es: 'mercado', pos: 'n.m.', ko: '시장', ex: 'Hay de todo en el mercado central.', exKo: '중앙 시장에는 이것저것 다 있다.' },
+      { es: 'sobre', pos: 'n.m.', ko: '종이 봉투', ex: '¿Tenéis sobres?', exKo: '(가게에서) 종이 봉투 있어요?' },
+      { es: 'salida', pos: 'n.f.', ko: '출구', ex: 'La salida principal está cerrada por obras.', exKo: '메인 출구는 공사로 인해 닫혀 있다.' },
+      { es: 'vendedor', pos: 'n.m.', ko: '판매자', ex: 'Los vendedores de esa tienda son chilenos.', exKo: '저 가게의 판매원들은 칠레 사람들이다.' },
+      { es: 'mercadillo', pos: 'n.m.', ko: '벼룩시장, 노상 마켓, (오일장 등) 장', ex: 'En mi barrio hay un mercadillo cada sábado.', exKo: '나의 동네에는 매주 토요일에 장이 선다.' },
+      { es: 'papelería', pos: 'n.f.', ko: '문구점, 사무 용품점', ex: 'Tengo que ir a una papelería a comprar folios.', exKo: '나는 A4용지를 사러 사무 용품점에 가야 한다.' },
+      { es: 'quiosco', pos: 'n.m.', ko: '가두 판매대', ex: 'En los quioscos puedes comprar periódicos.', exKo: '가두 판매대에서 너는 신문을 구매할 수 있다.' },
+      { es: 'estanco', pos: 'n.m.', ko: '담배 가게', ex: 'En los estancos puedes recargar la tarjeta de autobús.', exKo: '담배 가게에서 너는 버스 카드를 충전할 수 있다.' },
+      { es: 'frutería', pos: 'n.f.', ko: '과일 가게', ex: 'Quiero abrir una frutería en mi barrio.', exKo: '나는 내 동네에 과일 가게 하나를 열고 싶다.' },
+      { es: 'tienda de regalos', pos: 'n.f.', ko: '선물 가게', ex: 'Vamos a ir a una tienda de regalos.', exKo: '선물 가게에 가자.' },
+      { es: 'centro comercial', pos: 'n.m.', ko: '쇼핑몰', ex: 'Me gusta ir de compras a un centro comercial porque no paso frío ni calor.', exKo: '나는 쇼핑몰로 쇼핑 가는 것을 좋아한다 왜냐하면 나는 더위도 추위도 타지 않기 때문이다.' },
+      { es: 'hacer un pedido', pos: '동사표현', ko: '주문하다', ex: 'Algunos clientes hacen un pedido especial para Navidad.', exKo: '몇몇 고객들은 크리스마스를 위해 특별한 주문을 한다.' },
+      { es: 'haber rebajas', pos: '동사표현', ko: '세일이 있다', ex: 'Hay rebajas en todas las tiendas. Tenemos que aprovecharlas.', exKo: '모든 가게들에 세일이 있다. 우리는 그 세일 기간들을 잘 이용해야 한다.' },
+      { es: 'comprar por Internet', pos: '동사표현', ko: '인터넷으로 ~을 사다', ex: 'Compro ropa por Internet porque no tengo tiempo para salir.', exKo: '나는 인터넷으로 옷을 구매한다, 왜냐하면 나갈 시간이 없기 때문이다.' },
+      { es: 'escalera mecánica', pos: 'n.f.', ko: '에스컬레이터', ex: 'Estaban averiadas las escaleras mecánicas, así que tuve que bajar por las escaleras.', exKo: '에스컬레이터가 고장 나 있었다, 그래서 나는 계단으로 내려가야 했다.' },
+    ]
+  },
+
+
+  {
+    cap: 12, capTitle: 'De compras 쇼핑',
+    unit: 3, unitTitle: '옷·신발·액세서리',
+    words: [
+      { es: 'zapatilla de deporte', pos: 'n.f.', ko: '운동화', ex: 'Necesito unas zapatillas de deporte.', exKo: '나는 운동화 한 켤레가 필요하다.' },
+      { es: 'blusa', pos: 'n.f.', ko: '블라우스', ex: 'Te queda muy bien esa blusa.', exKo: '그 블라우스는 너에게 매우 잘 어울린다.' },
+      { es: 'pijama', pos: 'n.m.', ko: '파자마, 잠옷', ex: 'No tengo pijama, así que quiero comprarme uno.', exKo: '나는 파자마가 없다, 그래서 파자마 한 벌을 사기를 원한다.' },
+      { es: 'pañuelo', pos: 'n.m.', ko: '손수건, 스카프', ex: 'He comprado un pañuelo para mi profesora.', exKo: '나는 내 선생님을 위해 손수건 하나를 구매했다.' },
+      { es: 'algodón', pos: 'n.m.', ko: '면, 솜', ex: 'Es mejor comprar ropa de algodón para los bebés.', exKo: '아기들을 위해서는 면으로 된 옷을 사는 것이 더 좋다.' },
+      { es: 'lino', pos: 'n.m.', ko: '리넨', ex: 'Los vestidos de lino son muy frescos.', exKo: '리넨 원피스들은 매우 시원하다.' },
+      { es: 'lana', pos: 'n.f.', ko: '양모', ex: 'Esta camiseta es de lana y por eso es muy suave.', exKo: '이 티셔츠는 양모로 만들어졌다 그래서 매우 부드럽다.' },
+      { es: 'liso/a', pos: 'adj.', ko: '민무늬의, 무늬가 없는', ex: 'Me gustan las camisas lisas y de colores no llamativos.', exKo: '나는 민무늬와 튀지 않는 색들의 셔츠들을 좋아한다.' },
+      { es: 'de rayas', pos: 'adj.', ko: '줄무늬의', ex: 'Mi hermano mayor me regaló una camiseta de rayas.', exKo: '나의 형은 나에게 줄무늬 티셔츠를 하나 선물했다.' },
+      { es: 'de cuadros', pos: 'adj.', ko: '체크무늬의', ex: 'Vamos a comprar una camiseta de cuadros para Pedro.', exKo: '페드로에게 체크무늬 티셔츠를 사 주자.' },
+      { es: 'quedar bien', pos: '동사표현', ko: '잘 어울린다', ex: '¿Qué tal me queda la falda? ¿Me queda bien?', exKo: '치마가 나에게 어떤 것 같아? 나에게 잘 어울려?' },
+    ]
+  },
+
+
+  {
+    cap: 12, capTitle: 'De compras 쇼핑',
+    unit: 4, unitTitle: '식품',
+    words: [
+      { es: 'bolsa (de la compra)', pos: 'n.f.', ko: '쇼핑백', ex: 'Antes eran gratis las bolsas de la compra, pero ahora hay que pagar algo de dinero.', exKo: '전에는 쇼핑백들이 공짜였지만, 지금은 돈을 조금 내야 한다.' },
+      { es: 'queso manchego', pos: 'n.m.', ko: '만체고 치즈', ex: 'El queso manchego es famoso en toda España.', exKo: '만체고 치즈는 스페인 전역에서 유명하다.' },
+      { es: 'rabo de toro', pos: 'n.m.', ko: '소꼬리 요리', ex: 'Ayer probé rabo de toro.', exKo: '어제 소꼬리 요리를 먹어 봤다.' },
+      { es: 'cochinillo asado', pos: 'n.m.', ko: '새끼 돼지 구이', ex: 'Cuando fui a Segovia, comí el famoso cochinillo asado.', exKo: '나는 세고비아에 갔을 때, 그 유명한 새끼 돼지 구이를 먹었다.' },
+      { es: 'estar podrido/a', pos: '동사표현', ko: '상하다', ex: 'La comida está podrida. Voy a tirarla.', exKo: '음식이 상했어. 버릴게.' },
+      { es: 'estar caducado/a', pos: '동사표현', ko: '유통기한이 지났다', ex: 'Los yogures están caducados.', exKo: '요거트가 유통기한이 지났어.' },
+    ]
+  },
+
+
+  {
+    cap: 12, capTitle: 'De compras 쇼핑',
+    unit: 5, unitTitle: '지불 방법',
+    words: [
+      { es: 'pagar en efectivo', pos: '동사표현', ko: '현금으로 지불하다', ex: 'Yo prefiero pagar en efectivo porque así puedo controlar mis gastos.', exKo: '나는 현금으로 지불하는 것을 선호한다 왜냐하면 그렇게 하면 나의 지출을 조절할 수 있기 때문이다.' },
+      { es: 'pagar con tarjeta', pos: '동사표현', ko: '카드로 지불하다', ex: 'Como no tengo dinero en efectivo, voy a pagar con tarjeta.', exKo: '나는 현금이 없기 때문에, 카드로 지불할 것이다.' },
+      { es: 'pasar por caja', pos: '동사표현', ko: '계산하러 가다, 계산대로 가다', ex: 'Vamos a cerrar en quince minutos, así que vayan pasando por caja, por favor.', exKo: '우리는 15분 뒤에 문을 닫습니다, 그러니 이제 계산대로 가 주세요.' },
+    ]
+  },
+
+
+  {
+    cap: 12, capTitle: 'De compras 쇼핑',
+    unit: 6, unitTitle: '보너스: 옷·신발·액세서리 1',
+    words: [
+      { es: 'ropa de hombre', pos: 'n.f.', ko: '남성복', ex: 'En esta planta venden ropa de hombre.', exKo: '이 층에서는 남성복을 판다.' },
+      { es: 'ropa de mujer', pos: 'n.f.', ko: '여성복', ex: 'La sección de ropa de mujer está en el segundo piso.', exKo: '여성복 코너는 2층에 있다.' },
+      { es: 'ropa de niño', pos: 'n.f.', ko: '유아복', ex: 'Compramos ropa de niño para mi sobrino.', exKo: '우리는 내 조카를 위해 유아복을 샀다.' },
+      { es: 'ropa de verano', pos: 'n.f.', ko: '여름 옷', ex: 'Necesito comprar ropa de verano.', exKo: '나는 여름 옷을 사야 한다.' },
+      { es: 'ropa de invierno', pos: 'n.f.', ko: '겨울 옷', ex: 'Guardo la ropa de invierno en el armario.', exKo: '나는 겨울 옷을 옷장에 보관한다.' },
+      { es: 'ropa de deporte', pos: 'n.f.', ko: '스포츠 웨어', ex: 'Me gusta comprar ropa de deporte cómoda.', exKo: '나는 편안한 스포츠 웨어를 사는 것을 좋아한다.' },
+      { es: 'cazadora', pos: 'n.f.', ko: '라이더 재킷', ex: 'Me compré una cazadora de cuero negra.', exKo: '나는 검은 가죽 라이더 재킷을 하나 샀다.' },
+      { es: 'chaleco', pos: 'n.m.', ko: '조끼', ex: 'Llevo un chaleco encima de la camisa.', exKo: '나는 셔츠 위에 조끼를 입는다.' },
+      { es: 'minifalda', pos: 'n.f.', ko: '미니스커트', ex: 'Se puso una minifalda para la fiesta.', exKo: '그녀는 파티를 위해 미니스커트를 입었다.' },
+      { es: 'falda corta', pos: 'n.f.', ko: '짧은 치마', ex: 'Compró una falda corta de color rojo.', exKo: '그녀는 빨간색 짧은 치마를 샀다.' },
+      { es: 'falda larga', pos: 'n.f.', ko: '긴 치마', ex: 'Prefiero una falda larga para la oficina.', exKo: '나는 사무실을 위해 긴 치마를 선호한다.' },
+      { es: 'vestido de novia', pos: 'n.m.', ko: '신부 원피스', ex: 'Ella diseñó su propio vestido de novia.', exKo: '그녀는 자신의 신부 원피스를 직접 디자인했다.' },
+      { es: 'vestido de fiesta', pos: 'n.m.', ko: '파티용 원피스', ex: 'Necesito un vestido de fiesta para la boda.', exKo: '나는 결혼식을 위해 파티용 원피스가 필요하다.' },
+      { es: 'sujetador', pos: 'n.m.', ko: '브래지어', ex: 'Necesito comprar un sujetador nuevo.', exKo: '나는 새 브래지어를 사야 한다.' },
+      { es: 'braga', pos: 'n.f.', ko: '여성의 팬티', ex: 'Compré unas bragas de algodón.', exKo: '나는 면 팬티 몇 벌을 샀다.' },
+      { es: 'calzoncillo', pos: 'n.m.', ko: '남성의 팬티', ex: 'Mi padre necesita calzoncillos nuevos.', exKo: '나의 아버지는 새 팬티가 필요하다.' },
+    ]
+  },
+
+
+  {
+    cap: 12, capTitle: 'De compras 쇼핑',
+    unit: 7, unitTitle: '보너스: 옷·신발·액세서리 2',
+    words: [
+      { es: 'zapato plano', pos: 'n.m.', ko: '플랫 슈즈', ex: 'Prefiero los zapatos planos para caminar.', exKo: '나는 걷기 위해 플랫 슈즈를 선호한다.' },
+      { es: 'zapato de tacón', pos: 'n.m.', ko: '굽이 있는 신발', ex: 'Los zapatos de tacón me hacen daño en los pies.', exKo: '굽이 있는 신발은 내 발을 아프게 한다.' },
+      { es: 'zapatilla de estar por casa', pos: 'n.f.', ko: '(가정용) 슬리퍼', ex: 'Uso zapatillas de estar por casa cuando llego a casa.', exKo: '나는 집에 도착하면 슬리퍼를 신는다.' },
+      { es: 'chancla', pos: 'n.f.', ko: '슬리퍼', ex: 'Voy a la playa con mis chanclas.', exKo: '나는 슬리퍼를 신고 해변에 간다.' },
+      { es: 'sandalia', pos: 'n.f.', ko: '샌들', ex: 'En verano siempre llevo sandalias.', exKo: '여름에 나는 항상 샌들을 신는다.' },
+      { es: 'rebeca', pos: 'n.f.', ko: '카디건', ex: 'Se puso una rebeca porque hacía fresco.', exKo: '그녀는 쌀쌀해서 카디건을 입었다.' },
+      { es: 'gabardina', pos: 'n.f.', ko: '트렌치코트', ex: 'Llevo una gabardina cuando llueve.', exKo: '비가 올 때 나는 트렌치코트를 입는다.' },
+      { es: 'plumón', pos: 'n.m.', ko: '패딩', ex: 'En invierno necesito un plumón grueso.', exKo: '겨울에는 두꺼운 패딩이 필요하다.' },
+      { es: 'complemento', pos: 'n.m.', ko: '액세서리', ex: 'Los complementos completan cualquier atuendo.', exKo: '액세서리는 어떤 옷차림도 완성한다.' },
+      { es: 'diadema', pos: 'n.f.', ko: '머리띠', ex: 'Mi hija lleva una diadema rosa.', exKo: '내 딸은 분홍색 머리띠를 하고 있다.' },
+      { es: 'bañador', pos: 'n.m.', ko: '수영복', ex: 'No olvides el bañador para la piscina.', exKo: '수영장을 위한 수영복을 잊지 마.' },
+      { es: 'biquini', pos: 'n.m.', ko: '비키니', ex: 'Se puso un biquini azul en la playa.', exKo: '그녀는 해변에서 파란색 비키니를 입었다.' },
+      { es: 'gafa de sol', pos: 'n.f.', ko: '선글라스 (보통 복수 gafas de sol로 사용)', ex: 'Siempre llevo gafas de sol en verano.', exKo: '여름에는 항상 선글라스를 쓴다.' },
+      { es: 'monedero', pos: 'n.m.', ko: '동전 지갑', ex: 'Guardo las monedas en el monedero.', exKo: '나는 동전을 동전 지갑에 보관한다.' },
+      { es: 'billetero', pos: 'n.m.', ko: '지폐 수납용 지갑', ex: 'Guardo los billetes en el billetero.', exKo: '나는 지폐를 지폐 수납용 지갑에 보관한다.' },
+      { es: 'tarjetero', pos: 'n.m.', ko: '카드 지갑', ex: 'Uso un tarjetero para las tarjetas de crédito.', exKo: '나는 신용카드를 위해 카드 지갑을 사용한다.' },
+      { es: 'bandolera', pos: 'n.f.', ko: '크로스 백', ex: 'Llevo una bandolera para ir al trabajo.', exKo: '나는 출근할 때 크로스 백을 멘다.' },
+    ]
+  },
+
+
+  {
+    cap: 12, capTitle: 'De compras 쇼핑',
+    unit: 8, unitTitle: '보너스: 식재료 관련 어휘',
+    words: [
+      { es: 'una docena de huevos', pos: 'n.f.', ko: '달걀 12개', ex: 'Necesito una docena de huevos para la receta.', exKo: '나는 그 레시피를 위해 달걀 12개가 필요하다.' },
+      { es: 'una lata de tomate', pos: 'n.f.', ko: '토마토 한 캔', ex: 'Añade una lata de tomate a la salsa.', exKo: '소스에 토마토 한 캔을 넣어라.' },
+      { es: 'un bote de tomate', pos: 'n.m.', ko: '토마토 소스 한 통', ex: 'Abre un bote de tomate para la pizza.', exKo: '피자를 위해 토마토 소스 한 통을 열어라.' },
+      { es: 'una lata de atún', pos: 'n.f.', ko: '참치 한 캔', ex: 'Prepara una ensalada con una lata de atún.', exKo: '참치 한 캔으로 샐러드를 준비해라.' },
+      { es: 'un paquete de arroz', pos: 'n.m.', ko: '쌀 한 팩', ex: 'Compré un paquete de arroz de dos kilos.', exKo: '나는 2킬로짜리 쌀 한 팩을 샀다.' },
+      { es: 'una caja de galletas', pos: 'n.f.', ko: '쿠키 한 상자', ex: 'Le regalé una caja de galletas a mi vecina.', exKo: '나는 내 이웃에게 쿠키 한 상자를 선물했다.' },
+      { es: 'un bote de mermelada', pos: 'n.m.', ko: '잼 한 통', ex: 'Compré un bote de mermelada de fresa.', exKo: '나는 딸기 잼 한 통을 샀다.' },
+      { es: 'un kilo de patatas', pos: 'n.m.', ko: '감자 1킬로', ex: 'Necesito un kilo de patatas para la tortilla.', exKo: '나는 또르띠야를 위해 감자 1킬로가 필요하다.' },
+      { es: 'un litro de leche', pos: 'n.m.', ko: '우유 1리터', ex: 'Compra un litro de leche, por favor.', exKo: '우유 1리터를 사줘.' },
+      { es: 'un litro de agua', pos: 'n.m.', ko: '물 1리터', ex: 'Bebe al menos un litro de agua al día.', exKo: '하루에 최소 물 1리터를 마셔라.' },
+      { es: 'medio kilo', pos: 'n.m.', ko: '500그램', ex: 'Deme medio kilo de jamón, por favor.', exKo: '햄 500그램 주세요.' },
+      { es: 'un cuarto de kilo', pos: 'n.m.', ko: '250그램', ex: 'Ponga un cuarto de kilo de aceitunas.', exKo: '올리브 250그램 넣어주세요.' },
+      { es: 'cien gramos', pos: 'n.m.', ko: '100그램', ex: 'Deme cien gramos de jamón serrano.', exKo: '세라노 햄 100그램 주세요.' },
+      { es: 'doscientos gramos', pos: 'n.m.', ko: '200그램', ex: 'Quiero doscientos gramos de queso, por favor.', exKo: '치즈 200그램 주세요.' },
+    ]
+  },
+
+
+  {
+    cap: 8, capTitle: 'Ocio 여가',
+    unit: 2, unitTitle: '취미 생활',
+    words: [
+      { es: 'leer el periódico', pos: '동사표현', ko: '신문을 읽다', ex: 'Mi madre lee el periódico cada mañana a la misma hora.', exKo: '나의 어머니는 매일 아침 똑같은 시간에 신문을 읽으신다.' },
+      { es: 'leer un libro', pos: '동사표현', ko: '책을 읽다', ex: 'Estos días estoy leyendo un libro muy interesante.', exKo: '요즘 나는 매우 흥미로운 책 한 권을 읽고 있다.' },
+      { es: 'ver una película', pos: '동사표현', ko: '영화 한 편을 보다', ex: 'Este fin de semana voy a ver una película coreana.', exKo: '이번 주말에 나는 한국 영화 한 편을 볼 것이다.' },
+      { es: 'escuchar música', pos: '동사표현', ko: '음악을 듣다', ex: 'Me gusta escuchar música en mi tiempo libre.', exKo: '나는 나의 자유 시간에 음악 듣는 것을 좋아한다.' },
+      { es: 'escuchar la radio', pos: '동사표현', ko: '라디오를 듣다', ex: 'A mi abuelo le encanta escuchar la radio.', exKo: '나의 할아버지는 라디오 듣는 것을 매우 좋아하신다.' },
+      { es: 'ir a un bar', pos: '동사표현', ko: '바(bar)에 가다', ex: '¿Vamos a ir a un bar a tomar algo?', exKo: '뭐 먹거나 마시러 바에 갈까?' },
+      { es: 'ir a una discoteca', pos: '동사표현', ko: '클럽에 가다', ex: 'Los viernes suelo ir a una discoteca con algunos amigos míos.', exKo: '나는 보통 금요일에 내 친구 몇 명과 클럽에 가곤 한다.' },
+      { es: 'ir al cine', pos: '동사표현', ko: '영화관에 가다', ex: '¿Cuántas veces al mes vas al cine?', exKo: '너는 한 달에 몇 번 영화관에 가니?' },
+      { es: 'tiempo libre', pos: 'n.m.', ko: '자유 시간', ex: '¿Qué te gusta hacer en tu tiempo libre?', exKo: '너는 너의 자유 시간에 무엇을 하는 것을 좋아하니?' },
+      { es: 'parque de atracciones', pos: 'n.m.', ko: '놀이공원', ex: 'La semana que viene, vamos de excursión a un parque de atracciones.', exKo: '다음 주에, 어느 놀이공원으로 소풍을 간다.' },
+      { es: 'parque zoológico', pos: 'n.m.', ko: '동물원', ex: 'Ayer fui a un parque zoológico con mi sobrino de seis años.', exKo: '어제 나는 내 6살짜리 조카와 어느 한 동물원에 갔다.' },
+      { es: 'ir de paseo', pos: '동사표현', ko: '산책하러 가다', ex: 'Me gusta ir de paseo al atardecer.', exKo: '나는 해가 질 때 산책하러 가는 것을 좋아한다.' },
+      { es: 'ir de excursión', pos: '동사표현', ko: '당일치기 여행 혹은 소풍을 가다', ex: 'Mañana vamos de excursión a una montaña.', exKo: '우리는 내일 어느 한 산으로 소풍을 간다.' },
+      { es: 'tener planes', pos: '동사표현', ko: '계획들을 가지고 있다', ex: '¿Qué planes tienes para estas vacaciones?', exKo: '너는 이번 휴가를 위해 어떤 계획들을 가지고 있니?' },
+      { es: 'tener una cita', pos: '동사표현', ko: '데이트 약속을 갖다', ex: 'Juan está muy contento porque tiene una cita esta noche.', exKo: '후안은 오늘 밤 데이트 약속이 있기 때문에 매우 행복해하고 있다.' },
+      { es: 'tomar algo', pos: '동사표현', ko: '무언가 먹거나 마시다', ex: '¿Tomamos algo por ahí?', exKo: '근처에서 뭐 먹거나 마실까?' },
+      { es: 'tomar un café', pos: '동사표현', ko: '커피 한잔 마시다', ex: '¿Te vienes conmigo a tomar un café?', exKo: '커피 한잔 마시러 나랑 같이 갈래?' },
+      { es: 'descanso', pos: 'n.m.', ko: '휴식', ex: 'Vamos a tomar un descanso de diez minutos y seguimos hablando.', exKo: '10분의 휴식을 취합시다 그리고 계속해서 대화를 합시다.' },
+      { es: 'bricolaje', pos: 'n.m.', ko: 'DIY, 집안 수리 또는 보수 작업', ex: 'Tenemos que comprar pintura en la sección de bricolaje.', exKo: '우리는 집안 수리 (물품) 매장에서 페인트를 사야 한다.' },
+      { es: 'jardinería', pos: 'n.f.', ko: '원예', ex: 'Mi cuñado se dedica a la jardinería.', exKo: '나의 형부는 원예에 종사하신다.' },
+      { es: 'ser aficionado/a', pos: '동사표현', ko: '~의 애호가이다', ex: 'Soy aficionado a los deportes acuáticos.', exKo: '나는 수상 스포츠 애호가이다.' },
+      { es: 'ir de copas', pos: '동사표현', ko: '술 마시러 가다', ex: 'Esta noche vamos de copas al centro.', exKo: '오늘 밤에 우리는 중심가로 술 마시러 간다.' },
+      { es: 'ir de tapas', pos: '동사표현', ko: '타파스 먹으러 가다', ex: 'Cuando vivía en España, cada viernes iba de tapas con mis compañeros de piso.', exKo: '내가 스페인에 살 때, 매주 금요일마다 아파트를 공유하는 친구들과 타파스를 먹으러 가곤 했다.' },
+      { es: 'ir de fiesta', pos: '동사표현', ko: '놀러 나가다', ex: 'Este sábado vamos de fiesta al centro.', exKo: '이번 주 토요일에 우리는 중심가로 놀러 나간다.' },
+      { es: 'ir de picnic', pos: '동사표현', ko: '나들이를 가다', ex: 'Hace un tiempo ideal para ir de picnic.', exKo: '나들이를 가기 위한 이상적인 날씨이다.' },
+      { es: 'hacer turismo', pos: '동사표현', ko: '관광을 하다', ex: 'Cada vez hay más gente que quiere hacer turismo cultural.', exKo: '문화적 관광을 하기 원하는 사람들이 매번 더 많아지고 있다.' },
+      { es: 'colaborar como voluntario/a', pos: '동사표현', ko: '자원봉사자로 협조하다, 일하다', ex: 'Este verano colaboro en una ONG como voluntario.', exKo: '이번 여름에 나는 어느 한 비정부 기구에서 자원봉사자로 협조한다.' },
+      { es: 'tener un compromiso', pos: '동사표현', ko: '선약이 있다', ex: 'Mañana me es complicado quedar porque tengo un compromiso.', exKo: '내일은 만나는 것이 나에게 조금 어려워 왜냐하면 내가 선약이 있거든.' },
+      { es: 'pasarlo bien / pasárselo bien', pos: '동사표현', ko: '좋은 시간을 보내다', ex: 'Nos lo pasamos muy bien en el cumpleaños de Juan.', exKo: '우리는 후안의 생일에 매우 좋은 시간을 보냈다.' },
+      { es: 'hacer un curso de cocina', pos: '동사표현', ko: '요리 강좌를 듣다', ex: 'El año pasado hice un curso de cocina japonesa y sé hacer algunos platos.', exKo: '작년에 나는 일본 요리 강좌를 하나 들었다 그래서 몇 가지 요리를 할 줄 안다.' },
+      { es: 'hacer crucigramas', pos: '동사표현', ko: '십자 퍼즐을 하다', ex: 'A mi abuela le encanta hacer crucigramas en su tiempo libre.', exKo: '나의 할머니는 자신의 여가 시간에 십자 퍼즐 하는 것을 매우 좋아하신다.' },
+    ]
+  },
+
+
+  {
+    cap: 8, capTitle: 'Ocio 여가',
+    unit: 3, unitTitle: '문화생활',
+    words: [
+      { es: 'circo', pos: 'n.m.', ko: '서커스', ex: '¿Has estado en un circo alguna vez?', exKo: '너는 한 번이라도 서커스에 가 본 적이 있니?' },
+      { es: 'obra de teatro', pos: 'n.f.', ko: '연극 작품', ex: '¿Cuál es tu obra de teatro preferida?', exKo: '네가 가장 선호하는 연극 작품은 무엇이니?' },
+      { es: 'ópera', pos: 'n.f.', ko: '오페라', ex: 'Cantar ópera me parece muy difícil.', exKo: '오페라를 하는 것은 나에게 매우 어려워 보인다.' },
+      { es: 'musical', pos: 'n.m.', ko: '뮤지컬', ex: 'A mi madre le encanta ir a musicales.', exKo: '나의 어머니는 뮤지컬에 가는 것을 매우 좋아하신다.' },
+      { es: 'concierto de música clásica', pos: 'n.m.', ko: '클래식 음악 콘서트', ex: 'Todavía no he estado en un concierto de música clásica.', exKo: '나는 아직 클래식 음악 콘서트에 가 본 적이 없다.' },
+      { es: 'concierto de rock', pos: 'n.m.', ko: '록 콘서트', ex: 'Nos conocimos en un concierto de rock.', exKo: '우리는 어느 한 록 콘서트에서 서로 알게 되었어요.' },
+      { es: 'fila', pos: 'n.f.', ko: '열, 줄', ex: 'Estoy en la fila H, butaca 10.', exKo: '나는 H열, 10번 좌석에 있어.' },
+      { es: 'espectador', pos: 'n.m.', ko: '관람객', ex: 'Los espectadores estaban impresionados por la gran actuación del cantante.', exKo: '관람객들은 그 가수의 멋진 공연에 감명을 받은 상태였다.' },
+      { es: 'escenario', pos: 'n.m.', ko: '무대', ex: 'El escenario estaba lleno de entusiasmo.', exKo: '무대는 열정으로 가득 차 있었다.' },
+      { es: 'galería (de arte)', pos: 'n.f.', ko: '(예술) 갤러리', ex: 'Una tía mía trabaja en una galería de arte.', exKo: '나의 이모 한 분은 (예술) 갤러리에서 근무하신다.' },
+      { es: 'plaza de toros', pos: 'n.f.', ko: '투우장', ex: 'La plaza de toros está a diez minutos del centro de la ciudad en autobús.', exKo: '투우장은 도시의 중심부에서 버스로 10분 떨어진 곳에 있다.' },
+      { es: 'poner una película', pos: '동사표현', ko: '영화를 상영하다', ex: 'En la tele ponen una película muy interesante.', exKo: '텔레비전에서 매우 흥미로운 영화 한 편을 상영한다.' },
+      { es: 'hacer cola', pos: '동사표현', ko: '줄을 서다', ex: '¿Tenemos que hacer cola para entrar?', exKo: '우리는 입장하기 위해서 줄을 서야 하나요?' },
+      { es: 'ser un éxito', pos: '동사표현', ko: '성공적이다', ex: 'Su nuevo disco ha sido un éxito tremendo.', exKo: '그의 새로운 앨범은 아주 성공적이었다.' },
+    ]
+  },
+
+
+  {
+    cap: 8, capTitle: 'Ocio 여가',
+    unit: 4, unitTitle: '스포츠',
+    words: [
+      { es: 'montar en bicicleta', pos: '동사표현', ko: '자전거를 타다', ex: 'En mi ciudad es fácil montar en bicicleta porque hay carril bici.', exKo: '나의 도시에는 자전거 도로가 있기 때문에 자전거를 타는 것이 쉽다.' },
+      { es: 'hacer senderismo', pos: '동사표현', ko: '하이킹을 하다', ex: 'Hacer senderismo con regularidad ayuda a mejorar el estado físico.', exKo: '규칙적으로 하이킹을 하는 것은 신체 상태를 개선하는 것을 돕는다.' },
+      { es: 'árbitro', pos: 'n.m.', ko: '심판', ex: 'El árbitro pitó un penalti.', exKo: '그 심판은 패널티를 선언했다.' },
+      { es: 'entrenador', pos: 'n.m.', ko: '코치, 감독', ex: 'El Madrid va a cambiar de entrenador.', exKo: '레알 마드리드 축구 팀은 코치를 교체할 것이다.' },
+      { es: 'jugador', pos: 'n.m.', ko: '운동선수', ex: 'En fútbol sala cada equipo tiene 5 jugadores.', exKo: '풋살에서 각각의 팀은 5명의 선수를 갖는다.' },
+      { es: 'deportista', pos: 'n.m.f.', ko: '스포츠 선수, 스포츠를 즐기는 사람', ex: 'Mi hijo sueña con ser deportista.', exKo: '나의 아들은 스포츠 선수가 되는 것을 꿈꾼다.' },
+      { es: 'perdedor', pos: 'n.m.', ko: '패자, 패배의', ex: 'El equipo perdedor se quedó unos minutos más en el campo.', exKo: '패배 팀은 몇 분 더 경기장에 머물렀다.' },
+      { es: 'ganador', pos: 'n.m.', ko: '승자, 승리하는', ex: 'El equipo ganador de la liga española va a ser el Madrid.', exKo: '스페인 리그의 승리 팀은 레알 마드리드 축구 팀이 될 것이다.' },
+      { es: 'empate', pos: 'n.m.', ko: '동점', ex: 'Creo que el partido va a acabar en empate.', exKo: '내 생각에 경기는 동점으로 끝날 것이다.' },
+      { es: 'balón de fútbol', pos: 'n.m.', ko: '축구공', ex: 'Mi madre me regaló un balón de fútbol por mi cumpleaños.', exKo: '나의 어머니는 내 생일에 나에게 축구공을 선물해 주셨다.' },
+      { es: 'raqueta', pos: 'n.f.', ko: '라켓', ex: 'Para jugar al bádminton, necesitamos dos raquetas.', exKo: '배드민턴을 치기 위해서 우리는 두 개의 라켓이 필요하다.' },
+      { es: 'partido de fútbol', pos: 'n.m.', ko: '축구 경기', ex: 'Me gustaría ver un partido de fútbol en un estadio.', exKo: '나는 경기장에서 축구 경기 하나를 보고 싶다.' },
+      { es: 'hacer atletismo', pos: '동사표현', ko: '육상을 하다', ex: 'Mi padre lleva 2 años haciendo atletismo.', exKo: '나의 아버지는 2년째 육상을 해 오고 있다.' },
+      { es: 'natación', pos: 'n.f.', ko: '수영', ex: 'Mi hijo trabaja de profesor de natación en un polideportivo.', exKo: '나의 아들은 어느 한 종합 스포츠 시설에서 수영 선생님으로 일한다.' },
+      { es: 'campo de fútbol', pos: 'n.m.', ko: '축구 경기장', ex: 'Una de mis mayores ilusiones es visitar el campo de fútbol del Madrid.', exKo: '나의 가장 큰 바람 중 하나는 마드리드 팀의 축구 경기장에 방문하는 것이다.' },
+      { es: 'pista de tenis', pos: 'n.f.', ko: '테니스 코트', ex: 'Todas las pistas de tenis están reservadas para este fin de semana.', exKo: '이번 주말에는 모든 테니스 코트들이 예약되어 있습니다.' },
+      { es: 'carrera de motos', pos: 'n.f.', ko: '오토바이 경주', ex: 'Raúl quiere participar en una carrera de motos como amateur.', exKo: '라울은 아마추어로서 오토바이 경주에 참여하기를 원한다.' },
+      { es: 'boxeo', pos: 'n.m.', ko: '권투', ex: 'Dicen que practicar boxeo ayuda a adelgazar rápido.', exKo: '권투를 하는 것이 살을 빨리 빼는 데 도움이 된다고 한다.' },
+      { es: 'chándal', pos: 'n.m.', ko: '(위아래 세트) 운동복 한 벌', ex: 'Necesito comprarme un chándal para hacer footing.', exKo: '나는 조깅을 하기 위해 운동복 한 벌을 살 필요가 있다.' },
+      { es: 'zapato deportivo', pos: 'n.m.', ko: '운동화', ex: 'Estos zapatos deportivos me costaron un dineral.', exKo: '이 운동화들은 나에게 거금이 들었다.' },
+    ]
+  },
+
+
+  {
+    cap: 8, capTitle: 'Ocio 여가',
+    unit: 5, unitTitle: '놀이',
+    words: [
+      { es: 'videojuego', pos: 'n.m.', ko: '비디오 게임', ex: 'Los videojuegos tienen un impacto negativo en los adolescentes.', exKo: '비디오 게임들은 청소년들에게 부정적인 영향력을 가지고 있다.' },
+      { es: 'videoconsola', pos: 'n.f.', ko: '비디오 게임기', ex: '¿Te gusta jugar con la videoconsola?', exKo: '너는 비디오 게임기를 가지고 노는 것을 좋아하니?' },
+      { es: 'juego de mesa', pos: 'n.m.', ko: '보드게임', ex: '¿Te apetece jugar a un juego de mesa?', exKo: '너 보드게임 한판 할래?' },
+      { es: 'tocar el Gordo', pos: '동사표현', ko: '성탄절 복권에 당첨되다', ex: 'A un anciano de ochenta años le ha tocado el Gordo este año.', exKo: '80세 노인에게 올해 성탄절 복권이 당첨되었다.' },
+      { es: 'tocar la lotería', pos: '동사표현', ko: '복권에 당첨되다', ex: '¡Me ha tocado la lotería!', exKo: '나 복권에 당첨되었어!' },
+      { es: 'jugar con la pelota', pos: '동사표현', ko: '공을 가지고 놀다', ex: 'Cuando era niño, me gustaba jugar con la pelota.', exKo: '나는 어렸을 때, 공을 가지고 노는 것을 좋아했었다.' },
+    ]
+  },
+
+
+  {
+    cap: 8, capTitle: 'Ocio 여가',
+    unit: 6, unitTitle: '보너스: 운동과 게임',
+    words: [
+      { es: 'jugar al fútbol', pos: '동사표현', ko: '축구를 하다', ex: 'Los sábados juego al fútbol con mis amigos.', exKo: '토요일마다 나는 친구들과 축구를 한다.' },
+      { es: 'jugar al baloncesto', pos: '동사표현', ko: '농구를 하다', ex: 'En el colegio jugamos al baloncesto todas las tardes.', exKo: '학교에서 우리는 매일 오후 농구를 한다.' },
+      { es: 'jugar al tenis', pos: '동사표현', ko: '테니스를 하다', ex: 'Mis padres juegan al tenis todos los domingos.', exKo: '나의 부모님은 일요일마다 테니스를 치신다.' },
+      { es: 'jugar a las cartas', pos: '동사표현', ko: '카드 놀이를 하다', ex: 'Nos gusta jugar a las cartas después de cenar.', exKo: '우리는 저녁 식사 후에 카드 놀이를 하는 것을 좋아한다.' },
+      { es: 'jugar al ajedrez', pos: '동사표현', ko: '체스를 두다', ex: 'Mi hermano juega al ajedrez muy bien.', exKo: '나의 형은 체스를 매우 잘 둔다.' },
+      { es: 'jugar al golf', pos: '동사표현', ko: '골프를 치다', ex: 'Mi jefe juega al golf todos los fines de semana.', exKo: '나의 상사는 주말마다 골프를 친다.' },
+      { es: 'jugar a los bolos', pos: '동사표현', ko: '볼링을 치다', ex: 'El sábado fuimos a jugar a los bolos.', exKo: '토요일에 우리는 볼링을 치러 갔다.' },
+      { es: 'jugar a los dardos', pos: '동사표현', ko: '다트 놀이를 하다', ex: 'En ese bar se puede jugar a los dardos.', exKo: '그 바에서는 다트 놀이를 할 수 있다.' },
+      { es: 'jugar al billar', pos: '동사표현', ko: '당구를 치다', ex: 'Después del trabajo, solemos jugar al billar.', exKo: '퇴근 후에, 우리는 보통 당구를 치곤 한다.' },
+      { es: 'jugar al balonmano', pos: '동사표현', ko: '핸드볼을 하다', ex: 'En España, el balonmano es un deporte muy popular.', exKo: '스페인에서, 핸드볼은 매우 인기 있는 스포츠이다.' },
+      { es: 'jugar al voleibol', pos: '동사표현', ko: '배구를 하다', ex: 'En la playa nos gusta jugar al voleibol.', exKo: '우리는 해변에서 배구 하는 것을 좋아한다.' },
+      { es: 'jugar al béisbol', pos: '동사표현', ko: '야구를 하다', ex: 'En Corea mucha gente juega al béisbol.', exKo: '한국에서는 많은 사람들이 야구를 한다.' },
+      { es: 'hacer parapente', pos: '동사표현', ko: '패러글라이딩을 하다', ex: 'Quiero hacer parapente en las montañas de Guatemala.', exKo: '나는 과테말라의 산에서 패러글라이딩을 하고 싶다.' },
+      { es: 'hacer puenting', pos: '동사표현', ko: '번지점프를 하다', ex: 'Mi amigo hizo puenting el año pasado.', exKo: '나의 친구는 작년에 번지점프를 했다.' },
+      { es: 'hacer remo', pos: '동사표현', ko: '보트 레이스를 하다', ex: 'Los fines de semana hacemos remo en el lago.', exKo: '우리는 주말마다 호수에서 보트 레이스를 한다.' },
+      { es: 'deporte de invierno', pos: 'n.m.', ko: '겨울 스포츠', ex: 'El esquí es mi deporte de invierno favorito.', exKo: '스키는 내가 가장 좋아하는 겨울 스포츠이다.' },
+      { es: 'deporte de verano', pos: 'n.m.', ko: '여름 스포츠', ex: 'La natación es un deporte de verano muy popular.', exKo: '수영은 매우 인기 있는 여름 스포츠이다.' },
+      { es: 'deporte acuático', pos: 'n.m.', ko: '수상 스포츠', ex: 'El surf es un deporte acuático muy divertido.', exKo: '서핑은 매우 재미있는 수상 스포츠이다.' },
+      { es: 'deporte de equipo', pos: 'n.m.', ko: '팀 스포츠', ex: 'El fútbol es el deporte de equipo más popular del mundo.', exKo: '축구는 세계에서 가장 인기 있는 팀 스포츠이다.' },
+      { es: 'deporte de riesgo', pos: 'n.m.', ko: '익스트림 스포츠', ex: 'El paracaidismo es un deporte de riesgo.', exKo: '스카이다이빙은 익스트림 스포츠이다.' },
+      { es: 'marcar un gol', pos: '동사표현', ko: '골을 넣다', ex: 'El delantero marcó un gol en el último minuto.', exKo: '그 공격수는 마지막 순간에 골을 넣었다.' },
+      { es: 'portero/a', pos: 'n.m.', ko: '골키퍼', ex: 'El portero paró todos los tiros del otro equipo.', exKo: '그 골키퍼는 상대팀의 모든 슛을 막았다.' },
+      { es: 'futbolista', pos: 'n.m.f.', ko: '축구 선수, 축구를 좋아하는 사람', ex: 'De niño, quería ser futbolista profesional.', exKo: '나는 어렸을 때, 프로 축구 선수가 되고 싶었다.' },
+    ]
+  },
+
+
+  {
+    cap: 8, capTitle: 'Ocio 여가',
+    unit: 7, unitTitle: '보너스: 승부',
+    words: [
+      { es: 'victoria', pos: 'n.f.', ko: '승리', ex: 'El equipo celebró la victoria con una fiesta.', exKo: '그 팀은 승리를 파티로 축하했다.' },
+      { es: 'ganar una medalla', pos: '동사표현', ko: '메달을 획득하다', ex: 'El nadador ganó una medalla de plata en las olimpiadas.', exKo: '그 수영 선수는 올림픽에서 은메달을 획득했다.' },
+      { es: 'ganar la Copa del Mundo', pos: '동사표현', ko: '월드컵에서 우승하다', ex: 'Argentina ganó la Copa del Mundo en 2022.', exKo: '아르헨티나는 2022년에 월드컵에서 우승했다.' },
+      { es: 'ser campeón', pos: '동사표현', ko: '우승 팀이 되다', ex: 'Este equipo fue campeón hace tres años.', exKo: '이 팀은 3년 전에 우승 팀이었다.' },
+      { es: 'ser subcampeón', pos: '동사표현', ko: '준우승 팀이 되다', ex: 'Fuimos subcampeones en la liga el año pasado.', exKo: '우리는 작년에 리그에서 준우승 팀이었다.' },
+      { es: 'clasificarse para la eliminatoria', pos: '동사표현', ko: '예선에 진출하다', ex: 'Nuestro equipo se clasificó para la eliminatoria.', exKo: '우리 팀은 예선에 진출했다.' },
+      { es: 'clasificarse para los octavos de final', pos: '동사표현', ko: '16강전에 진출하다', ex: 'El equipo coreano se clasificó para los octavos de final.', exKo: '한국 팀은 16강전에 진출했다.' },
+      { es: 'clasificarse para los cuartos de final', pos: '동사표현', ko: '8강전에 진출하다', ex: 'Con esta victoria, nos clasificamos para los cuartos de final.', exKo: '이 승리로, 우리는 8강전에 진출했다.' },
+      { es: 'clasificarse para la semifinal', pos: '동사표현', ko: '4강전에 진출하다', ex: 'El equipo ganó y se clasificó para la semifinal.', exKo: '그 팀은 이겨서 4강전에 진출했다.' },
+      { es: 'clasificarse para la final', pos: '동사표현', ko: '결승에 진출하다', ex: 'Después de ganar la semifinal, se clasificaron para la final.', exKo: '4강전에서 이긴 후, 그들은 결승에 진출했다.' },
+      { es: 'jugar la prórroga', pos: '동사표현', ko: '연장전을 치르다', ex: 'El partido estaba empatado y tuvieron que jugar la prórroga.', exKo: '경기가 동점이어서 그들은 연장전을 치러야 했다.' },
+    ]
+  },
+
+
+  {
+    cap: 9, capTitle: 'Medios de comunicación 매스컴',
+    unit: 2, unitTitle: '정보와 의사소통',
+    words: [
+      { es: 'recibir una llamada', pos: '동사표현', ko: '한 통의 전화를 받다', ex: 'He recibido una llamada de una persona que se llama Juan Serrano.', exKo: '나는 후안 세라노라는 사람의 전화 한 통을 받았다.' },
+      { es: 'medios de comunicación', pos: 'n.m.', ko: '매스컴', ex: '¿Los medios de comunicación pueden manipular a la gente?', exKo: '매스컴이 사람들을 조종할 수 있을까?' },
+      { es: 'comentario', pos: 'n.m.', ko: '코멘트', ex: 'Me podéis dejar un comentario si tenéis alguna duda al respecto.', exKo: '만약 (이와) 관련하여 어떤 의문이 있으면 너희들은 나에게 코멘트를 남겨도 된다.' },
+      { es: 'cortarse la comunicación', pos: '동사표현', ko: '통신이 끊기다, 연결이 끊기다', ex: 'Se ha cortado la comunicación por la lluvia.', exKo: '비로 인해 통신이 끊겼다.' },
+      { es: 'mantenerse bien informado/a', pos: '동사표현', ko: '주변 소식을 잘 접하고 있다', ex: 'Me gusta mantenerme bien informado, así que no me pierdo ninguna noticia.', exKo: '나는 주변 소식을 잘 접하고 있는 것을 좋아한다, 그래서 어떠한 새로운 소식도 놓치지 않는다.' },
+      { es: 'estar bien informado/a', pos: '동사표현', ko: '주변 소식을 잘 알고 있다', ex: 'Veo que estás bien informado.', exKo: '나는 네가 주변 소식을 잘 알고 있다는 것이 느껴진다.' },
+    ]
+  },
+
+
+  {
+    cap: 9, capTitle: 'Medios de comunicación 매스컴',
+    unit: 3, unitTitle: '전화',
+    words: [
+      { es: 'teléfono fijo', pos: 'n.m.', ko: '집 전화', ex: 'En mi casa no tenemos teléfono fijo.', exKo: '내 집에는 집 전화가 없다.' },
+      { es: 'cabina', pos: 'n.f.', ko: '공중전화 박스', ex: '¿Hay una cabina por aquí cerca?', exKo: '이 근처에 공중전화 박스가 있나요?' },
+      { es: 'llamar por teléfono', pos: '동사표현', ko: '전화하다', ex: 'Te voy a llamar por teléfono esta tarde.', exKo: '오늘 오후에 너에게 전화할게.' },
+      { es: 'hablar por teléfono', pos: '동사표현', ko: '통화하다', ex: 'Anoche hablé con Juan por teléfono casi tres horas.', exKo: '어젯밤에 후안과 거의 3시간 동안을 통화했어.' },
+      { es: 'dejar un mensaje', pos: '동사표현', ko: '메시지를 남기다', ex: 'El señor Ramos te ha dejado un mensaje.', exKo: '라모스 씨가 너에게 메시지 하나를 남겼어.' },
+      { es: 'contestador automático', pos: 'n.m.', ko: '자동 응답기', ex: 'Este es el contestador automático de María Fernández.', exKo: '이것은 마리아 페르난데즈의 자동 응답기입니다.' },
+      { es: 'buzón de voz', pos: 'n.m.', ko: '음성 사서함', ex: '¿Sabes cómo desactivar el buzón de voz?', exKo: '너는 음성 사서함을 해제하는 방법을 아니?' },
+      { es: 'línea', pos: 'n.f.', ko: '전화선', ex: 'Llamé varias veces, pero la línea estaba ocupada.', exKo: '나는 여러 번 전화를 했지만, 통화 중이었다.' },
+      { es: 'prefijo', pos: 'n.m.', ko: '시외 국번, 국번', ex: 'El prefijo de Corea es el 82.', exKo: '한국의 국가 번호는 82이다.' },
+      { es: 'extensión', pos: 'n.f.', ko: '내선 번호', ex: 'Por favor, ponme con la extensión 123.', exKo: '내선 번호 123번과 연결 부탁해요.' },
+      { es: 'conversación telefónica', pos: 'n.f.', ko: '유선상의 대화', ex: 'Marcos tuvo una conversación telefónica con un miembro de la organización.', exKo: '마르코스는 그 단체의 한 회원과 유선상의 대화를 가졌다.' },
+      { es: 'guía telefónica', pos: 'n.f.', ko: '전화번호부', ex: '¿Dónde has dejado la guía telefónica?', exKo: '너 전화번호부 어디에 두었어?' },
+      { es: 'llamada perdida', pos: 'n.f.', ko: '부재중 전화', ex: 'Tienes una llamada perdida.', exKo: '너 부재중 전화가 하나 있다.' },
+      { es: 'lista de contactos', pos: 'n.f.', ko: '연락처 목록', ex: '¿Dónde está la lista de contactos?', exKo: '연락처 목록 어디에 있지?' },
+      { es: 'marcar un número de teléfono', pos: '동사표현', ko: '전화번호를 누르다', ex: 'Márcame tu número de teléfono y te doy un toque para que guardes el número mío.', exKo: '나에게 너의 전화번호를 눌러 줘 그리고 네가 내 번호를 저장하도록 부재중 통화를 하나 남길게.' },
+      { es: 'colgar el teléfono', pos: '동사표현', ko: '전화를 끊다', ex: 'Mi novio tiene la mala costumbre de colgar el teléfono cuando está enfadado.', exKo: '나의 남자 친구는 화가 나 있을 때 전화를 끊어 버리는 나쁜 습관이 있다.' },
+      { es: 'coger el teléfono', pos: '동사표현', ko: '전화를 받다', ex: 'Coge el teléfono, por favor, que estoy en la cocina.', exKo: '전화를 받아 줘, 나는 부엌에 있으니까.' },
+      { es: 'ponerse al teléfono', pos: '동사표현', ko: '전화 받으러 오다', ex: '¿Ana? Ahora mismo se pone, espera un poco.', exKo: '아나요? 지금 바로 전화 받으러 올 거예요, 조금만 기다려요.' },
+      { es: 'quedarse sin batería', pos: '동사표현', ko: '배터리가 다하다', ex: 'No te llamé porque me quedé sin batería.', exKo: '나 배터리가 다해서 너에게 전화를 못 했어.' },
+      { es: 'quedarse sin saldo', pos: '동사표현', ko: '(보통 휴대폰) 충전 잔액이 다하다', ex: '¿Puedo hacer una llamada desde tu móvil? Es que me he quedado sin saldo.', exKo: '네 휴대폰으로 전화 한 통 할 수 있을까? 그게 말이야 내가 충전 잔액이 다했거든.' },
+      { es: 'estar comunicando', pos: '동사표현', ko: '통화 중이다', ex: 'Ya he intentado varias veces llamar a Atención al Cliente, pero siempre está comunicando.', exKo: '나는 벌써 여러 번 고객 센터에 전화를 시도했으나, 항상 통화 중이다.' },
+    ]
+  },
+
+
+  {
+    cap: 9, capTitle: 'Medios de comunicación 매스컴',
+    unit: 4, unitTitle: '텔레비전과 라디오',
+    words: [
+      { es: 'ver la televisión', pos: '동사표현', ko: '텔레비전을 보다', ex: '¿Cuántas horas al día ves la televisión?', exKo: '너는 하루에 몇 시간 텔레비전을 보니?' },
+      { es: 'poner la radio', pos: '동사표현', ko: '라디오를 틀다', ex: 'Me gusta poner la radio cuando conduzco.', exKo: '나는 운전을 할 때 라디오를 트는 것을 좋아한다.' },
+      { es: 'presentador', pos: 'n.m.', ko: '아나운서', ex: 'Estrella quiere ser presentadora de televisión.', exKo: '에스트레야는 TV 아나운서가 되기를 원한다.' },
+      { es: 'locutor', pos: 'n.m.', ko: '라디오 진행자', ex: 'Carlos lleva diez años trabajando de locutor.', exKo: '카를로스는 10년째 라디오 진행자로 일하고 있다.' },
+      { es: 'serie', pos: 'n.f.', ko: '시리즈물', ex: 'Esta serie tiene tres temporadas.', exKo: '이 시리즈물은 3개의 시즌을 가지고 있다.' },
+      { es: 'capítulo', pos: 'n.m.', ko: '화, 회', ex: 'Esta serie tiene veinte capítulos.', exKo: '이 시리즈물은 총 20화로 구성되어 있다.' },
+      { es: 'culebrón', pos: 'n.m.', ko: '막장 드라마', ex: 'A mi abuela le encantan los culebrones.', exKo: '나의 할머니는 막장 드라마를 매우 좋아하신다.' },
+      { es: 'telenovela', pos: 'n.f.', ko: '연속극, 드라마', ex: 'Ya no tienen mucho éxito las telenovelas.', exKo: '연속극들은 더 이상 큰 성공을 거두지 못한다.' },
+      { es: 'concurso', pos: 'n.m.', ko: '대회', ex: 'Quiero presentarme a un concurso televisivo.', exKo: '나는 텔레비전 대회 프로그램에 출전하고 싶어.' },
+      { es: 'debate', pos: 'n.m.', ko: '토론', ex: 'El único programa que sigo cada semana es uno de debate.', exKo: '매주 내가 따르는 유일한 프로그램은 토론 프로그램이다.' },
+      { es: 'documental', pos: 'n.m.', ko: '다큐멘터리', ex: 'Mira, echan un documental sobre la cultura precolombina.', exKo: '이것 좀 봐, 정복 이전 문화에 대한 다큐멘터리를 틀어 준다.' },
+      { es: 'consultar la programación', pos: '동사표현', ko: '프로그램 편성표를 보다', ex: 'Vamos a consultar la programación de hoy a ver si hay alguna película chula.', exKo: '우리 괜찮은 영화가 있는지 보기 위해 오늘의 편성표를 보자.' },
+    ]
+  },
+
+
+  {
+    cap: 9, capTitle: 'Medios de comunicación 매스컴',
+    unit: 5, unitTitle: '출판',
+    words: [
+      { es: 'revista', pos: 'n.f.', ko: '잡지', ex: 'Las revistas del corazón no suelen ser muy caras.', exKo: '가십 잡지들은 보통 아주 비싸지는 않다.' },
+      { es: 'periodismo', pos: 'n.m.', ko: '신문업, 저널리즘', ex: 'Me dedico al periodismo.', exKo: '나는 신문업에 종사한다.' },
+      { es: 'prensa', pos: 'n.f.', ko: '언론', ex: 'Ese actor sale mucho en la prensa.', exKo: '그 배우는 언론에 많이 등장한다.' },
+      { es: 'editorial', pos: 'n.f.', ko: '출판사', ex: 'Me gustaría montar una editorial especializada en libros de idiomas.', exKo: '나는 외국어 서적을 전문으로 하는 출판사를 차리고 싶다.' },
+      { es: 'cartelera', pos: 'n.f.', ko: '상영작 목록', ex: '¿Miramos la cartelera antes de ir al cine?', exKo: '우리 영화관 가기 전에 상영작 목록 좀 볼까?' },
+      { es: 'sección de economía', pos: 'n.f.', ko: '경제란', ex: 'Me suelo saltar la sección de economía porque estoy muy verde en temas económicos.', exKo: '나는 보통 경제란은 건너뛴다 왜냐하면 경제적인 주제는 아는 게 없기 때문이다.' },
+      { es: 'suplemento cultural', pos: 'n.m.', ko: '문화 부록, 증보판', ex: 'Juan colabora en el suplemento cultural de un periódico.', exKo: '후안은 어느 한 신문사의 문화 증보판에서 일한다.' },
+      { es: 'artículo', pos: 'n.m.', ko: '기사', ex: 'Algunos artículos carecen de fundamento.', exKo: '몇몇 기사들은 근거가 부족하다.' },
+    ]
+  },
+
+
+  {
+    cap: 9, capTitle: 'Medios de comunicación 매스컴',
+    unit: 6, unitTitle: '서신',
+    words: [
+      { es: 'dejar una nota', pos: '동사표현', ko: '메모를 남기다', ex: 'Te he dejado una nota en la entrada.', exKo: '나는 현관에 너에게 메모 하나를 남겨 두었다.' },
+      { es: 'buzón', pos: 'n.m.', ko: '우체통', ex: 'Me gusta echar cartas al buzón.', exKo: '나는 우체통에 편지들을 부치는 것을 좋아한다.' },
+      { es: 'remitente', pos: 'n.m.f.', ko: '발송인', ex: 'En la casilla de remitente, pon tu nombre.', exKo: '발송인 칸에는, 너의 이름을 써.' },
+      { es: 'destinatario', pos: 'n.m.', ko: '수취인', ex: 'El destinatario es la persona a la que va dirigido un paquete.', exKo: '수취인은 소포가 향해 가는 대상이다.' },
+      { es: 'posdata', pos: 'n.f.', ko: '추신', ex: 'Si quieres añadir algo más en la carta, escríbele una posdata.', exKo: '네가 만약 편지에 뭔가를 더 추가하고 싶으면, 그에게 추신을 써.' },
+      { es: 'saludo', pos: 'n.m.', ko: '인사', ex: 'Mis padres te mandan saludos desde Chile.', exKo: '나의 부모님이 칠레로부터 너에게 안부 인사를 전하셔.' },
+      { es: 'despedida', pos: 'n.f.', ko: '작별 인사', ex: 'Las despedidas de las cartas varían según el destinatario.', exKo: '편지의 작별 인사들은 수취인에 따라 달라진다.' },
+      { es: 'carta formal', pos: 'n.f.', ko: '격식을 갖춘 편지', ex: 'Como quieres comunicarte con el Ayuntamiento, escribe una carta formal.', exKo: '네가 시청과 연락을 취하고 싶어하는 거니까, 격식을 갖춘 편지를 써.' },
+      { es: 'carta personal', pos: 'n.f.', ko: '사적인 편지', ex: 'Un compañero mío me mandó una carta personal.', exKo: '나의 어느 한 동료가 나에게 사적인 편지를 보냈다.' },
+      { es: 'mandar algo por correo', pos: '동사표현', ko: '무언가를 우편으로 보내다', ex: 'Te mandé una carta certificada por correo.', exKo: '너에게 우편으로 등기 편지 하나를 보냈어.' },
+    ]
+  },
+
+
+  {
+    cap: 9, capTitle: 'Medios de comunicación 매스컴',
+    unit: 7, unitTitle: '인터넷',
+    words: [
+      { es: 'página web', pos: 'n.f.', ko: '웹페이지', ex: 'Esta página web tiene un diseño muy bonito.', exKo: '이 웹페이지는 매우 예쁜 디자인을 가지고 있다.' },
+      { es: 'portátil', pos: 'n.m.', ko: '노트북', ex: 'Mi portátil es más antiguo que el tuyo.', exKo: '나의 노트북은 너의 노트북보다 더 오래되었다.' },
+      { es: 'PC', pos: 'n.m.', ko: '개인 컴퓨터', ex: 'Mi PC es muy antiguo y va regular estos días.', exKo: '나의 PC는 매우 오래되었다 그래서 요즘 작동이 별로다.' },
+      { es: 'informático', pos: 'n.m.', ko: '컴퓨터 기술자, 컴퓨터 공학의', ex: 'Quiero ser informático en el futuro.', exKo: '나는 미래에 컴퓨터 기술자가 되고 싶다.' },
+      { es: 'CD-ROM', pos: 'n.m.', ko: 'CD롬', ex: 'Este portátil no tiene CD-ROM.', exKo: '이 노트북은 CD롬이 없다.' },
+      { es: 'virus', pos: 'n.m.', ko: '바이러스', ex: 'Tienes que instalar un antivirus para proteger tu ordenador.', exKo: '너는 너의 컴퓨터를 보호하기 위해 안티바이러스 프로그램을 설치해야 해.' },
+      { es: 'cibercafé', pos: 'n.m.', ko: 'PC방', ex: 'Mi ordenador se colgó de repente y por eso me fui a un cibercafé a terminar el trabajo.', exKo: '나의 컴퓨터는 갑자기 먹통이 되었다 그래서 나는 작업을 끝내기 위해 어느 한 PC방에 갔다.' },
+    ]
+  },
+
+
+  {
+    cap: 9, capTitle: 'Medios de comunicación 매스컴',
+    unit: 8, unitTitle: '보너스: 인터넷 관련 용어',
+    words: [
+      { es: 'arroba', pos: 'n.f.', ko: '@, 앳(at)', ex: 'Mi correo electrónico tiene una arroba y un punto.', exKo: '내 이메일 주소에는 앳(@)과 점이 하나 있다.' },
+      { es: 'dirección de Internet', pos: 'n.f.', ko: '인터넷 주소', ex: 'Anota la dirección de Internet de esa página.', exKo: '저 페이지의 인터넷 주소를 적어라.' },
+      { es: 'foro', pos: 'n.m.', ko: '인터넷 게시판', ex: 'Publiqué mi pregunta en un foro de informática.', exKo: '나는 컴퓨터 관련 게시판에 내 질문을 올렸다.' },
+      { es: 'chat', pos: 'n.m.', ko: '채팅 창', ex: 'Abrí el chat para hablar con mis amigos.', exKo: '나는 친구들과 이야기하기 위해 채팅 창을 열었다.' },
+      { es: 'navegar por Internet', pos: '동사표현', ko: '인터넷을 서핑하다', ex: 'Me gusta navegar por Internet en mi tiempo libre.', exKo: '나는 여가 시간에 인터넷 서핑하는 것을 좋아한다.' },
+      { es: 'nombre de usuario', pos: 'n.m.', ko: '사용자 이름', ex: 'Olvidé mi nombre de usuario para esta página.', exKo: '나는 이 사이트의 사용자 이름을 잊어버렸다.' },
+      { es: 'colgar una fotografía en Internet', pos: '동사표현', ko: '사진을 인터넷에 업로드하다', ex: 'Colgó una fotografía en Internet de sus vacaciones.', exKo: '그는 자신의 휴가 사진을 인터넷에 업로드했다.' },
+      { es: 'entrar en una página web', pos: '동사표현', ko: '웹페이지에 들어가다', ex: 'No puedo entrar en esta página web.', exKo: '나는 이 웹페이지에 들어갈 수가 없다.' },
+      { es: 'acceder a una página web', pos: '동사표현', ko: '웹페이지에 접속하다', ex: 'Necesitas una contraseña para acceder a esta página web.', exKo: '이 웹페이지에 접속하려면 비밀번호가 필요하다.' },
+    ]
+  },
+
+
+  {
+    cap: 9, capTitle: 'Medios de comunicación 매스컴',
+    unit: 9, unitTitle: '보너스: 컴퓨터 관련 용어 1',
+    words: [
+      { es: 'guion', pos: 'n.m.', ko: '하이픈', ex: 'Escribe la palabra con un guion en medio.', exKo: '그 단어를 중간에 하이픈을 넣어서 써라.' },
+      { es: 'guion bajo', pos: 'n.m.', ko: '낮은 하이픈', ex: 'Mi nombre de usuario tiene un guion bajo.', exKo: '내 사용자 이름에는 낮은 하이픈이 하나 있다.' },
+      { es: 'ratón', pos: 'n.m.', ko: '마우스', ex: 'Mi ratón dejó de funcionar de repente.', exKo: '내 마우스가 갑자기 작동을 멈췄다.' },
+      { es: 'hacer un clic', pos: '동사표현', ko: '클릭하다', ex: 'Haz un clic aquí para continuar.', exKo: '계속하려면 여기를 클릭해라.' },
+      { es: 'hacer un doble clic', pos: '동사표현', ko: '더블 클릭하다', ex: 'Haz doble clic en el icono para abrir el archivo.', exKo: '파일을 열려면 아이콘을 더블 클릭해라.' },
+      { es: 'alfombrilla', pos: 'n.f.', ko: '마우스 패드', ex: 'Compré una alfombrilla nueva para el ratón.', exKo: '나는 마우스용 새 마우스 패드를 샀다.' },
+      { es: 'tecla', pos: 'n.f.', ko: '(키보드의) 키', ex: 'Esta tecla no funciona bien.', exKo: '이 키가 잘 작동하지 않는다.' },
+      { es: 'teclado', pos: 'n.m.', ko: '키보드(전체)', ex: 'Se me rompió una tecla del teclado.', exKo: '키보드의 키 하나가 고장 났다.' },
+      { es: 'torre', pos: 'n.f.', ko: '본체', ex: 'La torre del ordenador está debajo del escritorio.', exKo: '컴퓨터 본체는 책상 아래에 있다.' },
+      { es: 'ordenador de sobremesa', pos: 'n.m.', ko: '데스크톱', ex: 'Prefiero el ordenador de sobremesa al portátil.', exKo: '나는 노트북보다 데스크톱을 선호한다.' },
+      { es: 'altavoz', pos: 'n.m.', ko: '스피커', ex: 'El altavoz de mi ordenador no suena bien.', exKo: '내 컴퓨터 스피커가 소리가 잘 나지 않는다.' },
+      { es: 'navegador', pos: 'n.m.', ko: '브라우저', ex: '¿Qué navegador usas normalmente?', exKo: '너는 보통 어떤 브라우저를 사용하니?' },
+      { es: 'buscador', pos: 'n.m.', ko: '검색 창', ex: 'Escribí la pregunta en el buscador.', exKo: '나는 검색 창에 질문을 썼다.' },
+      { es: 'asunto', pos: 'n.m.', ko: '(이메일에서) 제목', ex: 'No olvides escribir el asunto del correo.', exKo: '이메일 제목 쓰는 것을 잊지 마.' },
+    ]
+  },
+
+
+  {
+    cap: 9, capTitle: 'Medios de comunicación 매스컴',
+    unit: 10, unitTitle: '보너스: 컴퓨터 관련 용어 2',
+    words: [
+      { es: 'escritorio', pos: 'n.m.', ko: '바탕 화면', ex: 'Guardé el archivo en el escritorio.', exKo: '나는 파일을 바탕 화면에 저장했다.' },
+      { es: 'antivirus', pos: 'n.m.', ko: '안티바이러스 프로그램', ex: 'Instalé un antivirus nuevo en mi ordenador.', exKo: '나는 내 컴퓨터에 새 안티바이러스 프로그램을 설치했다.' },
+      { es: 'guardar un archivo', pos: '동사표현', ko: '파일 하나를 저장하다', ex: 'Recuerda guardar el archivo antes de cerrar el programa.', exKo: '프로그램을 닫기 전에 파일 저장하는 것을 기억해라.' },
+      { es: 'crear una nueva carpeta', pos: '동사표현', ko: '새 폴더를 생성하다', ex: 'Voy a crear una nueva carpeta para organizar las fotos.', exKo: '나는 사진들을 정리하기 위해 새 폴더를 하나 생성할 것이다.' },
+      { es: 'descargarse un archivo', pos: '동사표현', ko: '파일을 다운로드하다', ex: 'Me descargué un archivo muy pesado.', exKo: '나는 아주 용량이 큰 파일을 다운로드했다.' },
+      { es: 'bajarse un programa', pos: '동사표현', ko: '프로그램을 다운로드하다', ex: 'Me bajé un programa nuevo para editar fotos.', exKo: '나는 사진 편집을 위해 새 프로그램을 다운로드했다.' },
+      { es: 'conectarse a Internet', pos: '동사표현', ko: '인터넷에 접속하다', ex: 'No puedo conectarme a Internet desde mi habitación.', exKo: '나는 내 방에서 인터넷에 접속할 수가 없다.' },
+      { es: 'tener conexión a Internet', pos: '동사표현', ko: '인터넷 연결을 가지고 있다, 인터넷이 되다', ex: 'No tenemos conexión a Internet en este hotel.', exKo: '이 호텔에는 인터넷이 되지 않는다.' },
+      { es: 'abrir una cuenta de correo electrónico', pos: '동사표현', ko: '이메일 계정을 만들다', ex: 'Necesito abrir una cuenta de correo electrónico nueva.', exKo: '나는 새 이메일 계정을 만들어야 한다.' },
+      { es: 'adjuntar un documento', pos: '동사표현', ko: '문서를 첨부하다', ex: 'Olvidé adjuntar un documento en el correo.', exKo: '나는 이메일에 문서 첨부하는 것을 잊어버렸다.' },
+      { es: 'reenviar un documento', pos: '동사표현', ko: '문서를 재전송하다', ex: '¿Puedes reenviarme el documento, por favor?', exKo: '그 문서를 나에게 다시 보내 줄 수 있어?' },
+      { es: 'enviar una copia oculta a alguien', pos: '동사표현', ko: '~에게 (숨은) 참조를 보내다', ex: 'Voy a enviar una copia oculta a mi jefe.', exKo: '나는 상사에게 숨은 참조를 보낼 것이다.' },
+      { es: 'ratón inalámbrico', pos: 'n.m.', ko: '무선 마우스', ex: 'Compré un ratón inalámbrico para mi portátil.', exKo: '나는 내 노트북용 무선 마우스를 샀다.' },
+    ]
+  },
+
+
+  {
+    cap: 10, capTitle: 'Vivienda 주거',
+    unit: 2, unitTitle: '집 구하기',
+    words: [
+      { es: 'cambiarse de casa', pos: '동사표현', ko: '이사를 가다', ex: 'Quiero cambiarme de casa porque mi casa actual es muy antigua.', exKo: '나는 이사를 가고 싶다 왜냐하면 현재 집이 매우 오래되었기 때문이다.' },
+      { es: 'compartir piso', pos: '동사표현', ko: '아파트를 공유하다', ex: 'Me gustaría compartir piso cuando esté en España.', exKo: '나는 스페인에 머무는 동안 아파트를 공유하고 싶다.' },
+      { es: 'alojamiento', pos: 'n.m.', ko: '숙소', ex: '¿Qué tipo de alojamiento estás buscando?', exKo: '너는 어떤 종류의 숙소를 찾고 있니?' },
+      { es: 'hipoteca', pos: 'n.f.', ko: '집 대출금', ex: 'Cada mes pago trescientos euros de hipoteca.', exKo: '나는 매달 300유로의 집 대출금을 지불한다.' },
+      { es: 'recibo de la luz', pos: 'n.m.', ko: '전기 요금 고지서', ex: 'No me acuerdo dónde he dejado el recibo de la luz.', exKo: '나는 전기 요금 고지서를 어디에 뒀는지 기억나지 않는다.' },
+      { es: 'comunidad', pos: 'n.f.', ko: '관리비', ex: 'La comunidad está incluida en el alquiler.', exKo: '관리비는 월세에 포함되어 있다.' },
+      { es: 'dueño/a', pos: 'n.m.', ko: '주인', ex: 'El dueño de este establecimiento es el padre de un amigo mío.', exKo: '이 가게의 주인은 내 한 친구의 아버지이다.' },
+      { es: 'conserje', pos: 'n.m.f.', ko: '(보통 아파트, 공동 주거지의) 경비원', ex: 'El conserje le dará la llave en caso de que llegue por la noche.', exKo: '당신이 밤에 도착하는 경우에는 경비원이 당신에게 열쇠를 줄 것입니다.' },
+      { es: 'empresa de mudanzas', pos: 'n.f.', ko: '이사 업체', ex: 'Voy a contratar una empresa de mudanzas porque lo veo más seguro.', exKo: '나는 이사 업체를 고용할 것이다 왜냐하면 그것이 더 안전하게 느껴지기 때문이다.' },
+      { es: 'camión de mudanzas', pos: 'n.m.', ko: '이사 트럭', ex: 'Me han dicho que mañana a las tres de la tarde llega el camión de mudanzas.', exKo: '(이삿짐 회사 측에서) 나에게 내일 오후 3시에 이사 트럭이 도착한다고 말했다.' },
+    ]
+  },
+
+
+  {
+    cap: 10, capTitle: 'Vivienda 주거',
+    unit: 3, unitTitle: '주거지',
+    words: [
+      { es: 'estudio', pos: 'n.m.', ko: '원룸', ex: 'Este estudio tiene 30m².', exKo: '이 원룸은 30제곱미터를 가지고 있다.' },
+      { es: 'dormitorio', pos: 'n.m.', ko: '침실', ex: 'Los dormitorios están en la primera planta.', exKo: '침실들은 2층에 있다.' },
+      { es: 'jardín', pos: 'n.m.', ko: '정원', ex: 'La casa de mis padres tiene un jardín muy grande.', exKo: '내 부모님의 집은 매우 큰 정원 하나를 가지고 있다.' },
+      { es: 'viejo/a', pos: 'adj.', ko: '낡은, 늙은, 오래된', ex: 'El piso está muy viejo.', exKo: '그 아파트는 매우 오래되었다.' },
+      { es: 'piso exterior', pos: 'n.m.', ko: '외향의 아파트', ex: 'Buscamos un piso exterior.', exKo: '우리는 외향의 아파트 한 채를 찾고 있습니다.' },
+      { es: 'calefacción central', pos: 'n.f.', ko: '중앙난방', ex: 'El edificio tiene calefacción central.', exKo: '그 건물은 중앙난방을 한다.' },
+      { es: 'estar bien comunicado/a', pos: '동사표현', ko: '교통망이 좋다', ex: 'Mi ciudad está muy bien comunicada.', exKo: '나의 도시는 교통망이 매우 좋다.' },
+      { es: 'estar en buen estado', pos: '동사표현', ko: '좋은 상태에 있다', ex: 'La vivienda está en muy buen estado.', exKo: '그 주거지는 매우 좋은 상태에 있다.' },
+      { es: 'edificio', pos: 'n.m.', ko: '건물', ex: 'Este edificio tiene diez plantas.', exKo: '이 건물은 10개의 층을 가지고 있다.' },
+      { es: 'plaza mayor', pos: 'n.f.', ko: '메인 광장', ex: 'El Ayuntamiento está en la Plaza Mayor.', exKo: '시청은 메인 광장에 있다.' },
+      { es: 'calle peatonal', pos: 'n.f.', ko: '보행자 전용의 도로, 길', ex: 'El centro tiene muchas calles peatonales.', exKo: '중심지는 많은 보행자 전용의 도로들을 가지고 있다.' },
+      { es: 'calle principal', pos: 'n.f.', ko: '메인 거리', ex: 'Las tiendas más caras están en la calle principal.', exKo: '가장 비싼 가게들은 메인 거리에 있다.' },
+      { es: 'calle comercial', pos: 'n.f.', ko: '상업가', ex: 'Hay muchos turistas en las calles comerciales.', exKo: '상업가에는 많은 관광객들이 있다.' },
+      { es: 'chalé', pos: 'n.m.', ko: '(보통 정원이 딸린) 단독 주택', ex: 'Quiero ver ofertas de chalés.', exKo: '나는 단독 주택 매물들을 보고 싶어요.' },
+      { es: 'suelo', pos: 'n.m.', ko: '바닥', ex: 'Voy a barrer el suelo, mientras tú lavas los platos.', exKo: '네가 설거지를 하는 동안에, 나는 바닥을 쓸게.' },
+      { es: 'techo', pos: 'n.m.', ko: '천장', ex: 'Hay una gotera en el techo.', exKo: '천장에 물이 새는 틈이 하나 있다.' },
+      { es: 'pared', pos: 'n.f.', ko: '벽', ex: 'La pared está pintada de blanco.', exKo: '벽은 흰색으로 칠해져 있다.' },
+      { es: 'ciudad cosmopolita', pos: 'n.f.', ko: '국제도시', ex: 'Barcelona es una ciudad cosmopolita.', exKo: '바르셀로나는 국제도시이다.' },
+      { es: 'ciudad industrial', pos: 'n.f.', ko: '공업 도시, 산업 도시', ex: 'En las ciudades industriales hay muchas fábricas.', exKo: '공업 도시들에는 많은 공장들이 있다.' },
+      { es: 'ciudad antigua', pos: 'n.f.', ko: '오래된 도시, 고대 도시', ex: 'Alejandría es una ciudad antigua de Egipto.', exKo: '알렉산드리아는 이집트의 오래된 도시이다.' },
+      { es: 'ciudad moderna', pos: 'n.f.', ko: '현대적인 도시', ex: 'En Estados Unidos hay muchas ciudades modernas.', exKo: '미국에는 많은 현대적인 도시들이 있다.' },
+      { es: 'ciudad universitaria', pos: 'n.f.', ko: '대학 도시', ex: 'Salamanca es una ciudad universitaria.', exKo: '살라망카는 대학 도시이다.' },
+    ]
+  },
+
+
+  {
+    cap: 10, capTitle: 'Vivienda 주거',
+    unit: 4, unitTitle: '집안일',
+    words: [
+      { es: 'limpiar el baño', pos: '동사표현', ko: '화장실을 청소하다', ex: 'Hoy te toca limpiar el baño.', exKo: '오늘은 네가 화장실을 청소할 차례이다.' },
+      { es: 'lavar la ropa', pos: '동사표현', ko: '세탁하다', ex: 'Lavo la ropa cada dos días.', exKo: '나는 이틀마다 세탁을 한다.' },
+      { es: 'pasar la aspiradora', pos: '동사표현', ko: '청소기를 돌리다', ex: 'No he podido pasar la aspiradora porque no estaba cargada.', exKo: '나는 청소기가 충전되어 있지 않았기 때문에 청소기를 돌릴 수 없었다.' },
+      { es: 'fregar el suelo', pos: '동사표현', ko: '바닥을 물청소하다', ex: '¿Friegas tú el suelo? Me encargo de pasar la aspiradora.', exKo: '네가 바닥을 물청소할래? 내가 청소기 돌리는 것을 맡을게.' },
+      { es: 'quitar el polvo', pos: '동사표현', ko: '먼지를 없애다', ex: 'Hay que comprar un trapo o un plumero para quitar el polvo.', exKo: '먼지를 없애기 위해 걸레 혹은 먼지떨이를 사야 한다.' },
+      { es: 'pasar el trapo a ~', pos: '동사표현', ko: '~를 천으로 훔치다', ex: 'He pasado el trapo a las ventanas.', exKo: '나는 걸레로 창문을 훔쳤다.' },
+      { es: 'hacer la cama', pos: '동사표현', ko: '침대를 정리하다', ex: 'Se me da fatal hacer la cama.', exKo: '나는 침대 정리를 정말 못한다.' },
+      { es: 'hacer la compra', pos: '동사표현', ko: '장을 보다', ex: 'Yo hago la compra en un supermercado cerca de mi casa.', exKo: '나는 집 근처 슈퍼에서 장을 본다.' },
+      { es: 'sacar la basura', pos: '동사표현', ko: '쓰레기를 내놓다', ex: '¿Puedes sacar la basura? Es que huele a rancio.', exKo: '너 쓰레기 내놓을 수 있니? 그게 말이야 쓰레기가 완전 썩은 냄새가 나.' },
+      { es: 'tender la ropa', pos: '동사표현', ko: '옷을 널다', ex: 'Yo pongo la lavadora y mi hermana menor se encarga de tender la ropa.', exKo: '나는 세탁기를 작동시키고, 나의 여동생은 옷을 너는 것을 담당한다.' },
+    ]
+  },
+
+
+  {
+    cap: 10, capTitle: 'Vivienda 주거',
+    unit: 5, unitTitle: '가구 및 집안 용품',
+    words: [
+      { es: 'sillón', pos: 'n.m.', ko: '팔걸이 의자, 안락의자', ex: 'A mi padre le gusta echarse una siesta en el sillón.', exKo: '나의 아버지는 팔걸이 의자에서 잠깐 낮잠 자는 것을 좋아하신다.' },
+      { es: 'sofá', pos: 'n.m.', ko: '소파', ex: 'Este sofá es para cinco personas.', exKo: '이 소파는 5인용이다.' },
+      { es: 'armario', pos: 'n.m.', ko: '옷장', ex: 'El armario está lleno de ropa de invierno.', exKo: '옷장은 겨울 옷으로 가득 차 있다.' },
+      { es: 'estantería', pos: 'n.f.', ko: '책장', ex: 'Necesito una estantería más grande porque los libros no caben.', exKo: '나는 조금 더 큰 책장이 필요하다 왜냐하면 책들이 다 들어가지 않기 때문이다.' },
+      { es: 'vídeo', pos: 'n.m.', ko: '비디오', ex: 'Estos días casi no hay tiendas de alquiler de vídeos.', exKo: '요즘은 비디오 대여 가게들이 거의 없다.' },
+      { es: 'DVD', pos: 'n.m.', ko: 'DVD', ex: 'Este ordenador no tiene lector de DVD.', exKo: '이 컴퓨터는 DVD 리더기가 없다.' },
+      { es: 'fregadero', pos: 'n.m.', ko: '싱크대', ex: 'Puedes poner los platos usados en el fregadero.', exKo: '너는 사용한 접시들을 싱크대에 놓아도 된다.' },
+      { es: 'microondas', pos: 'n.m.', ko: '전자레인지', ex: 'Vamos a calentarlo en el microondas.', exKo: '그거 전자레인지에 데우자.' },
+      { es: 'cocina eléctrica', pos: 'n.f.', ko: '전기레인지', ex: 'La mayoría de las casas de España tienen cocina eléctrica.', exKo: '스페인의 대부분 집들은 전기레인지를 가지고 있다.' },
+      { es: 'cocina de gas', pos: 'n.f.', ko: '가스레인지', ex: 'Mi madre todavía prefiere la cocina de gas.', exKo: '나의 어머니는 아직도 가스레인지를 선호하신다.' },
+      { es: 'nevera', pos: 'n.f.', ko: '냉장고', ex: 'Esta nevera tiene un congelador muy pequeño.', exKo: '이 냉장고는 매우 작은 냉동고를 가지고 있다.' },
+      { es: 'lavaplatos', pos: 'n.m.', ko: '식기세척기', ex: 'Existen detergentes especiales para el uso del lavaplatos.', exKo: '식기세척기용 특별한 세제들이 존재한다.' },
+      { es: 'lavabo', pos: 'n.m.', ko: '세면대', ex: 'Estoy buscando un producto para limpiar el lavabo.', exKo: '나는 세면대를 청소할 제품을 찾고 있습니다.' },
+      { es: 'alfombra', pos: 'n.f.', ko: '카펫', ex: 'La alfombra es difícil de limpiar.', exKo: '카펫은 청소하는 것이 어렵다.' },
+      { es: 'cortina', pos: 'n.f.', ko: '커튼', ex: 'Tengo que poner cortinas en mi habitación porque entra demasiada luz.', exKo: '나는 방에 커튼을 달아야 한다, 왜냐하면 너무 많은 빛이 들어오기 때문이다.' },
+      { es: 'florero', pos: 'n.m.', ko: '꽃병', ex: 'Se ha roto el florero favorito de mi madre.', exKo: '엄마가 가장 좋아하는 꽃병이 깨졌다.' },
+      { es: 'espejo', pos: 'n.m.', ko: '거울', ex: 'Quiero comprarme un espejo de pie.', exKo: '나는 전신 거울을 사고 싶다.' },
+      { es: 'mesilla de noche', pos: 'n.f.', ko: '협탁', ex: 'Me quito las gafas antes de dormir y las dejo en la mesilla de noche.', exKo: '나는 자기 전에 안경을 벗어서 협탁에 놓는다.' },
+      { es: 'electrodoméstico', pos: 'n.m.', ko: '가전제품', ex: 'Los electrodomésticos de Alemania tienen muy buena fama.', exKo: '독일의 가전제품들은 아주 좋은 명성을 가지고 있다.' },
+      { es: 'horno', pos: 'n.m.', ko: '오븐', ex: 'Voy a programar el horno para hacer galletas.', exKo: '나는 과자를 만들기 위해 오븐을 세팅할 것이다.' },
+      { es: 'cafetera', pos: 'n.f.', ko: '커피포트', ex: 'Esta cafetera tarda mucho en calentarse.', exKo: '이 커피포트는 뜨거워지는 데 매우 오래 걸린다.' },
+      { es: 'estar roto/a', pos: '동사표현', ko: '부러져 있다', ex: 'El asa de la cafetera está rota, así que ten cuidado de no quemarte.', exKo: '커피포트의 손잡이가 부러졌다, 그러니 화상을 입지 않도록 (너) 조심해라.' },
+      { es: 'estar estropeado/a', pos: '동사표현', ko: '고장이 나 있다', ex: 'La aspiradora está estropeada, así que tengo que usar la escoba para limpiar la casa.', exKo: '청소기가 고장이 나 있다, 그래서 나는 집을 청소하기 위해 빗자루를 사용해야 한다.' },
+    ]
+  },
+
+
+  {
+    cap: 10, capTitle: 'Vivienda 주거',
+    unit: 6, unitTitle: '보너스: 주거지',
+    words: [
+      { es: 'espacioso/a', pos: 'adj.', ko: '널찍한', ex: 'El salón de esta casa es muy espacioso.', exKo: '이 집의 거실은 매우 널찍하다.' },
+      { es: 'dar a la calle', pos: '동사표현', ko: '(건물이 창을 열면) 거리를 내다보고 있다', ex: 'Mi habitación da a la calle, así que se oye mucho ruido.', exKo: '내 방은 거리를 내다보고 있다, 그래서 소음이 많이 들린다.' },
+      { es: 'escalera de incendios', pos: 'n.f.', ko: '화재용 비상 계단', ex: 'En caso de emergencia, usa la escalera de incendios.', exKo: '비상시에는 화재용 비상 계단을 사용해라.' },
+      { es: 'sótano', pos: 'n.m.', ko: '지하', ex: 'Guardamos las maletas en el sótano.', exKo: '우리는 여행 가방들을 지하에 보관한다.' },
+      { es: 'despensa', pos: 'n.f.', ko: '식료품 저장실', ex: 'Puse el arroz y el aceite en la despensa.', exKo: '나는 쌀과 기름을 식료품 저장실에 넣었다.' },
+      { es: 'trastero', pos: 'n.m.', ko: '창고', ex: 'Dejamos las maletas viejas en el trastero.', exKo: '우리는 오래된 여행 가방들을 창고에 뒀다.' },
+      { es: 'mueble bar', pos: 'n.m.', ko: '바 캐비닛', ex: 'Tenemos un mueble bar en el salón con varias botellas.', exKo: '우리는 거실에 여러 병들이 있는 바 캐비닛 하나를 가지고 있다.' },
+      { es: 'orientado/a al sur', pos: 'adj.', ko: '남향의', ex: 'Nuestro piso está orientado al sur, así que recibe mucho sol.', exKo: '우리 아파트는 남향이다, 그래서 햇빛을 많이 받는다.' },
+      { es: 'orientado/a al norte', pos: 'adj.', ko: '북향의', ex: 'Los pisos orientados al norte suelen ser más fríos.', exKo: '북향 아파트들은 보통 더 춥다.' },
+      { es: 'acogedor/a', pos: 'adj.', ko: '아늑한', ex: 'Este apartamento es pequeño pero muy acogedor.', exKo: '이 아파트는 작지만 매우 아늑하다.' },
+      { es: 'montacargas', pos: 'n.m.', ko: '화물용 승강기', ex: 'Subimos los muebles por el montacargas.', exKo: '우리는 화물용 승강기로 가구를 올렸다.' },
+    ]
+  },
+
+
+  {
+    cap: 10, capTitle: 'Vivienda 주거',
+    unit: 7, unitTitle: '보너스: 집안에서',
+    words: [
+      { es: 'bañera', pos: 'n.f.', ko: '욕조', ex: 'Me gusta darme un baño en la bañera después del trabajo.', exKo: '나는 퇴근 후에 욕조에서 목욕하는 것을 좋아한다.' },
+      { es: 'grifo', pos: 'n.m.', ko: '수도꼭지', ex: 'Cierra bien el grifo cuando termines de lavarte los dientes.', exKo: '양치를 끝내면 수도꼭지를 잘 잠가라.' },
+      { es: 'recogedor', pos: 'n.m.', ko: '쓰레받기', ex: 'Necesito una escoba y un recogedor para limpiar los cristales rotos.', exKo: '나는 깨진 유리 조각을 치우기 위해 빗자루와 쓰레받기가 필요하다.' },
+      { es: 'fregona', pos: 'n.f.', ko: '대걸레', ex: 'Uso la fregona para limpiar el suelo de la cocina.', exKo: '나는 부엌 바닥을 청소하기 위해 대걸레를 사용한다.' },
+      { es: 'cubo de basura', pos: 'n.m.', ko: '쓰레기통', ex: 'El cubo de basura está lleno, hay que vaciarlo.', exKo: '쓰레기통이 가득 찼다, 비워야 한다.' },
+      { es: 'papel de cocina', pos: 'n.m.', ko: '키친타월', ex: 'Se nos ha terminado el papel de cocina.', exKo: '우리 집 키친타월이 다 떨어졌다.' },
+      { es: 'tendedero', pos: 'n.m.', ko: '건조대', ex: 'Colgué las camisas en el tendedero.', exKo: '나는 셔츠들을 건조대에 걸었다.' },
+      { es: 'pinza', pos: 'n.f.', ko: '집게', ex: 'Necesito más pinzas para tender la ropa.', exKo: '나는 빨래를 널기 위한 집게가 더 필요하다.' },
+      { es: 'retrete', pos: 'n.m.', ko: '변기', ex: 'El retrete está atascado otra vez.', exKo: '변기가 또 막혔다.' },
+      { es: 'bidé', pos: 'n.m.', ko: '비데', ex: 'Este baño tiene bañera, ducha y bidé.', exKo: '이 화장실은 욕조, 샤워기, 그리고 비데를 가지고 있다.' },
+      { es: 'persiana', pos: 'n.f.', ko: '블라인드', ex: 'Baja la persiana, entra demasiada luz.', exKo: '블라인드를 내려, 빛이 너무 많이 들어와.' },
+      { es: 'percha', pos: 'n.f.', ko: '옷걸이', ex: 'Cuelga la chaqueta en la percha, por favor.', exKo: '재킷을 옷걸이에 걸어 줘.' },
+      { es: 'perchero', pos: 'n.m.', ko: '옷걸이(스탠드형)', ex: 'Deja el abrigo en el perchero de la entrada.', exKo: '외투는 현관의 스탠드형 옷걸이에 놔둬.' },
+      { es: 'colchón', pos: 'n.m.', ko: '매트리스', ex: 'Necesito cambiar el colchón porque ya está muy viejo.', exKo: '매트리스가 너무 낡아서 나는 바꿔야 한다.' },
+      { es: 'cojín', pos: 'n.m.', ko: '방석, 쿠션', ex: 'Puse varios cojines en el sofá.', exKo: '나는 소파에 여러 쿠션들을 놓았다.' },
+      { es: 'sábana', pos: 'n.f.', ko: '침대 시트', ex: 'Cambio las sábanas todas las semanas.', exKo: '나는 매주 침대 시트를 바꾼다.' },
+      { es: 'tocador', pos: 'n.m.', ko: '화장대', ex: 'Puse el perfume en el tocador.', exKo: '나는 화장대에 향수를 놓았다.' },
+      { es: 'cabecera', pos: 'n.f.', ko: '침대 헤드', ex: 'La cabecera de la cama es de madera.', exKo: '침대 헤드는 나무로 되어 있다.' },
+      { es: 'taburete', pos: 'n.m.', ko: '스툴', ex: 'Me siento en un taburete cuando cocino.', exKo: '나는 요리할 때 스툴에 앉는다.' },
+      { es: 'doblar la ropa', pos: '동사표현', ko: '옷을 개다', ex: 'Odio doblar la ropa después de lavarla.', exKo: '나는 세탁 후 옷 개는 것을 매우 싫어한다.' },
+      { es: 'recoger la casa', pos: '동사표현', ko: '집을 정돈하다', ex: 'Tengo que recoger la casa antes de que lleguen los invitados.', exKo: '손님들이 도착하기 전에 나는 집을 정돈해야 한다.' },
+      { es: 'hacer una limpieza general', pos: '동사표현', ko: '대청소를 하다', ex: 'Vamos a hacer una limpieza general antes de Año Nuevo.', exKo: '우리는 새해 전에 대청소를 할 것이다.' },
+      { es: 'alcachofa de la ducha', pos: 'n.f.', ko: '샤워기 헤드', ex: 'La alcachofa de la ducha necesita una limpieza urgente.', exKo: '샤워기 헤드는 시급한 청소가 필요하다.' },
+      { es: 'tirar de la cadena', pos: '동사표현', ko: '변기의 물을 내리다', ex: 'No te olvides de tirar de la cadena después de usar el baño.', exKo: '화장실을 사용한 후 변기 물 내리는 것을 잊지 마.' },
+    ]
+  },
+
+
+  {
+    cap: 11, capTitle: 'Servicios públicos 공공서비스',
+    unit: 2, unitTitle: '우체국',
+    words: [
+      { es: 'postal', pos: 'n.f.', ko: '엽서', ex: 'Me encanta coleccionar postales de cada país.', exKo: '나는 각 나라의 엽서들을 수집하는 것을 좋아한다.' },
+      { es: 'sello', pos: 'n.m.', ko: '우표', ex: '¿Vendéis sellos?', exKo: '우표 파나요?' },
+      { es: 'código postal', pos: 'n.m.', ko: '우편번호', ex: '¿Cuál es el código postal de su domicilio?', exKo: '당신 자택의 우편번호는 무엇인가요?' },
+      { es: 'Correos', pos: 'n.m.', ko: '우체국', ex: 'Es bueno saber dónde está Correos por si acaso.', exKo: '만일을 대비하여 우체국이 어디에 있는지 아는 게 좋다.' },
+      { es: 'paquete', pos: 'n.m.', ko: '소포', ex: 'Mañana iré a Correos a mandar un paquete.', exKo: '나는 내일 소포 하나 보내러 우체국에 갈 거야.' },
+      { es: 'cartero', pos: 'n.m.', ko: '우편 배달부', ex: 'Los carteros empiezan a distribuir el correo a partir de las nueve de la mañana.', exKo: '우편 배달부들은 우편물을 아침 9시부터 배달하기 시작한다.' },
+      { es: 'mensajero', pos: 'n.m.', ko: '택배 기사', ex: 'Ha venido el mensajero dos veces, pero yo no estaba en casa.', exKo: '택배 기사가 두 번이나 왔는데, 나는 집에 없었다.' },
+    ]
+  },
+
+
+  {
+    cap: 11, capTitle: 'Servicios públicos 공공서비스',
+    unit: 3, unitTitle: '은행',
+    words: [
+      { es: 'céntimo', pos: 'n.m.', ko: '센트', ex: 'Me faltan diez céntimos.', exKo: '나에게 10센트가 부족해.' },
+      { es: 'euro', pos: 'n.m.', ko: '유로', ex: 'El euro ha bajado mucho en los últimos tres meses.', exKo: '최근 석 달 동안 유로가 많이 내려갔다.' },
+      { es: 'cambiar dinero', pos: '동사표현', ko: '환전하다', ex: 'Necesito cambiar dinero para viajar a Europa.', exKo: '나는 유럽으로 여행을 가기 위해 환전을 할 필요가 있다.' },
+      { es: 'cheque de viaje', pos: 'n.m.', ko: '여행자 수표', ex: 'Ya no se usan mucho los cheques de viaje.', exKo: '더 이상 여행자 수표들은 많이 사용되지 않는다.' },
+      { es: 'hacer una transferencia', pos: '동사표현', ko: '계좌 이체를 하다', ex: '¿Te hago una transferencia de cien euros?', exKo: '내가 너에게 100유로를 계좌 이체해 줄까?' },
+      { es: 'préstamo', pos: 'n.m.', ko: '대출', ex: 'Necesito pedir un préstamo al banco.', exKo: '나는 은행에 대출을 신청할 필요가 있다.' },
+    ]
+  },
+
+
+  {
+    cap: 11, capTitle: 'Servicios públicos 공공서비스',
+    unit: 4, unitTitle: '병원',
+    words: [
+      { es: 'ambulancia', pos: 'n.f.', ko: '구급차', ex: 'Hay que despejar el camino para la ambulancia.', exKo: '구급차를 위해서 길을 터 주어야 한다.' },
+      { es: 'Cruz Roja', pos: 'n.f.', ko: '적십자', ex: 'Este verano voy a hacer un trabajo de voluntariado en la Cruz Roja.', exKo: '이번 여름에 나는 적십자에서 봉사 활동을 할 것이다.' },
+      { es: 'urgencias', pos: 'n.f.', ko: '응급실', ex: 'Anoche llevé a mi madre a urgencias.', exKo: '어젯밤 나는 어머니를 응급실로 데리고 갔다.' },
+      { es: 'psicólogo', pos: 'n.m.', ko: '심리학자', ex: 'Si no puedes manejar el estrés, ve al médico o a un psicólogo.', exKo: '네가 만약에 스트레스를 다룰 수 없다면, 병원이나 심리학자에게 가 봐.' },
+      { es: 'Seguridad Social', pos: 'n.f.', ko: '사회보험', ex: 'Estoy cotizando a la Seguridad Social.', exKo: '나는 사회보험을 내고 있다.' },
+    ]
+  },
+
+
+  {
+    cap: 11, capTitle: 'Servicios públicos 공공서비스',
+    unit: 5, unitTitle: '경찰서 및 소방서',
+    words: [
+      { es: 'comisaría', pos: 'n.f.', ko: '경찰서', ex: 'Ve dos manzanas más y la comisaría está a tu derecha.', exKo: '두 블록 더 가 그러면 오른쪽에 경찰서가 있어.' },
+      { es: 'socorro', pos: 'n.m.', ko: '구조', ex: '¡Socorro! ¡No puedo salir de casa!', exKo: '(화재 현장에서) 도와주세요! 집에서 나갈 수가 없어요!' },
+      { es: 'llamar a los bomberos', pos: '동사표현', ko: '소방서에 전화하다', ex: 'Llamamos a los bomberos nada más ver las llamas.', exKo: '우리는 화염들을 보자마자 소방서에 전화를 했습니다.' },
+      { es: 'vigilante', pos: 'n.m.f.', ko: '경비원', ex: 'Juan trabaja como vigilante de seguridad en un centro comercial.', exKo: '후안은 어느 쇼핑몰에서 안전 요원으로 일한다.' },
+      { es: 'socorrista', pos: 'n.m.f.', ko: '구조 대원', ex: 'En verano trabajo de socorrista en una playa.', exKo: '여름에 나는 한 해변에서 구조 대원으로 일한다.' },
+      { es: 'ladrón', pos: 'n.m.', ko: '도둑', ex: 'La casa está manga por hombro. ¿Habrán entrado ladrones?', exKo: '집이 뒤죽박죽이다. 도둑이 들었나?' },
+      { es: 'asesino', pos: 'n.m.', ko: '살인자', ex: 'El asesino fue detenido en un área de descanso.', exKo: '그 살인자는 어느 휴게소에서 체포되었다.' },
+      { es: 'crimen', pos: 'n.m.', ko: '범죄', ex: 'Su amigo cometió un crimen muy grave y fue condenado a cadena perpetua.', exKo: '그의 친구는 매우 심각한 범죄를 저질렀고 종신형을 선고받았다.' },
+      { es: 'incendio', pos: 'n.m.', ko: '화재', ex: 'Los bomberos tardaron muy poco en extinguir el incendio.', exKo: '소방관들은 화재를 진압하는 데 매우 짧은 시간이 걸렸다.' },
+      { es: 'muerte', pos: 'n.f.', ko: '죽음', ex: 'El juez ha condenado al asesino a pena de muerte.', exKo: '판사는 살인자에게 사형을 선고했다.' },
+    ]
+  },
+
+
+  {
+    cap: 11, capTitle: 'Servicios públicos 공공서비스',
+    unit: 6, unitTitle: '보너스: 경찰서',
+    words: [
+      { es: 'accidente de tráfico', pos: 'n.m.', ko: '교통사고', ex: 'Hubo un accidente de tráfico en la autopista esta mañana.', exKo: '오늘 아침 고속도로에서 교통사고가 있었다.' },
+      { es: 'testigo', pos: 'n.m.f.', ko: '증인', ex: 'El testigo describió al sospechoso con detalle.', exKo: '증인은 용의자를 자세히 묘사했다.' },
+      { es: 'fraude', pos: 'n.m.', ko: '사기', ex: 'Fue acusado de fraude fiscal.', exKo: '그는 세금 사기로 고소당했다.' },
+      { es: 'carterista', pos: 'n.m.f.', ko: '소매치기', ex: 'Ten cuidado, hay muchos carteristas en el metro.', exKo: '조심해, 지하철에는 소매치기가 많아.' },
+      { es: 'delito', pos: 'n.m.', ko: '(비교적 가벼운) 범죄', ex: 'Robar una bicicleta es un delito menor.', exKo: '자전거를 훔치는 것은 경범죄다.' },
+      { es: 'delincuente', pos: 'n.m.f.', ko: '(경범죄의) 범죄자', ex: 'El delincuente fue arrestado por la policía local.', exKo: '그 범죄자는 지역 경찰에게 체포되었다.' },
+      { es: 'criminal', pos: 'n.m.f.', ko: '(중범죄의) 범죄자', ex: 'El criminal fue condenado a veinte años de prisión.', exKo: '그 범죄자는 징역 20년을 선고받았다.' },
+    ]
+  },
+
+
+  {
+    cap: 11, capTitle: 'Servicios públicos 공공서비스',
+    unit: 7, unitTitle: '보너스: 소방서',
+    words: [
+      { es: 'sirena', pos: 'n.f.', ko: '사이렌', ex: 'Se oía la sirena de la ambulancia desde lejos.', exKo: '멀리서 구급차 사이렌 소리가 들렸다.' },
+      { es: 'botiquín', pos: 'n.m.', ko: '구급상자', ex: 'Guardamos el botiquín en el armario del baño.', exKo: '우리는 구급상자를 화장실 장에 보관한다.' },
+      { es: 'extintor', pos: 'n.m.', ko: '소화기', ex: 'Hay un extintor junto a la puerta de la cocina.', exKo: '부엌 문 옆에 소화기가 있다.' },
+      { es: 'manguera', pos: 'n.f.', ko: '(소방용) 호스', ex: 'Los bomberos conectaron la manguera al hidrante.', exKo: '소방관들은 호스를 소화전에 연결했다.' },
+      { es: 'vehículo de bomberos', pos: 'n.m.', ko: '소방차', ex: 'El vehículo de bomberos llegó en cinco minutos.', exKo: '소방차는 5분 만에 도착했다.' },
+      { es: 'hacer el boca a boca', pos: '동사표현', ko: '인공호흡을 하다', ex: 'El socorrista le hizo el boca a boca para salvarle la vida.', exKo: '구조 대원은 그의 생명을 구하기 위해 인공호흡을 했다.' },
+    ]
+  },
+
+
+  {
+    cap: 11, capTitle: 'Servicios públicos 공공서비스',
+    unit: 8, unitTitle: '보너스: 병원',
+    words: [
+      { es: 'quemadura', pos: 'n.f.', ko: '화상', ex: 'Se hizo una quemadura al tocar la sartén caliente.', exKo: '그는 뜨거운 프라이팬을 만져서 화상을 입었다.' },
+      { es: 'vacuna', pos: 'n.f.', ko: '예방접종', ex: 'Mi hijo se puso la vacuna contra la gripe.', exKo: '내 아들은 독감 예방접종을 맞았다.' },
+      { es: 'ataque al corazón', pos: 'n.m.', ko: '심장마비', ex: 'Mi abuelo sufrió un ataque al corazón el año pasado.', exKo: '내 할아버지는 작년에 심장마비를 겪으셨다.' },
+      { es: 'camilla', pos: 'n.f.', ko: '들것', ex: 'Los enfermeros llevaron al herido en camilla.', exKo: '간호사들은 부상자를 들것에 실어 갔다.' },
+      { es: 'inyección', pos: 'n.f.', ko: '주사', ex: 'El médico me puso una inyección en el brazo.', exKo: '의사는 내 팔에 주사를 놓았다.' },
+    ]
+  },
+
+
+  {
+    cap: 11, capTitle: 'Servicios públicos 공공서비스',
+    unit: 9, unitTitle: '보너스: 우체국',
+    words: [
+      { es: 'correo certificado', pos: 'n.m.', ko: '등기', ex: 'Envié el contrato por correo certificado.', exKo: '나는 계약서를 등기로 보냈다.' },
+      { es: 'giro postal', pos: 'n.m.', ko: '우편환', ex: 'Mandé el dinero mediante un giro postal.', exKo: '나는 우편환을 통해 돈을 보냈다.' },
+      { es: 'envío internacional', pos: 'n.m.', ko: '국제 배송', ex: 'El envío internacional tarda entre una y dos semanas.', exKo: '국제 배송은 1~2주가 걸린다.' },
+      { es: 'envío nacional', pos: 'n.m.', ko: '국내 배송', ex: 'El envío nacional suele llegar en dos días.', exKo: '국내 배송은 보통 이틀 만에 도착한다.' },
+    ]
+  },
 ];
 
 // pron = 한국어 발음 표기
